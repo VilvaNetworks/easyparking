@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-montserrat), 'Montserrat', sans-serif;
+  --font-montserrat: var(--font-montserrat), 'Montserrat', sans-serif;
+  --font-marcellus: var(--font-marcellus), 'Marcellus', serif;
+  --font-marck-script: var(--font-marck-script), 'Marck Script', cursive;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #2C3E50;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-montserrat), 'Montserrat', Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
