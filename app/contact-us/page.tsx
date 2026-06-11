@@ -4,13 +4,40 @@ import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Easy Parking Ltd',
-  description: 'Contact Easy Parking Ltd for Gatwick Airport parking assistance, bookings, and customer support. Call +44 333 004 0262 or email Info@easyparkingltd.com.',
+  title: 'Contact Us | Easy Parking Ltd - Gatwick Parking Support',
+  description: 'Need assistance with your Gatwick airport parking booking? Contact the Easy Parking customer support team via phone +44 333 004 0262 or email.',
+};
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": "https://www.easyparkingltd.com/contact-us/#contactpage",
+  "url": "https://www.easyparkingltd.com/contact-us",
+  "name": "Contact Us - Easy Parking Ltd",
+  "description": "Contact Easy Parking Ltd for airport parking bookings, support, and inquiries at Gatwick Airport.",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "Easy Parking Ltd",
+    "telephone": "+443330040262",
+    "email": "Info@easyparkingltd.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "1-2, Johnston Road, Woodford Green",
+      "addressLocality": "London",
+      "addressRegion": "England",
+      "postalCode": "IG8 0XA",
+      "addressCountry": "GB"
+    }
+  }
 };
 
 export default function ContactUsPage() {
   return (
     <div className="w-full bg-white text-[#2c3e50] font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+      />
       
       {/* ================= HEADER BANNER ================= */}
       <section className="relative w-full h-[240px] md:h-[300px] flex items-center justify-center overflow-hidden">

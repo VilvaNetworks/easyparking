@@ -4,14 +4,46 @@ import Link from 'next/link';
 import blogsData from '@/data/blogs.json';
 
 export const metadata: Metadata = {
-  title: 'Blog - Easy Parking Ltd',
-  description: "Read our latest news and tips about airport parking services, Gatwick parking benefits, and more. Park Smart at Gatwick: Easy Parking LTD Has You Covered.",
+  title: 'Airport Parking Blog & Travel Tips | Easy Parking Ltd',
+  description: 'Stay updated with airport parking insights, professional valeting tips, Gatwick Airport updates, and holiday travel recommendations from Easy Parking Ltd.',
 };
 
 export default function BlogIndexPage() {
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": "https://www.easyparkingltd.com/blog/#blog",
+    "url": "https://www.easyparkingltd.com/blog",
+    "name": "Blog - Easy Parking Ltd",
+    "description": "Read our latest news and tips about airport parking services, Gatwick parking benefits, and more.",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://www.easyparkingltd.com/#organization",
+      "name": "Easy Parking Ltd",
+      "url": "https://www.easyparkingltd.com"
+    },
+    "blogPost": blogsData.map((post) => ({
+      "@type": "BlogPosting",
+      "@id": `https://www.easyparkingltd.com/blog/${post.slug}/#blogpost`,
+      "url": `https://www.easyparkingltd.com/blog/${post.slug}`,
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": `https://www.easyparkingltd.com${post.image}`,
+      "datePublished": post.date,
+      "author": {
+        "@type": "Organization",
+        "name": post.author
+      }
+    }))
+  };
+
   return (
     <div className="w-full bg-[#fcfbfa] text-[#2c3e50] font-sans">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
+
       {/* ================= HEADER BANNER ================= */}
       <section className="relative w-full h-[240px] md:h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">

@@ -35,14 +35,87 @@ const marckScript = Marck_Script({
 });
 
 export const metadata: Metadata = {
-  title: 'HOME - Easy Parking Ltd',
-  description: '"Where convenience meets luxury"',
+  metadataBase: new URL('https://www.easyparkingltd.com'),
+  title: {
+    default: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
+    template: '%s | Easy Parking Ltd',
+  },
+  description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking Ltd today.',
+  keywords: ['gatwick parking', 'airport parking', 'meet and greet', 'valet parking', 'easy parking', 'gatwick valet'],
+  alternates: {
+    canonical: './',
+  },
+  other: {
+    'ahrefs-site-verification': 'ahrefs_site_verification_placeholder_code_1234567890',
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.easyparkingltd.com/#organization",
+  "name": "Easy Parking Ltd",
+  "url": "https://www.easyparkingltd.com",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://www.easyparkingltd.com/images/logo.png"
+  },
+  "sameAs": [
+    "https://www.facebook.com/easyparkingltd",
+    "https://twitter.com/easyparkingltd"
+  ]
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://www.easyparkingltd.com/#localbusiness",
+  "name": "Easy Parking Ltd",
+  "image": "https://www.easyparkingltd.com/images/car.jpg",
+  "url": "https://www.easyparkingltd.com",
+  "telephone": "+443330040262",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1-2, Johnston Road, Woodford Green",
+    "addressLocality": "London",
+    "addressRegion": "England",
+    "postalCode": "IG8 0XA",
+    "addressCountry": "GB"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 51.605378,
+    "longitude": 0.031575
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${roboto.variable} ${robotoSlab.variable} ${montserrat.variable} ${marcellus.variable} ${marckScript.variable}`}>
       <body className="font-sans bg-white">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <Navbar />
         <main>{children}</main>
         <Footer />

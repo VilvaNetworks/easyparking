@@ -36,7 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = (blogs as BlogPost[]).find((b) => b.slug === slug);
   if (!post) return {};
-  return { title: `${post.title} - Easy Parking Ltd` };
+  return {
+    title: `${post.title} - Easy Parking Ltd`,
+    description: post.excerpt,
+  };
 }
 
 function renderContent(block: ContentBlock, idx: number) {

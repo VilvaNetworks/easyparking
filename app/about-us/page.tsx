@@ -3,8 +3,47 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Us - Easy Parking Ltd',
-  description: 'We are a family run business who strive to provide the best possible service to make your holidays a joyous and unforgettable one.',
+  title: 'About Us | Easy Parking Ltd - Gatwick Airport Valet',
+  description: 'Learn about Easy Parking Ltd, a family-run business providing top-tier, secure, and cheap airport valet parking at London Gatwick Airport.',
+};
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": "https://www.easyparkingltd.com/about-us/#aboutpage",
+  "url": "https://www.easyparkingltd.com/about-us",
+  "name": "About Us - Easy Parking Ltd",
+  "description": "We are a family run business who strive to provide the best possible service to make your holidays a joyous and unforgettable one.",
+  "mainEntity": {
+    "@type": "Organization",
+    "@id": "https://www.easyparkingltd.com/#organization",
+    "name": "Easy Parking Ltd",
+    "url": "https://www.easyparkingltd.com",
+    "description": "Family-run airport parking business providing affordable, secure, and reliable parking solutions at Gatwick Airport.",
+    "foundingDate": "2020",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Gatwick Airport, London, UK"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "1-2, Johnston Road, Woodford Green",
+      "addressLocality": "London",
+      "addressRegion": "England",
+      "postalCode": "IG8 0XA",
+      "addressCountry": "GB"
+    },
+    "telephone": "+443330040262",
+    "email": "Info@easyparkingltd.com",
+    "knowsAbout": [
+      "Airport Parking",
+      "Meet and Greet Parking",
+      "Valet Parking",
+      "Car Valeting",
+      "Electric Vehicle Charging",
+      "Airport Transfer Services"
+    ]
+  }
 };
 
 export default function AboutUsPage() {
@@ -17,6 +56,10 @@ export default function AboutUsPage() {
 
   return (
     <div className="w-full bg-white text-[#2c3e50] font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
       {/* CSS Injection for Floating Animation */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes float {

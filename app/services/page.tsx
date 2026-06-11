@@ -3,13 +3,94 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Services - Easy Parking Ltd',
-  description: 'The ultimate convenience! Discover our airport parking services, valeting, car washing, electric vehicle charging, and transfer options at Gatwick Airport.',
+  title: 'Airport Parking & Valeting Services | Easy Parking Ltd',
+  description: 'Explore our full range of Gatwick services: Meet & Greet parking, professional valeting, car washing, electric car charging, and direct airport transfer solutions.',
+};
+
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://www.easyparkingltd.com/services/#servicepage",
+  "url": "https://www.easyparkingltd.com/services",
+  "name": "Airport Parking Services - Easy Parking Ltd",
+  "description": "Discover our airport parking services, valeting, car washing, electric vehicle charging, and transfer options at Gatwick Airport.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "@id": "https://www.easyparkingltd.com/#organization",
+    "name": "Easy Parking Ltd",
+    "telephone": "+443330040262",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "1-2, Johnston Road, Woodford Green",
+      "addressLocality": "London",
+      "addressRegion": "England",
+      "postalCode": "IG8 0XA",
+      "addressCountry": "GB"
+    }
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Easy Parking Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Meet & Greet Airport Parking",
+          "description": "Drive to the terminal and our professional driver will park your car. Upon return, your car will be ready at the terminal."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Valeting Service",
+          "description": "Complete interior and exterior cleaning of your vehicle."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Full Car Wash Service",
+          "description": "Hand washed by experienced valeters using premium products for a perfect finish."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Car Wash Outside Only",
+          "description": "Hand washed and dried exterior clean for £14.99."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Electric Car Charging",
+          "description": "Fast chargers located in our secure facility. Pay only for what you charge."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Transfer Services",
+          "description": "Safe, secure, and stress-free transport to the airport, hotel, or anywhere else."
+        }
+      }
+    ]
+  }
 };
 
 export default function ServicesPage() {
   return (
     <div className="w-full bg-white text-[#2c3e50] font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
       
       {/* ================= HEADER BANNER ================= */}
       <section className="relative w-full h-[240px] md:h-[300px] flex items-center justify-center overflow-hidden">

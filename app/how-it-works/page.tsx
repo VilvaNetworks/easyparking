@@ -4,8 +4,8 @@ import Link from 'next/link';
 import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
-  title: 'How It Works - Easy Parking Ltd',
-  description: 'Learn how airport parking works with Easy Parking Ltd. Discover the process for departure and arrival at Gatwick Airport, and find answers to common questions.',
+  title: 'How Airport Parking Works | Easy Parking Ltd',
+  description: 'Discover how simple departure check-ins and arrival car pick-ups are handled at London Gatwick Terminal. Review our parking and valet procedures.',
 };
 
 export default function HowItWorksPage() {
