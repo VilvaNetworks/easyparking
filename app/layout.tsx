@@ -45,6 +45,28 @@ export const metadata: Metadata = {
   alternates: {
     canonical: './',
   },
+  openGraph: {
+    title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
+    description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking Ltd today.',
+    url: 'https://www.easyparkingltd.com',
+    siteName: 'Easy Parking Ltd',
+    images: [
+      {
+        url: '/images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Easy Parking Ltd Gatwick Airport Meet & Greet Logo',
+      },
+    ],
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
+    description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick.',
+    images: ['/images/logo.png'],
+  },
   other: {
     'ahrefs-site-verification': 'ahrefs_site_verification_placeholder_code_1234567890',
   },

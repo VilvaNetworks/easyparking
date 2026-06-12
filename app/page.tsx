@@ -14,6 +14,28 @@ import BlogSection from '@/components/BlogSection';
 export const metadata: Metadata = {
   title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
   description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+  openGraph: {
+    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
+    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+    url: 'https://www.easyparkingltd.com',
+    siteName: 'Easy Parking Ltd',
+    images: [
+      {
+        url: '/images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Easy Parking Ltd Gatwick Airport Meet & Greet Logo',
+      },
+    ],
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
+    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+    images: ['/images/logo.png'],
+  },
 };
 
 // Dynamically load the Swiper-heavy OurServices component to optimize PageSpeed Insights score (reduces TBT / blocking JS load)

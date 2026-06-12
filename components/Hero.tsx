@@ -57,7 +57,7 @@ export default function Hero() {
             className="mb-[10px]"
             style={{ animation: "fadeInDown 0.8s ease-out" }}
           >
-            <h3
+            <h1
               className="m-0 text-[42px] sm:text-[54px] md:text-[72px] lg:text-[90px] font-normal leading-[1.1] tracking-[1px]"
               style={{ fontFamily: '"Marcellus","Marck Script",serif', color: "#E7701E" }}
             >
@@ -74,7 +74,7 @@ export default function Hero() {
                   style={{ height: 12, zIndex: 1, animation: "drawLine 1.2s ease-out 0.5s both" }}
                 />
               </span>
-            </h3>
+            </h1>
           </div>
 
           {/* ── Main Heading ── */}
