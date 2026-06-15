@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import SvgIcons from "@/components/SvgIcons";
 
 export default function Hero() {
+  const router = useRouter();
   const [dropOffDate, setDropOffDate] = useState("");
   const [dropOffTime, setDropOffTime] = useState("");
   const [pickupDate, setPickupDate] = useState("");
@@ -17,6 +19,17 @@ export default function Hero() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!dropOffDate || !dropOffTime || !pickupDate || !pickupTime) {
+      return;
+    }
+    const query = new URLSearchParams({
+      dropOffDate,
+      dropOffTime,
+      pickupDate,
+      pickupTime,
+      terminal,
+    }).toString();
+    router.push(`/car-park-booking-system?${query}`);
   };
 
   return (
@@ -146,6 +159,7 @@ export default function Hero() {
                       type="date"
                       value={dropOffDate}
                       onChange={(e) => setDropOffDate(e.target.value)}
+                      required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
@@ -173,6 +187,7 @@ export default function Hero() {
                       type="time"
                       value={dropOffTime}
                       onChange={(e) => setDropOffTime(e.target.value)}
+                      required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
@@ -209,6 +224,7 @@ export default function Hero() {
                       type="date"
                       value={pickupDate}
                       onChange={(e) => setPickupDate(e.target.value)}
+                      required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
@@ -235,6 +251,7 @@ export default function Hero() {
                       type="time"
                       value={pickupTime}
                       onChange={(e) => setPickupTime(e.target.value)}
+                      required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
