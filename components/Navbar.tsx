@@ -57,11 +57,11 @@ export default function Navbar() {
 
             {/* RIGHT: My Account + Social Icons */}
             <div className="flex items-center" style={{ gap: 22 }}>
-              <Link href="/account" className="group flex items-center gap-1.5 no-underline"
+              {/* <Link href="/account" className="group flex items-center gap-1.5 no-underline"
                 style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 15, fontWeight: 500, color: "#FFFFFF" }}>
                 <SvgIcons.MyAccount className="shrink-0 transition-all duration-300 group-hover:fill-[#FFC595]" style={{ width: 19, height: 19, fill: "#FFFFFF" }} />
                 <span className="transition-colors duration-300 group-hover:text-[#FFC595]" style={{ color: "#FFFFFF" }}>My Account</span>
-              </Link>
+              </Link> */}
 
               <div className="flex items-center" style={{ gap: 4 }}>
                 {[
@@ -214,11 +214,11 @@ export default function Navbar() {
             <SvgIcons.Phone style={{ width: 13, height: 13, fill: "#FFFFFF", flexShrink: 0 }} />
             Booking Helpline: +44 333 004 0262
           </a>
-          <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 no-underline mb-4"
+          {/* <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 no-underline mb-4"
             style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 13, fontWeight: 500, color: "#FFFFFF" }}>
             <SvgIcons.MyAccount style={{ width: 16, height: 16, fill: "#FFFFFF", flexShrink: 0 }} />
             My Account
-          </Link>
+          </Link> */}
 
           {/* Social icons */}
           <div className="flex items-center gap-2">
