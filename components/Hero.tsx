@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import SvgIcons from "@/components/SvgIcons";
 
 export default function Hero() {
@@ -11,10 +12,32 @@ export default function Hero() {
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [terminal, setTerminal] = useState("17789");
+  const [serviceType, setServiceType] = useState("meet-and-greet");
+  const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
+    { name: "Meet & Greet", slug: "meet-and-greet" },
+    { name: "Park & Ride", slug: "park-and-ride" }
+  ]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     videoRef.current?.play().catch(() => {});
+
+    // Fetch dynamic service types
+    const fetchTypes = async () => {
+      try {
+        const res = await axios.get("/api/service-types");
+        if (res.status === 200) {
+          const result = res.data;
+          if (result && Array.isArray(result.data) && result.data.length > 0) {
+            setServiceTypes(result.data);
+            setServiceType(result.data[0].slug);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching service types:", err);
+      }
+    };
+    fetchTypes();
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,6 +51,7 @@ export default function Hero() {
       pickupDate,
       pickupTime,
       terminal,
+      serviceType,
     }).toString();
     router.push(`/car-park-booking-system?${query}`);
   };
@@ -141,8 +165,8 @@ export default function Hero() {
           >
             <form onSubmit={handleSubmit} className="w-full">
 
-              {/* Form grid — 3 cols desktop, 1 col mobile, gap:30px, mb:25px */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-[30px] mb-[25px]">
+              {/* Form grid — 4 cols desktop, 1 col mobile, gap:20px, mb:25px */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-[20px] mb-[25px]">
 
                 {/* ── Drop Off Date and Time ── */}
                 <div style={{ minWidth: 0 }}>
@@ -271,6 +295,54 @@ export default function Hero() {
                       onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
                       onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
                       autoComplete="off"
+                    />
+                  </div>
+                </div>
+
+                {/* ── Select Service ── */}
+                <div style={{ minWidth: 0 }}>
+                  <div
+                    className="text-[15px] md:text-[16px] font-bold mb-[12px] md:mb-[18px] tracking-[0.3px]"
+                    style={{ color: "#004280" }}
+                  >
+                    Select Service
+                  </div>
+                  <div className="relative w-full">
+                    <select
+                      value={serviceType}
+                      onChange={(e) => setServiceType(e.target.value)}
+                      className="w-full outline-none cursor-pointer box-border transition-all duration-300"
+                      style={{
+                        height: 48,
+                        padding: "0 40px 0 16px",
+                        border: "1px solid #D1D5DB",
+                        borderRadius: 4,
+                        backgroundColor: "#FFFFFF",
+                        color: "#1A1A1A",
+                        fontSize: 13,
+                        fontWeight: 500,
+                        fontFamily: "inherit",
+                        letterSpacing: "0.5px",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                      }}
+                      onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
+                      onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                    >
+                      {serviceTypes.map((st) => (
+                        <option key={st.slug} value={st.slug}>{st.name}</option>
+                      ))}
+                    </select>
+                    <SvgIcons.ChevronDown
+                      className="absolute pointer-events-none"
+                      style={{
+                        right: 14,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: 18,
+                        height: 18,
+                        color: "#6B7280",
+                      }}
                     />
                   </div>
                 </div>

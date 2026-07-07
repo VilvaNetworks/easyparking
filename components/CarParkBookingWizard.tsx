@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import axios from "axios";
 
 type Step = 1 | 2 | 3 | 4 | 5;
 
 export default function CarParkBookingWizard() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // Parse parameters from query string
   const initialDropOffDate = searchParams.get("dropOffDate") || "";
@@ -23,6 +25,8 @@ export default function CarParkBookingWizard() {
       ? "South Terminal"
       : rawTerminal;
 
+  const initialServiceType = searchParams.get("serviceType") || "meet-and-greet";
+
   const [currentStep, setCurrentStep] = useState<Step>(2); // Start at Step 2 based on user screenshots
 
   // Step 1: Dates & Terminal
@@ -31,6 +35,7 @@ export default function CarParkBookingWizard() {
   const [pickupDate, setPickupDate] = useState(initialPickupDate);
   const [pickupTime, setPickupTime] = useState(initialPickupTime);
   const [terminal, setTerminal] = useState(initialTerminal);
+  const [selectedServiceType, setSelectedServiceType] = useState(initialServiceType);
 
   // Step 2: Space Packages Selection
   const [parkingOption, setParkingOption] = useState<"standard" | "valet-car-wash">("valet-car-wash");
@@ -69,6 +74,53 @@ export default function CarParkBookingWizard() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const [timeLeft, setTimeLeft] = useState(2000);
+  const [isHovered, setIsHovered] = useState(false);
+  const [createdRef, setCreatedRef] = useState("");
+
+  // Pauseable timer logic for redirecting on Step 5 Success page
+  useEffect(() => {
+    if (currentStep === 5 && createdRef && !isHovered && timeLeft > 0) {
+      const interval = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 10) {
+            clearInterval(interval);
+            router.push(`/bookings-details?ref=${createdRef}`);
+            return 0;
+          }
+          return prev - 10;
+        });
+      }, 10);
+      return () => clearInterval(interval);
+    }
+  }, [currentStep, createdRef, isHovered, timeLeft, router]);
+
+  const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
+    { name: "Meet & Greet", slug: "meet-and-greet" },
+    { name: "Park & Ride", slug: "park-and-ride" }
+  ]);
+
+  // Fetch dynamic service types on mount
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const res = await axios.get("/api/service-types");
+        if (res.status === 200) {
+          const result = res.data;
+          if (result && Array.isArray(result.data) && result.data.length > 0) {
+            setServiceTypes(result.data);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching service types:", err);
+      }
+    };
+    fetchTypes();
+  }, []);
 
   // Populate terminal fields on terminal state changes
   useEffect(() => {
@@ -109,6 +161,61 @@ export default function CarParkBookingWizard() {
   const spacePrice = parkingOption === "standard" ? 0.0 : 143.0;
   const totalPrice = spacePrice;
 
+  const submitBooking = async () => {
+    setIsSubmitting(true);
+    setToastMessage(null);
+    try {
+      let tCode = "LGW-N";
+      if (terminal.toLowerCase().includes("south") || terminal === "17790") {
+        tCode = "LGW-S";
+      }
+
+      const serviceTypeSlug = parkingOption === "standard" ? "meet-and-greet" : "valet-car-wash";
+
+      const dropOffAt = `${dropOffDate} ${dropOffTime.length === 5 ? dropOffTime + ":00" : dropOffTime}`;
+      const pickupAt = `${pickupDate} ${pickupTime.length === 5 ? pickupTime + ":00" : pickupTime}`;
+
+      const payload = {
+        service_type: selectedServiceType,
+        terminal_code: tCode,
+        customer_name: `${firstName} ${lastName}`,
+        customer_email: email,
+        customer_phone: phone,
+        vehicle_registration: vehicleReg,
+        vehicle_make: vehicleMake || "Ford",
+        vehicle_model: vehicleModel,
+        vehicle_colour: vehicleColor || "Blue",
+        dropoff_at: dropOffAt,
+        pickup_at: pickupAt,
+        notes: flightNum ? `Flight ${flightNum}, return terminal ${retTerminal}` : "No notes"
+      };
+
+      const response = await axios.post("/api/bookings", payload, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const result = response.data;
+
+      if (result && result.data && result.data.booking_reference) {
+        const ref = result.data.booking_reference;
+        setToastMessage({ type: 'success', text: `Booking created successfully! Reference: ${ref}` });
+        setCreatedRef(ref);
+        setTimeLeft(2000);
+        setCurrentStep(5);
+      } else {
+        throw new Error(result?.message || "Booking reference not returned from server");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setToastMessage({ type: 'error', text: err.message || "Something went wrong while creating booking. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Actions
   const handleStep1Submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,11 +245,7 @@ export default function CarParkBookingWizard() {
       return;
     }
 
-    if (paymentMethod === "stripe" || paymentMethod === "paypal") {
-      setCurrentStep(4); // Go to payment mock page
-    } else {
-      setCurrentStep(5); // Success directly for cash
-    }
+    submitBooking();
   };
 
   const handleStep4Submit = (e: React.FormEvent) => {
@@ -151,11 +254,31 @@ export default function CarParkBookingWizard() {
       alert("Please fill out required payment details.");
       return;
     }
-    setCurrentStep(5);
+    submitBooking();
   };
 
   return (
-    <div className="w-full font-sans text-[#2c3e50] bg-white">
+    <div className="w-full font-sans text-[#2c3e50] bg-white relative">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-5 right-5 z-50 animate-fade-in transition-all duration-300">
+          <div className={`p-4 rounded shadow-2xl border text-white font-bold flex items-center gap-3 ${
+            toastMessage.type === 'success' ? 'bg-[#2ec4b6] border-[#2ec4b6]' : 'bg-[#e71d36] border-[#e71d36]'
+          }`} style={{ minWidth: '300px' }}>
+            {toastMessage.type === 'success' ? (
+              <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+            )}
+            <span>{toastMessage.text}</span>
+          </div>
+        </div>
+      )}
+
       {/* ================= HEADER GRAPHIC ================= */}
       {currentStep !== 5 && (
         <div className="max-w-[1320px] mx-auto px-4 mb-10">
@@ -279,7 +402,19 @@ export default function CarParkBookingWizard() {
                   required
                 />
               </div>
-              <div className="md:col-span-2">
+              <div>
+                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Service Type</label>
+                <select
+                  value={selectedServiceType}
+                  onChange={(e) => setSelectedServiceType(e.target.value)}
+                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
+                >
+                  {serviceTypes.map((st) => (
+                    <option key={st.slug} value={st.slug}>{st.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
                 <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Terminal</label>
                 <select
                   value={terminal}
@@ -828,12 +963,15 @@ export default function CarParkBookingWizard() {
                     </button>
                     <button
                       type="submit"
-                      className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 shadow-md transition-all cursor-pointer"
+                      disabled={isSubmitting}
+                      className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-50"
                     >
-                      Booking Summary
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
+                      {isSubmitting ? "Processing..." : "Confirm Booking"}
+                      {!isSubmitting && (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      )}
                     </button>
                   </div>
 
@@ -978,9 +1116,10 @@ export default function CarParkBookingWizard() {
                   </button>
                   <button
                     type="submit"
-                    className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold px-10 py-3.5 transition-colors cursor-pointer rounded-[4px]"
+                    disabled={isSubmitting}
+                    className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold px-10 py-3.5 transition-colors cursor-pointer rounded-[4px] disabled:opacity-50"
                   >
-                    Confirm &amp; Pay
+                    {isSubmitting ? "Processing..." : "Confirm & Pay"}
                   </button>
                 </div>
               </form>
@@ -1008,7 +1147,11 @@ export default function CarParkBookingWizard() {
       {/* ================= 6. STEP 5: SUCCESS CONFIRMATION ================= */}
       {currentStep === 5 && (
         <div className="max-w-[800px] mx-auto px-4 text-center py-12">
-          <div className="border border-gray-200 bg-[#fcfbfa] p-12 shadow-lg space-y-6 rounded-[8px]">
+          <div 
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="relative border border-gray-200 bg-[#fcfbfa] p-12 shadow-lg space-y-6 rounded-[8px] overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-orange-200"
+          >
             <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto ring-8 ring-green-50 animate-pulse">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-10 h-10">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -1020,23 +1163,26 @@ export default function CarParkBookingWizard() {
             </h2>
             
             <p className="text-[#555555] text-[16px] leading-relaxed max-w-[600px] mx-auto">
-              Thank you, <strong>{firstName}</strong>! Your airport parking reservation with Easy Parking Ltd has been registered successfully. A confirmation email with parking details and instructions has been sent to <strong>{email}</strong>.
+              Thank you, <strong>{firstName}</strong>! Your airport parking reservation with Easy Parking Ltd has been registered successfully. You will be redirected to your booking details in a moment.
             </p>
 
             <div className="bg-[#f0f4f8] border border-gray-200 p-6 max-w-[500px] mx-auto text-left space-y-2 text-sm text-[#4a4a4a] rounded-[4px]">
-              <p><strong>Reservation Code:</strong> EP-{Math.floor(100000 + Math.random() * 900000)}</p>
+              <p><strong>Reservation Code:</strong> {createdRef}</p>
               <p><strong>Location:</strong> Gatwick Airport ({terminal})</p>
               <p><strong>Vehicle:</strong> {vehicleMake} {vehicleModel} (VRN: {vehicleReg})</p>
               <p><strong>Drop Off Date:</strong> {formatDate(dropOffDate)} at {dropOffTime}</p>
             </div>
 
-            <div className="pt-6">
-              <Link
-                href="/"
-                className="inline-block bg-black hover:bg-gray-800 text-white font-extrabold text-[15px] px-12 py-[14px] uppercase tracking-[1px] transition-all duration-300 rounded-[4px]"
-              >
-                Return Home
-              </Link>
+            {/* <div className="text-xs text-gray-400 italic">
+              {isHovered ? "Timer paused. Move mouse away to resume redirection." : `Redirecting in ${(timeLeft / 1000).toFixed(1)}s...`}
+            </div> */}
+
+            {/* Visual running countdown line */}
+            <div className="absolute bottom-0 left-0 w-full bg-gray-200 h-2">
+              <div 
+                className="bg-[#e7701e] h-full transition-all duration-100 ease-linear"
+                style={{ width: `${(timeLeft / 2000) * 100}%` }}
+              />
             </div>
           </div>
         </div>
