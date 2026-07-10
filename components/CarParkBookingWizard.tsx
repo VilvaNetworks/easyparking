@@ -301,6 +301,13 @@ export default function CarParkBookingWizard() {
   const spacePrice = selectedQuote ? selectedQuote.total / 100 : 0;
   const totalPrice = spacePrice;
 
+  // Step 2 confirms whatever service type was already chosen (homepage
+  // widget or Step 1's dropdown) — it doesn't offer a switcher. Falls back
+  // to showing every active type only if the selection doesn't match any
+  // real service type (e.g. a stale/invalid slug in the URL).
+  const matchingServiceTypes = serviceTypes.filter((st) => st.slug === selectedServiceType);
+  const stepTwoServiceTypes = matchingServiceTypes.length > 0 ? matchingServiceTypes : serviceTypes;
+
   const submitBooking = async () => {
     setIsSubmitting(true);
     setToastMessage(null);
@@ -675,14 +682,15 @@ export default function CarParkBookingWizard() {
                   <div>
                     <h2 className="text-[#002f5d] text-[24px] font-extrabold tracking-tight">Parking Space</h2>
                     <p className="text-gray-400 text-[14px] mt-1 font-bold">
-                      {serviceTypes.length} Result{serviceTypes.length !== 1 ? "s" : ""} Found
+                      {stepTwoServiceTypes.length} Result{stepTwoServiceTypes.length !== 1 ? "s" : ""} Found
                     </p>
                   </div>
 
-                  {/* One card per real, active service type — price is a live
-                      quote from the backend's pricing engine (PricingDefault
-                      + PricingCalendar), not a guessed number. */}
-                  {serviceTypes.map((st) => {
+                  {/* Only the service type already chosen (homepage widget or
+                      Step 1's dropdown) — price is a live quote from the
+                      backend's pricing engine (PricingDefault + PricingCalendar),
+                      not a guessed number. */}
+                  {stepTwoServiceTypes.map((st) => {
                     const quote = servicePrices[st.slug];
                     const isSelected = selectedServiceType === st.slug;
 
