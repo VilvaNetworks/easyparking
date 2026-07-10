@@ -11,6 +11,8 @@ export default function BookingForm() {
   const [pickupTime, setPickupTime] = useState('');
   const [terminal, setTerminal] = useState('17789');
   const [serviceType, setServiceType] = useState('meet-and-greet');
+  const [dateError, setDateError] = useState('');
+  const todayISO = new Date().toISOString().split('T')[0];
   const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
@@ -36,9 +38,23 @@ export default function BookingForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setDateError('');
     if (!dropOffDate || !dropOffTime || !pickupDate || !pickupTime) {
       return;
     }
+
+    const dropOff = new Date(`${dropOffDate}T${dropOffTime}`);
+    const pickup = new Date(`${pickupDate}T${pickupTime}`);
+
+    if (dropOff.getTime() <= Date.now()) {
+      setDateError('Drop off date and time must be in the future.');
+      return;
+    }
+    if (pickup.getTime() <= dropOff.getTime()) {
+      setDateError('Pickup date and time must be after drop off.');
+      return;
+    }
+
     const query = new URLSearchParams({
       dropOffDate,
       dropOffTime,
@@ -67,6 +83,7 @@ export default function BookingForm() {
                     type="date"
                     value={dropOffDate}
                     onChange={(e) => setDropOffDate(e.target.value)}
+                    min={todayISO}
                     required
                     className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
                   />
@@ -96,6 +113,7 @@ export default function BookingForm() {
                     type="date"
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
+                    min={dropOffDate || todayISO}
                     required
                     className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
                   />
@@ -159,6 +177,12 @@ export default function BookingForm() {
                 Get a Quote
               </button>
             </div>
+
+            {dateError && (
+              <p className="md:col-span-5 text-red-300 text-sm font-semibold text-center" role="alert">
+                {dateError}
+              </p>
+            )}
           </form>
         </div>
       </div>

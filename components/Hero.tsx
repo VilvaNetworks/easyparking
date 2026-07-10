@@ -13,6 +13,10 @@ export default function Hero() {
   const [pickupTime, setPickupTime] = useState("");
   const [terminal, setTerminal] = useState("17789");
   const [serviceType, setServiceType] = useState("meet-and-greet");
+  const [dateError, setDateError] = useState("");
+  // Recomputed each render rather than memoized — cheap, and guarantees it's
+  // never stale if the page stays open across midnight.
+  const todayISO = new Date().toISOString().split("T")[0];
   const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
@@ -42,9 +46,25 @@ export default function Hero() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setDateError("");
     if (!dropOffDate || !dropOffTime || !pickupDate || !pickupTime) {
       return;
     }
+
+    // Catch an invalid date/time selection right here, on the very first
+    // page — not several steps later when the backend finally rejects it.
+    const dropOff = new Date(`${dropOffDate}T${dropOffTime}`);
+    const pickup = new Date(`${pickupDate}T${pickupTime}`);
+
+    if (dropOff.getTime() <= Date.now()) {
+      setDateError("Drop off date and time must be in the future.");
+      return;
+    }
+    if (pickup.getTime() <= dropOff.getTime()) {
+      setDateError("Pickup date and time must be after drop off.");
+      return;
+    }
+
     const query = new URLSearchParams({
       dropOffDate,
       dropOffTime,
@@ -183,6 +203,7 @@ export default function Hero() {
                       type="date"
                       value={dropOffDate}
                       onChange={(e) => setDropOffDate(e.target.value)}
+                      min={todayISO}
                       required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
@@ -248,6 +269,7 @@ export default function Hero() {
                       type="date"
                       value={pickupDate}
                       onChange={(e) => setPickupDate(e.target.value)}
+                      min={dropOffDate || todayISO}
                       required
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
@@ -397,6 +419,12 @@ export default function Hero() {
                 </div>
 
               </div>
+
+              {dateError && (
+                <p className="text-[#E71D36] text-sm font-semibold text-center mb-[15px]" role="alert">
+                  {dateError}
+                </p>
+              )}
 
               {/* ── Get a Quote button — full width, h:52px, bg:#E7701E, 16px 600, white ── */}
               <div className="w-full mt-[25px]">

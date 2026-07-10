@@ -67,7 +67,22 @@ export default function CarParkBookingWizard() {
 
   const initialServiceType = searchParams.get("serviceType") || "meet-and-greet";
 
-  const [currentStep, setCurrentStep] = useState<Step>(2); // Start at Step 2 based on user screenshots
+  // A stale/direct link (or a page left open across midnight) can carry a
+  // drop-off date that's already in the past — the backend would reject it
+  // at final submission with a raw 422. Catch it here instead, before the
+  // customer ever lands on Step 2, so it surfaces on the date-selection step.
+  const hasValidInitialDates = (() => {
+    if (!initialDropOffDate || !initialDropOffTime || !initialPickupDate || !initialPickupTime) {
+      return false;
+    }
+    const dropOff = new Date(`${initialDropOffDate}T${initialDropOffTime}`);
+    const pickup = new Date(`${initialPickupDate}T${initialPickupTime}`);
+    return dropOff.getTime() > Date.now() && pickup.getTime() > dropOff.getTime();
+  })();
+
+  // Start at Step 2 based on user screenshots — but only when the dates
+  // carried in via query params are actually still valid.
+  const [currentStep, setCurrentStep] = useState<Step>(hasValidInitialDates ? 2 : 1);
 
   // Step 1: Dates & Terminal
   const [dropOffDate, setDropOffDate] = useState(initialDropOffDate);
@@ -76,6 +91,8 @@ export default function CarParkBookingWizard() {
   const [pickupTime, setPickupTime] = useState(initialPickupTime);
   const [terminal, setTerminal] = useState(initialTerminal);
   const [selectedServiceType, setSelectedServiceType] = useState(initialServiceType);
+  const [dateError, setDateError] = useState("");
+  const todayISO = new Date().toISOString().split("T")[0];
 
   // Step 2: Space Packages Selection
   const [parkingOption, setParkingOption] = useState<"standard" | "valet-car-wash">("valet-car-wash");
@@ -157,6 +174,20 @@ export default function CarParkBookingWizard() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
+
+  // If the customer arrived here with dates from the homepage widget (or a
+  // stale link) that have since passed, explain why they landed on Step 1
+  // instead of silently dropping them there with no context.
+  useEffect(() => {
+    const cameWithDates = initialDropOffDate && initialDropOffTime && initialPickupDate && initialPickupTime;
+    if (cameWithDates && !hasValidInitialDates) {
+      setToastMessage({
+        type: "error",
+        text: "Your selected date has passed — please choose new dates.",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Helper date formatter: converts YYYY-MM-DD to DD-MM-YYYY
   const formatDate = (dateStr: string) => {
@@ -281,10 +312,24 @@ export default function CarParkBookingWizard() {
   // Actions
   const handleStep1Submit = (e: React.FormEvent) => {
     e.preventDefault();
+    setDateError("");
     if (!dropOffDate || !dropOffTime || !pickupDate || !pickupTime) {
       alert("Please specify drop-off and pickup dates and times.");
       return;
     }
+
+    const dropOff = new Date(`${dropOffDate}T${dropOffTime}`);
+    const pickup = new Date(`${pickupDate}T${pickupTime}`);
+
+    if (dropOff.getTime() <= Date.now()) {
+      setDateError("Drop off date and time must be in the future.");
+      return;
+    }
+    if (pickup.getTime() <= dropOff.getTime()) {
+      setDateError("Pickup date and time must be after drop off.");
+      return;
+    }
+
     setCurrentStep(2);
   };
 
@@ -417,6 +462,7 @@ export default function CarParkBookingWizard() {
                   type="date"
                   value={dropOffDate}
                   onChange={(e) => setDropOffDate(e.target.value)}
+                  min={todayISO}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
                   required
                 />
@@ -437,6 +483,7 @@ export default function CarParkBookingWizard() {
                   type="date"
                   value={pickupDate}
                   onChange={(e) => setPickupDate(e.target.value)}
+                  min={dropOffDate || todayISO}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
                   required
                 />
@@ -475,6 +522,11 @@ export default function CarParkBookingWizard() {
                 </select>
               </div>
             </div>
+            {dateError && (
+              <p className="text-red-600 text-sm font-semibold" role="alert">
+                {dateError}
+              </p>
+            )}
             <button
               type="submit"
               className="w-full bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[16px] py-4 uppercase tracking-[1px] transition-all duration-300 cursor-pointer"
