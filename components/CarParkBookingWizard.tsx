@@ -1,16 +1,56 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
-type Step = 1 | 2 | 3 | 4 | 5;
+type Step = 1 | 2 | 3 | 4;
+
+// The proxy route wraps the backend's ApiResponse error shape one level
+// deeper (`{ error: true, message: <backend body> }`), so a validation
+// failure surfaces at err.response.data.message.message — unwrap both
+// levels before falling back to a generic message.
+const getPaymentErrorMessage = (err: unknown): string => {
+  const fallback = "Unable to start payment. Please try again.";
+
+  if (axios.isAxiosError(err)) {
+    const payload = err.response?.data as { message?: unknown } | undefined;
+    const inner = payload?.message;
+
+    if (typeof inner === "string") {
+      return inner;
+    }
+
+    if (inner && typeof inner === "object" && "message" in inner) {
+      const nested = (inner as { message?: unknown }).message;
+      if (typeof nested === "string") {
+        return nested;
+      }
+    }
+
+    return err.message || fallback;
+  }
+
+  if (err instanceof Error) {
+    return err.message;
+  }
+
+  return fallback;
+};
+
+// Minor units (pence) -> display string, matching bookings-details/page.tsx.
+const formatAmount = (amount: number, currency: string): string => {
+  const value = amount / 100;
+  return value.toLocaleString("en-GB", {
+    style: "currency",
+    currency: currency || "GBP",
+  });
+};
 
 export default function CarParkBookingWizard() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   // Parse parameters from query string
   const initialDropOffDate = searchParams.get("dropOffDate") || "";
@@ -65,39 +105,24 @@ export default function CarParkBookingWizard() {
   const [vehicleColor, setVehicleColor] = useState("");
   const [vehicleReg, setVehicleReg] = useState("");
 
-  // Payment Selection
-  const [paymentMethod, setPaymentMethod] = useState<"cash" | "stripe" | "paypal">("paypal");
   const [agreeTerms, setAgreeTerms] = useState(false);
-
-  // Step 4: Card details for processing
-  const [cardHolder, setCardHolder] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCvv, setCardCvv] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const [timeLeft, setTimeLeft] = useState(2000);
-  const [isHovered, setIsHovered] = useState(false);
   const [createdRef, setCreatedRef] = useState("");
 
-  // Pauseable timer logic for redirecting on Step 5 Success page
-  useEffect(() => {
-    if (currentStep === 5 && createdRef && !isHovered && timeLeft > 0) {
-      const interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 10) {
-            clearInterval(interval);
-            router.push(`/bookings-details?ref=${createdRef}`);
-            return 0;
-          }
-          return prev - 10;
-        });
-      }, 10);
-      return () => clearInterval(interval);
-    }
-  }, [currentStep, createdRef, isHovered, timeLeft, router]);
+  // Real server-calculated total from the /api/bookings response — the
+  // payment redirect step (Step 4) must display this, never spacePrice/totalPrice.
+  const [bookingAmount, setBookingAmount] = useState<number | null>(null);
+  const [bookingCurrency, setBookingCurrency] = useState("GBP");
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  // Guards the automatic checkout call so it only fires once per booking
+  // (e.g. against React Strict Mode's dev-time double effect invocation).
+  // A retry after failure always goes through the explicit button below,
+  // which calls startCheckout() directly and bypasses this guard.
+  const checkoutStartedRef = useRef(false);
 
   const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
@@ -203,8 +228,9 @@ export default function CarParkBookingWizard() {
         const ref = result.data.booking_reference;
         setToastMessage({ type: 'success', text: `Booking created successfully! Reference: ${ref}` });
         setCreatedRef(ref);
-        setTimeLeft(2000);
-        setCurrentStep(5);
+        setBookingAmount(typeof result.data.amount === "number" ? result.data.amount : null);
+        setBookingCurrency(result.data.currency || "GBP");
+        setCurrentStep(4);
       } else {
         throw new Error(result?.message || "Booking reference not returned from server");
       }
@@ -215,6 +241,42 @@ export default function CarParkBookingWizard() {
       setIsSubmitting(false);
     }
   };
+
+  // Creates a Worldpay hosted-payment-page session for the already-created
+  // booking and redirects the browser to it. The booking itself is never
+  // recreated here — retries just re-request a checkout session for the
+  // same booking_reference, which is what makes retrying safe.
+  const startCheckout = useCallback(async () => {
+    setCheckoutError(null);
+    try {
+      const response = await axios.post("/api/payments/checkout", { booking_reference: createdRef }, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const redirectUrl = response.data?.data?.redirect_url;
+
+      if (!redirectUrl) {
+        throw new Error("Payment provider did not return a redirect URL.");
+      }
+
+      window.location.href = redirectUrl;
+    } catch (err) {
+      console.error(err);
+      setCheckoutError(getPaymentErrorMessage(err));
+    }
+  }, [createdRef]);
+
+  // Auto-trigger checkout exactly once when the redirect step mounts with a
+  // booking reference in hand.
+  useEffect(() => {
+    if (currentStep === 4 && createdRef && !checkoutStartedRef.current) {
+      checkoutStartedRef.current = true;
+      startCheckout();
+    }
+  }, [currentStep, createdRef, startCheckout]);
 
   // Actions
   const handleStep1Submit = (e: React.FormEvent) => {
@@ -248,15 +310,6 @@ export default function CarParkBookingWizard() {
     submitBooking();
   };
 
-  const handleStep4Submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!cardHolder || !cardNumber || !cardExpiry || !cardCvv) {
-      alert("Please fill out required payment details.");
-      return;
-    }
-    submitBooking();
-  };
-
   return (
     <div className="w-full font-sans text-[#2c3e50] bg-white relative">
       {/* Toast Notification */}
@@ -280,8 +333,7 @@ export default function CarParkBookingWizard() {
       )}
 
       {/* ================= HEADER GRAPHIC ================= */}
-      {currentStep !== 5 && (
-        <div className="max-w-[1320px] mx-auto px-4 mb-10">
+      <div className="max-w-[1320px] mx-auto px-4 mb-10">
           <div className="bg-[#002f5d] text-white flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-6 relative overflow-hidden">
             {/* Background design elements */}
             <div className="absolute right-0 top-0 w-[400px] h-full bg-orange-500/10 -skew-x-12 transform origin-top-right pointer-events-none" />
@@ -311,17 +363,15 @@ export default function CarParkBookingWizard() {
             </div>
           </div>
         </div>
-      )}
 
       {/* ================= STEP INDICATOR BAR ================= */}
-      {currentStep !== 5 && (
-        <div className="max-w-[1320px] mx-auto mb-10 px-4">
+      <div className="max-w-[1320px] mx-auto mb-10 px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 border border-gray-200 bg-[#fcfbfa] p-6 shadow-sm">
             {[
               { num: 1, label: "Select Dates" },
               { num: 2, label: "Parking Space" },
               { num: 3, label: "Customer Details" },
-              { num: 4, label: "Booking Summary" },
+              { num: 4, label: "Payment" },
             ].map((s) => {
               const isCompleted = currentStep > s.num;
               const isActive = currentStep === s.num;
@@ -354,7 +404,6 @@ export default function CarParkBookingWizard() {
             })}
           </div>
         </div>
-      )}
 
       {/* ================= 3. STEP 1: SELECT DATES FORM ================= */}
       {currentStep === 1 && (
@@ -887,49 +936,7 @@ export default function CarParkBookingWizard() {
                     </div>
                   </div>
 
-                  {/* SECTION 5: Payment Method */}
-                  <div className="space-y-6 bg-white p-6 border border-gray-150 rounded-[4px]">
-                    <h3 className="text-[#002f5d] font-bold text-[16px] border-b border-gray-100 pb-2 flex items-center gap-2">
-                      <span className="w-1.5 h-6 bg-[#e7701e] inline-block" />
-                      Payment Method
-                    </h3>
-                    <div className="space-y-4">
-                      {[
-                        { id: "cash", label: "Cash" },
-                        { id: "stripe", label: "Stripe" },
-                        { id: "paypal", label: "PayPal" },
-                      ].map((pay) => {
-                        const isChecked = paymentMethod === pay.id;
-                        return (
-                          <label
-                            key={pay.id}
-                            onClick={() => setPaymentMethod(pay.id as "cash" | "stripe" | "paypal")}
-                            className={`flex items-center justify-between border rounded-[4px] p-4 cursor-pointer hover:border-gray-300 transition-colors ${
-                              isChecked ? "border-[#e7701e] bg-orange-50/10" : "border-gray-200"
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <input
-                                type="radio"
-                                name="payment_method"
-                                checked={isChecked}
-                                onChange={() => setPaymentMethod(pay.id as "cash" | "stripe" | "paypal")}
-                                className="w-4 h-4 accent-[#e7701e] cursor-pointer"
-                              />
-                              <span className="text-sm font-bold text-[#1a1a1a]">{pay.label}</span>
-                            </div>
-                            {isChecked && (
-                              <svg className="w-5 h-5 text-[#e7701e]" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                              </svg>
-                            )}
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* SECTION 6: Agreements */}
+                  {/* SECTION 5: Agreements */}
                   <div className="space-y-6 bg-white p-6 border border-gray-150 rounded-[4px]">
                     <h3 className="text-[#002f5d] font-bold text-[16px] border-b border-gray-100 pb-2 flex items-center gap-2">
                       <span className="w-1.5 h-6 bg-[#e7701e] inline-block" />
@@ -983,207 +990,54 @@ export default function CarParkBookingWizard() {
         </div>
       )}
 
-      {/* ================= 5. STEP 4: PAYMENT PROCESSING ================= */}
+      {/* ================= 5. STEP 4: PAYMENT REDIRECT ================= */}
       {currentStep === 4 && (
-        <div className="max-w-[1000px] mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
-            {/* Left Column: Summary */}
-            <div className="lg:col-span-2 border border-gray-200 bg-[#fcfbfa] p-8 md:p-10 shadow-md">
-              <h3 className="text-[#1a1a1a] text-[20px] font-extrabold mb-6 font-sans">
-                Review Booking Details
-              </h3>
-
-              <div className="space-y-4 mb-8">
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Customer</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">{firstName} {lastName}</span>
+        <div className="max-w-[600px] mx-auto px-4 py-16">
+          <div className="border border-gray-200 bg-[#fcfbfa] p-8 md:p-10 shadow-md rounded-lg text-center space-y-6">
+            {checkoutError ? (
+              <>
+                <div className="w-16 h-16 bg-red-100 text-[#e71d36] rounded-full flex items-center justify-center mx-auto">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                  </svg>
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Contact Phone</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">{phone}</span>
+                <h2 className="text-[#1a1a1a] text-[22px] font-extrabold font-sans">
+                  We couldn&apos;t start your payment
+                </h2>
+                <p className="text-[#555555] text-[14px] leading-relaxed">
+                  {checkoutError}
+                </p>
+                <div className="bg-[#f0f4f8] border border-gray-200 p-4 text-left text-sm text-[#4a4a4a] rounded-[4px]">
+                  <p><strong>Booking reference:</strong> {createdRef}</p>
+                  <p className="mt-1">Your booking is saved and still pending payment — it&apos;s safe to try again.</p>
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Email</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">{email}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Billing Address</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">
-                    {billingAddress1}
-                    {billingAddress2 ? `, ${billingAddress2}` : ""}
-                    {`, ${billingCity}`}
-                    {billingState ? `, ${billingState}` : ""}
-                    {`, ${billingPostcode}`}
-                    {`, ${billingCountry}`}
+                <button
+                  onClick={startCheckout}
+                  className="w-full bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase py-3.5 rounded-[4px] tracking-[1px] transition-all cursor-pointer"
+                >
+                  Try Payment Again
+                </button>
+              </>
+            ) : (
+              <>
+                <svg className="animate-spin h-12 w-12 text-[#e7701e] mx-auto" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                <h2 className="text-[#1a1a1a] text-[22px] font-extrabold font-sans">
+                  Redirecting you to our secure payment provider…
+                </h2>
+                <p className="text-[#555555] text-[14px] leading-relaxed">
+                  Please don&apos;t close this window. You&apos;ll be taken to our payment provider to complete your card payment.
+                </p>
+                <div className="bg-[#f0f4f8] border border-gray-200 p-4 flex justify-between items-center rounded-[4px]">
+                  <span className="text-[#004280] text-[14px] font-extrabold uppercase">Amount Due</span>
+                  <span className="text-[22px] font-black text-[#004280]">
+                    {bookingAmount !== null ? formatAmount(bookingAmount, bookingCurrency) : "—"}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Drop Off Schedule</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">{formatDate(dropOffDate)} at {dropOffTime}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Pickup Schedule</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">{formatDate(pickupDate)} at {pickupTime}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Departure Terminal</span>
-                  <span className="text-[14px] text-[#e7701e] font-extrabold">{depTerminal}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Return Terminal</span>
-                  <span className="text-[14px] text-[#e7701e] font-extrabold">{retTerminal}</span>
-                </div>
-                {flightNum && (
-                  <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                    <span className="text-[14px] text-gray-500 font-bold uppercase">Return Flight Number</span>
-                    <span className="text-[14px] text-[#1a1a1a] font-extrabold">{flightNum}</span>
-                  </div>
-                )}
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Vehicle Details</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold">
-                    {vehicleMake} {vehicleModel} {vehicleColor ? `(${vehicleColor})` : ""} - {vehicleReg}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 border-b border-gray-200 pb-3">
-                  <span className="text-[14px] text-gray-500 font-bold uppercase">Payment Method</span>
-                  <span className="text-[14px] text-[#1a1a1a] font-extrabold uppercase">{paymentMethod}</span>
-                </div>
-              </div>
-
-              {/* Mock Payment Form */}
-              <h4 className="text-[#1a1a1a] text-[16px] font-bold uppercase tracking-[1px] mb-4 border-b border-gray-200 pb-2">
-                Mock Payment Card Processing ({paymentMethod.toUpperCase()})
-              </h4>
-              <form onSubmit={handleStep4Submit} className="space-y-4">
-                <div>
-                  <label className="block text-[13px] font-bold text-[#1a1a1a] mb-1 select-none">Cardholder Name *</label>
-                  <input
-                    type="text"
-                    value={cardHolder}
-                    onChange={(e) => setCardHolder(e.target.value)}
-                    className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-[13px] font-bold text-[#1a1a1a] mb-1 select-none">16-Digit Card Number *</label>
-                  <input
-                    type="text"
-                    maxLength={16}
-                    placeholder="4111 2222 3333 4444"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ""))}
-                    className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[13px] font-bold text-[#1a1a1a] mb-1 select-none">Expiry Date *</label>
-                    <input
-                      type="text"
-                      maxLength={5}
-                      placeholder="MM/YY"
-                      value={cardExpiry}
-                      onChange={(e) => setCardExpiry(e.target.value)}
-                      className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[13px] font-bold text-[#1a1a1a] mb-1 select-none">CVV Code *</label>
-                    <input
-                      type="password"
-                      maxLength={3}
-                      placeholder="***"
-                      value={cardCvv}
-                      onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ""))}
-                      className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-4 pt-6">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(3)}
-                    className="bg-gray-200 hover:bg-gray-300 text-[#1a1a1a] font-bold px-8 py-3.5 transition-colors cursor-pointer rounded-[4px]"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold px-10 py-3.5 transition-colors cursor-pointer rounded-[4px] disabled:opacity-50"
-                  >
-                    {isSubmitting ? "Processing..." : "Confirm & Pay"}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Right Column: Invoice Summary */}
-            <div className="border border-gray-200 bg-[#fcfbfa] p-6 shadow-md space-y-4 rounded-[4px] lg:sticky lg:top-[170px]">
-              <h3 className="text-[#1a1a1a] text-[16px] font-bold uppercase tracking-[1.5px] border-b border-gray-200 pb-2">
-                Invoice Summary
-              </h3>
-              <div className="flex justify-between text-sm text-[#4a4a4a]">
-                <span>Base Rate ({parkingOption === "standard" ? "Standard" : "Valet Car Wash"})</span>
-                <span className="font-bold">£{spacePrice.toFixed(2)}</span>
-              </div>
-              <div className="border-t border-gray-200 pt-4 flex justify-between items-center text-[#1a1a1a]">
-                <span className="text-[15px] font-bold">Total Amount Due</span>
-                <span className="text-[28px] font-black text-[#e7701e]">£{totalPrice.toFixed(2)}</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* ================= 6. STEP 5: SUCCESS CONFIRMATION ================= */}
-      {currentStep === 5 && (
-        <div className="max-w-[800px] mx-auto px-4 text-center py-12">
-          <div 
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="relative border border-gray-200 bg-[#fcfbfa] p-12 shadow-lg space-y-6 rounded-[8px] overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-orange-200"
-          >
-            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto ring-8 ring-green-50 animate-pulse">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-10 h-10">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-              </svg>
-            </div>
-            
-            <h2 className="text-[#1a1a1a] text-[28px] font-extrabold tracking-tight font-sans">
-              Booking Complete!
-            </h2>
-            
-            <p className="text-[#555555] text-[16px] leading-relaxed max-w-[600px] mx-auto">
-              Thank you, <strong>{firstName}</strong>! Your airport parking reservation with Easy Parking Ltd has been registered successfully. You will be redirected to your booking details in a moment.
-            </p>
-
-            <div className="bg-[#f0f4f8] border border-gray-200 p-6 max-w-[500px] mx-auto text-left space-y-2 text-sm text-[#4a4a4a] rounded-[4px]">
-              <p><strong>Reservation Code:</strong> {createdRef}</p>
-              <p><strong>Location:</strong> Gatwick Airport ({terminal})</p>
-              <p><strong>Vehicle:</strong> {vehicleMake} {vehicleModel} (VRN: {vehicleReg})</p>
-              <p><strong>Drop Off Date:</strong> {formatDate(dropOffDate)} at {dropOffTime}</p>
-            </div>
-
-            {/* <div className="text-xs text-gray-400 italic">
-              {isHovered ? "Timer paused. Move mouse away to resume redirection." : `Redirecting in ${(timeLeft / 1000).toFixed(1)}s...`}
-            </div> */}
-
-            {/* Visual running countdown line */}
-            <div className="absolute bottom-0 left-0 w-full bg-gray-200 h-2">
-              <div 
-                className="bg-[#e7701e] h-full transition-all duration-100 ease-linear"
-                style={{ width: `${(timeLeft / 2000) * 100}%` }}
-              />
-            </div>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -3,11 +3,13 @@ import axios from 'axios';
 
 export const runtime = 'edge';
 
+const BACKEND_URL = process.env.BACKEND_URL || 'https://admin.easyparkingltd.com';
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const response = await axios.post('https://admin.easyparkingltd.com/api/v1/bookings', body, {
+    const response = await axios.post(`${BACKEND_URL}/api/v1/bookings`, body, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
