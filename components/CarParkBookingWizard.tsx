@@ -153,7 +153,7 @@ export default function CarParkBookingWizard() {
     name: string;
     slug: string;
     description?: string | null;
-    add_ons?: { id: number; name: string; price: number; currency: string }[];
+    add_ons?: { id: number; name: string; description?: string | null; price: number; currency: string }[];
   }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
@@ -766,23 +766,30 @@ export default function CarParkBookingWizard() {
                                 <p className="text-[12px] font-bold text-[#002f5d] uppercase tracking-[0.5px] mb-2">
                                   Optional Extras
                                 </p>
-                                <div className="space-y-2">
+                                <div className="space-y-3">
                                   {st.add_ons.map((addOn) => (
                                     <label
                                       key={addOn.id}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="flex items-center justify-between gap-3 text-[13px] text-[#2c3e50] cursor-pointer"
+                                      className="flex items-start justify-between gap-3 text-[13px] text-[#2c3e50] cursor-pointer"
                                     >
-                                      <span className="flex items-center gap-2">
+                                      <span className="flex items-start gap-2">
                                         <input
                                           type="checkbox"
                                           checked={selectedAddOnIds.includes(addOn.id)}
                                           onChange={() => toggleAddOn(addOn.id)}
-                                          className="w-4 h-4 accent-[#e7701e]"
+                                          className="w-4 h-4 mt-0.5 accent-[#e7701e]"
                                         />
-                                        {addOn.name}
+                                        <span>
+                                          {addOn.name}
+                                          {addOn.description && (
+                                            <span className="block text-[12px] text-[#8a8a8a] font-normal mt-0.5">
+                                              {addOn.description}
+                                            </span>
+                                          )}
+                                        </span>
                                       </span>
-                                      <span className="font-bold">+{formatAmount(addOn.price, addOn.currency)}</span>
+                                      <span className="font-bold shrink-0">+{formatAmount(addOn.price, addOn.currency)}</span>
                                     </label>
                                   ))}
                                 </div>
