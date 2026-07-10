@@ -94,8 +94,12 @@ export default function CarParkBookingWizard() {
   const [dateError, setDateError] = useState("");
   const todayISO = new Date().toISOString().split("T")[0];
 
-  // Step 2: Space Packages Selection
-  const [parkingOption, setParkingOption] = useState<"standard" | "valet-car-wash">("valet-car-wash");
+  // Step 2: Space Packages Selection — the card picked here IS the real
+  // service type (selectedServiceType), kept in sync with Step 1's dropdown.
+  // Real per-card prices are fetched fresh from the backend's pricing quote
+  // endpoint whenever the selected dates or service type list change.
+  const [servicePrices, setServicePrices] = useState<Record<string, { total: number; currency: string } | null>>({});
+  const [pricesLoading, setPricesLoading] = useState(false);
 
   // Step 3: Customer Details
   const [firstName, setFirstName] = useState("");
@@ -141,7 +145,7 @@ export default function CarParkBookingWizard() {
   // which calls startCheckout() directly and bypasses this guard.
   const checkoutStartedRef = useRef(false);
 
-  const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
+  const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string; description?: string | null }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
   ]);
@@ -164,6 +168,44 @@ export default function CarParkBookingWizard() {
     fetchTypes();
   }, []);
 
+  // Fetch a real, server-computed price quote per service type whenever the
+  // selected dates (or the service type list) change — Step 2 must show a
+  // live PricingDefault/PricingCalendar-backed total, not a guessed number.
+  useEffect(() => {
+    if (!dropOffDate || !pickupDate || serviceTypes.length === 0) return;
+
+    let cancelled = false;
+    setPricesLoading(true);
+
+    const fetchPrices = async () => {
+      const entries = await Promise.all(
+        serviceTypes.map(async (st) => {
+          try {
+            const res = await axios.get("/api/pricing", {
+              params: { service_type: st.slug, dropoff: dropOffDate, pickup: pickupDate },
+            });
+            const data = res.data?.data;
+            return [st.slug, data ? { total: data.total, currency: data.currency } : null] as const;
+          } catch (err) {
+            console.error(`Error fetching price for ${st.slug}:`, err);
+            return [st.slug, null] as const;
+          }
+        })
+      );
+
+      if (!cancelled) {
+        setServicePrices(Object.fromEntries(entries));
+        setPricesLoading(false);
+      }
+    };
+
+    fetchPrices();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [serviceTypes, dropOffDate, pickupDate]);
+
   // Populate terminal fields on terminal state changes
   useEffect(() => {
     setDepTerminal(terminal);
@@ -174,6 +216,16 @@ export default function CarParkBookingWizard() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
+
+  // Toasts had no auto-dismiss at all — they only cleared when the next
+  // action happened to overwrite them, so they could sit on screen
+  // indefinitely (e.g. the invalid-dates notice below, which has no
+  // natural follow-up action until Step 4).
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToastMessage(null), 5000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   // If the customer arrived here with dates from the homepage widget (or a
   // stale link) that have since passed, explain why they landed on Step 1
@@ -214,7 +266,8 @@ export default function CarParkBookingWizard() {
   };
 
   const bookingDays = calculateDays(dropOffDate, pickupDate);
-  const spacePrice = parkingOption === "standard" ? 0.0 : 143.0;
+  const selectedQuote = servicePrices[selectedServiceType];
+  const spacePrice = selectedQuote ? selectedQuote.total / 100 : 0;
   const totalPrice = spacePrice;
 
   const submitBooking = async () => {
@@ -225,8 +278,6 @@ export default function CarParkBookingWizard() {
       if (terminal.toLowerCase().includes("south") || terminal === "17790") {
         tCode = "LGW-S";
       }
-
-      const serviceTypeSlug = parkingOption === "standard" ? "meet-and-greet" : "valet-car-wash";
 
       const dropOffAt = `${dropOffDate} ${dropOffTime.length === 5 ? dropOffTime + ":00" : dropOffTime}`;
       const pickupAt = `${pickupDate} ${pickupTime.length === 5 ? pickupTime + ":00" : pickupTime}`;
@@ -596,142 +647,74 @@ export default function CarParkBookingWizard() {
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-[#002f5d] text-[24px] font-extrabold tracking-tight">Parking Space</h2>
-                    <p className="text-gray-400 text-[14px] mt-1 font-bold">2 Results Found</p>
+                    <p className="text-gray-400 text-[14px] mt-1 font-bold">
+                      {serviceTypes.length} Result{serviceTypes.length !== 1 ? "s" : ""} Found
+                    </p>
                   </div>
 
-                  {/* PACKAGE 1: STANDARD */}
-                  <div
-                    onClick={() => setParkingOption("standard")}
-                    className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
-                      parkingOption === "standard" ? "ring-2 ring-[#e7701e] border-transparent" : ""
-                    }`}
-                  >
-                    {/* Logo area */}
-                    <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
-                      <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
-                        <div className="relative w-full h-[60px]">
-                          <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
-                        </div>
-                        <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
-                          Meet &amp; Greet
-                        </div>
-                      </div>
-                    </div>
+                  {/* One card per real, active service type — price is a live
+                      quote from the backend's pricing engine (PricingDefault
+                      + PricingCalendar), not a guessed number. */}
+                  {serviceTypes.map((st) => {
+                    const quote = servicePrices[st.slug];
+                    const isSelected = selectedServiceType === st.slug;
 
-                    {/* Middle details */}
-                    <div className="flex-1 p-6 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">Standard</h3>
-                        <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                          Gatwick Airport - {terminal} <span className="text-[#e7701e] lowercase font-normal ml-2 underline cursor-pointer">More details</span>
-                        </p>
-                        
-                        <ul className="mt-5 space-y-2.5">
-                          {[
-                            "Meet our uniformed team directly at the terminal",
-                            "Direct access to the terminal",
-                            "Hassle free handover",
-                            "24/7 cctv monitored parking facility",
-                            "Easy changes up to 48hrs before departure",
-                            "Airport charges included",
-                          ].map((feat, fidx) => (
-                            <li key={fidx} className="flex items-start gap-2.5 text-[13px] text-[#555555]">
-                              <svg className="w-4 h-4 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                              </svg>
-                              <span>{feat}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Right Price/Select box */}
-                    <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
-                      <div className="text-[28px] font-black text-[#002f5d]">£0.00</div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setParkingOption("standard");
-                        }}
-                        className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer ${
-                          parkingOption === "standard"
-                            ? "bg-[#e7701e] text-white shadow-md"
-                            : "bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
+                    return (
+                      <div
+                        key={st.slug}
+                        onClick={() => setSelectedServiceType(st.slug)}
+                        className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
+                          isSelected ? "ring-2 ring-[#e7701e] border-transparent" : ""
                         }`}
                       >
-                        Select
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* PACKAGE 2: VALET CAR WASH */}
-                  <div
-                    onClick={() => setParkingOption("valet-car-wash")}
-                    className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
-                      parkingOption === "valet-car-wash" ? "ring-2 ring-[#e7701e] border-transparent" : ""
-                    }`}
-                  >
-                    {/* Logo area */}
-                    <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
-                      <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
-                        <div className="relative w-full h-[60px]">
-                          <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
+                        {/* Logo area */}
+                        <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
+                          <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
+                            <div className="relative w-full h-[60px]">
+                              <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
+                            </div>
+                            <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
+                              {st.name}
+                            </div>
+                          </div>
                         </div>
-                        <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
-                          Meet &amp; Greet
+
+                        {/* Middle details */}
+                        <div className="flex-1 p-6 flex flex-col justify-between">
+                          <div>
+                            <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
+                            <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
+                              Gatwick Airport - {terminal}
+                            </p>
+
+                            {st.description && (
+                              <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{st.description}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Price/Select box */}
+                        <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
+                          <div className="text-[28px] font-black text-[#002f5d]">
+                            {quote ? formatAmount(quote.total, quote.currency) : pricesLoading ? "…" : "—"}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedServiceType(st.slug);
+                            }}
+                            className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer ${
+                              isSelected
+                                ? "bg-[#e7701e] text-white shadow-md"
+                                : "bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
+                            }`}
+                          >
+                            Select
+                          </button>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Middle details */}
-                    <div className="flex-1 p-6 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">Valet Car Wash</h3>
-                        <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                          Gatwick Airport - {terminal} <span className="text-[#e7701e] lowercase font-normal ml-2 underline cursor-pointer">More details</span>
-                        </p>
-                        
-                        <p className="mt-4 text-[#002f5d] font-extrabold text-[14px]">Enjoy premium quality valet servicing</p>
-
-                        <ul className="mt-4 space-y-2.5">
-                          {[
-                            "Complete vehicle care, including a full professional clean both on the inside and outside.",
-                            "Direct access to the terminal",
-                            "Quick and Seamless handover",
-                            "24/7 cctv monitored parking facility",
-                            "Easy changes up to 48hrs before departure",
-                            "Airport charges included",
-                          ].map((feat, fidx) => (
-                            <li key={fidx} className="flex items-start gap-2.5 text-[13px] text-[#555555]">
-                              <svg className="w-4 h-4 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                              </svg>
-                              <span>{feat}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Right Price/Select box */}
-                    <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
-                      <div className="text-[28px] font-black text-[#002f5d]">£143.00</div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setParkingOption("valet-car-wash");
-                        }}
-                        className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer ${
-                          parkingOption === "valet-car-wash"
-                            ? "bg-[#e7701e] text-white shadow-md"
-                            : "bg-gray-155 text-[#2c3e50] hover:bg-gray-200"
-                        }`}
-                      >
-                        Select
-                      </button>
-                    </div>
-                  </div>
+                    );
+                  })}
 
                   {/* Actions buttons bottom of Step 2 */}
                   <div className="flex items-center justify-between border-t border-gray-100 pt-8 mt-12">
