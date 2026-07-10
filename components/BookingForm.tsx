@@ -9,13 +9,17 @@ export default function BookingForm() {
   const [dropOffTime, setDropOffTime] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
-  const [terminal, setTerminal] = useState('17789');
+  const [terminal, setTerminal] = useState('LGW-N');
   const [serviceType, setServiceType] = useState('meet-and-greet');
   const [dateError, setDateError] = useState('');
   const todayISO = new Date().toISOString().split('T')[0];
   const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
+  ]);
+  const [terminals, setTerminals] = useState<{ id?: number; name: string; code: string }[]>([
+    { name: "Gatwick Airport – North Terminal", code: "LGW-N" },
+    { name: "Gatwick Airport – South Terminal", code: "LGW-S" }
   ]);
 
   useEffect(() => {
@@ -34,6 +38,22 @@ export default function BookingForm() {
       }
     };
     fetchTypes();
+
+    const fetchTerminals = async () => {
+      try {
+        const res = await axios.get("/api/terminals");
+        if (res.status === 200) {
+          const result = res.data;
+          if (result && Array.isArray(result.data) && result.data.length > 0) {
+            setTerminals(result.data);
+            setTerminal(result.data[0].code);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching terminals:", err);
+      }
+    };
+    fetchTerminals();
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -162,8 +182,9 @@ export default function BookingForm() {
                   onChange={(e) => setTerminal(e.target.value)}
                   className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
                 >
-                  <option value="17789">Gatwick Airport - North Terminal</option>
-                  <option value="17790">Gatwick Airport - South Terminal</option>
+                  {terminals.map((t) => (
+                    <option key={t.code} value={t.code}>{t.name}</option>
+                  ))}
                 </select>
               </div>
             </div>

@@ -11,7 +11,7 @@ export default function Hero() {
   const [dropOffTime, setDropOffTime] = useState("");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
-  const [terminal, setTerminal] = useState("17789");
+  const [terminal, setTerminal] = useState("LGW-N");
   const [serviceType, setServiceType] = useState("meet-and-greet");
   const [dateError, setDateError] = useState("");
   // Recomputed each render rather than memoized — cheap, and guarantees it's
@@ -20,6 +20,10 @@ export default function Hero() {
   const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
+  ]);
+  const [terminals, setTerminals] = useState<{ id?: number; name: string; code: string }[]>([
+    { name: "Gatwick Airport – North Terminal", code: "LGW-N" },
+    { name: "Gatwick Airport – South Terminal", code: "LGW-S" }
   ]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -42,6 +46,24 @@ export default function Hero() {
       }
     };
     fetchTypes();
+
+    // Fetch real terminals so the dropdown (and the code sent downstream)
+    // reflects whatever's actually active in the backend, not a guess.
+    const fetchTerminals = async () => {
+      try {
+        const res = await axios.get("/api/terminals");
+        if (res.status === 200) {
+          const result = res.data;
+          if (result && Array.isArray(result.data) && result.data.length > 0) {
+            setTerminals(result.data);
+            setTerminal(result.data[0].code);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching terminals:", err);
+      }
+    };
+    fetchTerminals();
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -400,8 +422,9 @@ export default function Hero() {
                       onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
                       onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
                     >
-                      <option value="17789">Gatwick Airport - North Terminal</option>
-                      <option value="17790">Gatwick Airport - South Terminal</option>
+                      {terminals.map((t) => (
+                        <option key={t.code} value={t.code}>{t.name}</option>
+                      ))}
                     </select>
                     {/* ChevronDown arrow — absolute right:14px top:50%, 18×18px, color:#6B7280, pointer-events:none */}
                     <SvgIcons.ChevronDown

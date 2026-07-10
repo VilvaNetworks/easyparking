@@ -100,7 +100,7 @@ export default function HowItWorksPage() {
                     Book Your Parking Now
                   </h4>
                   <p>
-                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/#book_now" className="text-[#e7701e] font-semibold hover:underline">[Online Booking Page]</Link> or call us at <span className="font-bold text-[#e7701e]">+44 020 4519 2869</span>.
+                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/#book_now" className="text-[#e7701e] font-semibold hover:underline">[Online Booking Page]</Link> or call us at <span className="font-bold text-[#e7701e]">+44 333 004 0262</span>.
                   </p>
                 </div>
               </div>

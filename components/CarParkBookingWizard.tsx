@@ -57,12 +57,15 @@ export default function CarParkBookingWizard() {
   const initialDropOffTime = searchParams.get("dropOffTime") || "";
   const initialPickupDate = searchParams.get("pickupDate") || "";
   const initialPickupTime = searchParams.get("pickupTime") || "";
-  const rawTerminal = searchParams.get("terminal") || "North Terminal";
+  const rawTerminal = searchParams.get("terminal") || "LGW-N";
+  // Old WordPress-era links (or the homepage widget before it fetched real
+  // terminals) may still carry these legacy post-ID-style values — map them
+  // to the real terminal codes rather than passing them through unresolved.
   const initialTerminal =
     rawTerminal === "17789"
-      ? "North Terminal"
+      ? "LGW-N"
       : rawTerminal === "17790"
-      ? "South Terminal"
+      ? "LGW-S"
       : rawTerminal;
 
   const initialServiceType = searchParams.get("serviceType") || "meet-and-greet";
@@ -150,6 +153,11 @@ export default function CarParkBookingWizard() {
     { name: "Park & Ride", slug: "park-and-ride" }
   ]);
 
+  const [terminals, setTerminals] = useState<{ id?: number; name: string; code: string }[]>([
+    { name: "Gatwick Airport – North Terminal", code: "LGW-N" },
+    { name: "Gatwick Airport – South Terminal", code: "LGW-S" }
+  ]);
+
   // Fetch dynamic service types on mount
   useEffect(() => {
     const fetchTypes = async () => {
@@ -166,6 +174,25 @@ export default function CarParkBookingWizard() {
       }
     };
     fetchTypes();
+  }, []);
+
+  // Fetch dynamic terminals on mount — the select options and the code sent
+  // in the booking payload must both reflect what's actually active server-side.
+  useEffect(() => {
+    const fetchTerminals = async () => {
+      try {
+        const res = await axios.get("/api/terminals");
+        if (res.status === 200) {
+          const result = res.data;
+          if (result && Array.isArray(result.data) && result.data.length > 0) {
+            setTerminals(result.data);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching terminals:", err);
+      }
+    };
+    fetchTerminals();
   }, []);
 
   // Fetch a real, server-computed price quote per service type whenever the
@@ -255,6 +282,10 @@ export default function CarParkBookingWizard() {
     return timeStr || defaultTime;
   };
 
+  // Resolves a terminal code (e.g. "LGW-N") to its real display name from
+  // the fetched terminals list, falling back to the raw code if not found.
+  const terminalName = (code: string) => terminals.find((t) => t.code === code)?.name || code;
+
   // Days Calculation (minimum 1 day)
   const calculateDays = (date1Str: string, date2Str: string) => {
     if (!date1Str || !date2Str) return 1;
@@ -274,17 +305,12 @@ export default function CarParkBookingWizard() {
     setIsSubmitting(true);
     setToastMessage(null);
     try {
-      let tCode = "LGW-N";
-      if (terminal.toLowerCase().includes("south") || terminal === "17790") {
-        tCode = "LGW-S";
-      }
-
       const dropOffAt = `${dropOffDate} ${dropOffTime.length === 5 ? dropOffTime + ":00" : dropOffTime}`;
       const pickupAt = `${pickupDate} ${pickupTime.length === 5 ? pickupTime + ":00" : pickupTime}`;
 
       const payload = {
         service_type: selectedServiceType,
-        terminal_code: tCode,
+        terminal_code: terminal,
         customer_name: `${firstName} ${lastName}`,
         customer_email: email,
         customer_phone: phone,
@@ -294,7 +320,7 @@ export default function CarParkBookingWizard() {
         vehicle_colour: vehicleColor || "Blue",
         dropoff_at: dropOffAt,
         pickup_at: pickupAt,
-        notes: flightNum ? `Flight ${flightNum}, return terminal ${retTerminal}` : "No notes"
+        notes: flightNum ? `Flight ${flightNum}, return terminal ${terminalName(retTerminal)}` : "No notes"
       };
 
       const response = await axios.post("/api/bookings", payload, {
@@ -568,8 +594,9 @@ export default function CarParkBookingWizard() {
                   onChange={(e) => setTerminal(e.target.value)}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
                 >
-                  <option value="North Terminal">Gatwick Airport - North Terminal</option>
-                  <option value="South Terminal">Gatwick Airport - South Terminal</option>
+                  {terminals.map((t) => (
+                    <option key={t.code} value={t.code}>{t.name}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -684,7 +711,7 @@ export default function CarParkBookingWizard() {
                           <div>
                             <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
                             <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                              Gatwick Airport - {terminal}
+                              {terminalName(terminal)}
                             </p>
 
                             {st.description && (
@@ -889,8 +916,9 @@ export default function CarParkBookingWizard() {
                           onChange={(e) => setDepTerminal(e.target.value)}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         >
-                          <option value="North Terminal">Gatwick Airport - North Terminal</option>
-                          <option value="South Terminal">Gatwick Airport - South Terminal</option>
+                          {terminals.map((t) => (
+                            <option key={t.code} value={t.code}>{t.name}</option>
+                          ))}
                         </select>
                       </div>
                       <div>
@@ -900,8 +928,9 @@ export default function CarParkBookingWizard() {
                           onChange={(e) => setRetTerminal(e.target.value)}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         >
-                          <option value="North Terminal">Gatwick Airport - North Terminal</option>
-                          <option value="South Terminal">Gatwick Airport - South Terminal</option>
+                          {terminals.map((t) => (
+                            <option key={t.code} value={t.code}>{t.name}</option>
+                          ))}
                         </select>
                       </div>
                       <div className="md:col-span-2">

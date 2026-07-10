@@ -479,8 +479,8 @@ export default function GeneralInformationPage() {
                   <div className="text-[#555555] text-[14px] sm:text-[15px] leading-relaxed space-y-4">
                     <p className="font-semibold text-gray-700">
                       On your return, please call us on{" "}
-                      <a href="tel:+4402045192867" className="text-[#e7701e] font-extrabold hover:underline">
-                        +44 020 4519 2867
+                      <a href="tel:+443330040262" className="text-[#e7701e] font-extrabold hover:underline">
+                        +44 333 004 0262
                       </a>{" "}
                       once you finish your Immigration. Our driver will hand over the car back to you as quickly and swiftly as possible.
                     </p>

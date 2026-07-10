@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ export default function ContactForm() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const services = [
     { value: "meet-greet", label: "Meet & Greet Airport Parking Service" },
@@ -27,23 +30,35 @@ export default function ContactForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
     if (!formData.service) {
       alert("Please select a service");
       return;
     }
-    // Simulate API form submission
-    setIsSubmitted(true);
-    // Reset form
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      service: "",
-      message: ""
-    });
-    setTimeout(() => setIsSubmitted(false), 5000);
+
+    setIsSubmitting(true);
+    try {
+      await axios.post("/api/contact", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setIsSubmitted(true);
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        service: "",
+        message: ""
+      });
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (err) {
+      console.error("Error submitting contact form:", err);
+      setSubmitError("Something went wrong sending your message. Please try again or call us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -163,13 +178,20 @@ export default function ContactForm() {
             />
           </div>
 
+          {submitError && (
+            <p className="text-white bg-black/20 rounded-[4px] px-4 py-3 text-[13px] font-semibold" role="alert">
+              {submitError}
+            </p>
+          )}
+
           {/* Send Button */}
           <div>
             <button
               type="submit"
-              className="w-full bg-white text-[#e7701e] hover:bg-gray-100 font-extrabold text-[14px] uppercase tracking-wider py-4 rounded-[4px] transition-all duration-300 shadow-md cursor-pointer hover:shadow-lg focus:outline-none"
+              disabled={isSubmitting}
+              className="w-full bg-white text-[#e7701e] hover:bg-gray-100 font-extrabold text-[14px] uppercase tracking-wider py-4 rounded-[4px] transition-all duration-300 shadow-md cursor-pointer hover:shadow-lg focus:outline-none disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              SEND
+              {isSubmitting ? "SENDING…" : "SEND"}
             </button>
           </div>
         </form>
