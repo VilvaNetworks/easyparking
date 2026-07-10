@@ -148,10 +148,26 @@ export default function CarParkBookingWizard() {
   // which calls startCheckout() directly and bypasses this guard.
   const checkoutStartedRef = useRef(false);
 
-  const [serviceTypes, setServiceTypes] = useState<{ id?: number; name: string; slug: string; description?: string | null }[]>([
+  const [serviceTypes, setServiceTypes] = useState<{
+    id?: number;
+    name: string;
+    slug: string;
+    description?: string | null;
+    add_ons?: { id: number; name: string; price: number; currency: string }[];
+  }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
   ]);
+
+  // Optional extras (e.g. valeting, car wash) for whichever service type is
+  // selected — flat one-time fees, added on top of the base parking price.
+  const [selectedAddOnIds, setSelectedAddOnIds] = useState<number[]>([]);
+
+  // Selecting a different service type invalidates any previously chosen
+  // add-ons (they belong to the old service type's list).
+  useEffect(() => {
+    setSelectedAddOnIds([]);
+  }, [selectedServiceType]);
 
   const [terminals, setTerminals] = useState<{ id?: number; name: string; code: string }[]>([
     { name: "Gatwick Airport – North Terminal", code: "LGW-N" },
@@ -299,7 +315,6 @@ export default function CarParkBookingWizard() {
   const bookingDays = calculateDays(dropOffDate, pickupDate);
   const selectedQuote = servicePrices[selectedServiceType];
   const spacePrice = selectedQuote ? selectedQuote.total / 100 : 0;
-  const totalPrice = spacePrice;
 
   // Step 2 confirms whatever service type was already chosen (homepage
   // widget or Step 1's dropdown) — it doesn't offer a switcher. Falls back
@@ -307,6 +322,17 @@ export default function CarParkBookingWizard() {
   // real service type (e.g. a stale/invalid slug in the URL).
   const matchingServiceTypes = serviceTypes.filter((st) => st.slug === selectedServiceType);
   const stepTwoServiceTypes = matchingServiceTypes.length > 0 ? matchingServiceTypes : serviceTypes;
+
+  // Add-ons are flat one-time fees (not multiplied by nights) tied to
+  // whichever service type is currently selected.
+  const availableAddOns = serviceTypes.find((st) => st.slug === selectedServiceType)?.add_ons ?? [];
+  const selectedAddOns = availableAddOns.filter((a) => selectedAddOnIds.includes(a.id));
+  const addOnsTotal = selectedAddOns.reduce((sum, a) => sum + a.price, 0) / 100;
+  const totalPrice = spacePrice + addOnsTotal;
+
+  const toggleAddOn = (id: number) => {
+    setSelectedAddOnIds((prev) => (prev.includes(id) ? prev.filter((existing) => existing !== id) : [...prev, id]));
+  };
 
   const submitBooking = async () => {
     setIsSubmitting(true);
@@ -327,7 +353,8 @@ export default function CarParkBookingWizard() {
         vehicle_colour: vehicleColor || "Blue",
         dropoff_at: dropOffAt,
         pickup_at: pickupAt,
-        notes: flightNum ? `Flight ${flightNum}, return terminal ${terminalName(retTerminal)}` : "No notes"
+        notes: flightNum ? `Flight ${flightNum}, return terminal ${terminalName(retTerminal)}` : "No notes",
+        add_on_ids: selectedAddOnIds,
       };
 
       const response = await axios.post("/api/bookings", payload, {
@@ -660,10 +687,18 @@ export default function CarParkBookingWizard() {
                 <h4 className="text-gray-400 text-[12px] uppercase font-bold tracking-[0.5px] mb-3">Order summary</h4>
                 
                 {currentStep === 3 && (
-                  <div className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2 font-bold">
-                    <span>Space</span>
-                    <span>£{spacePrice.toFixed(2)}</span>
-                  </div>
+                  <>
+                    <div className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2 font-bold">
+                      <span>Space</span>
+                      <span>£{spacePrice.toFixed(2)}</span>
+                    </div>
+                    {selectedAddOns.map((addOn) => (
+                      <div key={addOn.id} className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2">
+                        <span>{addOn.name}</span>
+                        <span>£{(addOn.price / 100).toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </>
                 )}
 
                 <div className="flex justify-between items-end border-t border-dashed border-gray-200 pt-3">
@@ -725,13 +760,46 @@ export default function CarParkBookingWizard() {
                             {st.description && (
                               <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{st.description}</p>
                             )}
+
+                            {isSelected && st.add_ons && st.add_ons.length > 0 && (
+                              <div className="mt-5 pt-4 border-t border-gray-100">
+                                <p className="text-[12px] font-bold text-[#002f5d] uppercase tracking-[0.5px] mb-2">
+                                  Optional Extras
+                                </p>
+                                <div className="space-y-2">
+                                  {st.add_ons.map((addOn) => (
+                                    <label
+                                      key={addOn.id}
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="flex items-center justify-between gap-3 text-[13px] text-[#2c3e50] cursor-pointer"
+                                    >
+                                      <span className="flex items-center gap-2">
+                                        <input
+                                          type="checkbox"
+                                          checked={selectedAddOnIds.includes(addOn.id)}
+                                          onChange={() => toggleAddOn(addOn.id)}
+                                          className="w-4 h-4 accent-[#e7701e]"
+                                        />
+                                        {addOn.name}
+                                      </span>
+                                      <span className="font-bold">+{formatAmount(addOn.price, addOn.currency)}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         {/* Right Price/Select box */}
                         <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
                           <div className="text-[28px] font-black text-[#002f5d]">
-                            {quote ? formatAmount(quote.total, quote.currency) : pricesLoading ? "…" : "—"}
+                            {quote
+                              ? formatAmount(
+                                  quote.total + (isSelected ? selectedAddOns.reduce((sum, a) => sum + a.price, 0) : 0),
+                                  quote.currency
+                                )
+                              : pricesLoading ? "…" : "—"}
                           </div>
                           <button
                             onClick={(e) => {
