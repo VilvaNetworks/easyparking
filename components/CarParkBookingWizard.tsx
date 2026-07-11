@@ -717,7 +717,7 @@ export default function CarParkBookingWizard() {
                   <div>
                     <h2 className="text-[#002f5d] text-[24px] font-extrabold tracking-tight">Parking Space</h2>
                     <p className="text-gray-400 text-[14px] mt-1 font-bold">
-                      {stepTwoServiceTypes.length} Result{stepTwoServiceTypes.length !== 1 ? "s" : ""} Found
+                      {stepTwoServiceTypes.length + availableAddOns.length} Result{stepTwoServiceTypes.length + availableAddOns.length !== 1 ? "s" : ""} Found
                     </p>
                   </div>
 
@@ -760,41 +760,6 @@ export default function CarParkBookingWizard() {
                             {st.description && (
                               <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{st.description}</p>
                             )}
-
-                            {isSelected && st.add_ons && st.add_ons.length > 0 && (
-                              <div className="mt-5 pt-4 border-t border-gray-100">
-                                <p className="text-[12px] font-bold text-[#002f5d] uppercase tracking-[0.5px] mb-2">
-                                  Optional Extras
-                                </p>
-                                <div className="space-y-3">
-                                  {st.add_ons.map((addOn) => (
-                                    <label
-                                      key={addOn.id}
-                                      onClick={(e) => e.stopPropagation()}
-                                      className="flex items-start justify-between gap-3 text-[13px] text-[#2c3e50] cursor-pointer"
-                                    >
-                                      <span className="flex items-start gap-2">
-                                        <input
-                                          type="checkbox"
-                                          checked={selectedAddOnIds.includes(addOn.id)}
-                                          onChange={() => toggleAddOn(addOn.id)}
-                                          className="w-4 h-4 mt-0.5 accent-[#e7701e]"
-                                        />
-                                        <span>
-                                          {addOn.name}
-                                          {addOn.description && (
-                                            <span className="block text-[12px] text-[#8a8a8a] font-normal mt-0.5">
-                                              {addOn.description}
-                                            </span>
-                                          )}
-                                        </span>
-                                      </span>
-                                      <span className="font-bold shrink-0">+{formatAmount(addOn.price, addOn.currency)}</span>
-                                    </label>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
                           </div>
                         </div>
 
@@ -821,6 +786,72 @@ export default function CarParkBookingWizard() {
                           >
                             Select
                           </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* One full card per optional add-on for the selected service
+                      type — a checkbox (not an exclusive "Select") since any
+                      number of extras can be added on top of the base price. */}
+                  {availableAddOns.map((addOn) => {
+                    const isChecked = selectedAddOnIds.includes(addOn.id);
+
+                    return (
+                      <div
+                        key={addOn.id}
+                        onClick={() => toggleAddOn(addOn.id)}
+                        className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
+                          isChecked ? "ring-2 ring-[#e7701e] border-transparent" : ""
+                        }`}
+                      >
+                        {/* Logo area */}
+                        <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
+                          <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
+                            <div className="relative w-full h-[60px]">
+                              <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
+                            </div>
+                            <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
+                              Add-on
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Middle details */}
+                        <div className="flex-1 p-6 flex flex-col justify-between">
+                          <div>
+                            <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{addOn.name}</h3>
+                            <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
+                              {terminalName(terminal)}
+                            </p>
+
+                            {addOn.description && (
+                              <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{addOn.description}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Price/Checkbox box */}
+                        <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
+                          <div className="text-[28px] font-black text-[#002f5d]">
+                            +{formatAmount(addOn.price, addOn.currency)}
+                          </div>
+                          <label
+                            onClick={(e) => e.stopPropagation()}
+                            className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                              isChecked
+                                ? "bg-[#e7701e] text-white shadow-md"
+                                : "bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleAddOn(addOn.id)}
+                              className="w-4 h-4 accent-white"
+                            />
+                            Add
+                          </label>
                         </div>
                       </div>
                     );
