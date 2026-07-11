@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
+import MoreDetailsModal from "./MoreDetailsModal";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -48,6 +49,13 @@ const formatAmount = (amount: number, currency: string): string => {
     currency: currency || "GBP",
   });
 };
+
+// Renders admin-authored rich text (service type / add-on descriptions).
+// Tailwind's preflight strips default browser list styling, so bullet/
+// numbered lists need it explicitly re-added here.
+const RICH_TEXT_CLASSES =
+  "[&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline " +
+  "[&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1";
 
 export default function CarParkBookingWizard() {
   const searchParams = useSearchParams();
@@ -96,6 +104,7 @@ export default function CarParkBookingWizard() {
   const [selectedServiceType, setSelectedServiceType] = useState(initialServiceType);
   const [dateError, setDateError] = useState("");
   const todayISO = new Date().toISOString().split("T")[0];
+  const [moreDetailsFor, setMoreDetailsFor] = useState<{ title: string; html?: string | null } | null>(null);
 
   // Step 2: Space Packages Selection — the card picked here IS the real
   // service type (selectedServiceType), kept in sync with Step 1's dropdown.
@@ -153,7 +162,8 @@ export default function CarParkBookingWizard() {
     name: string;
     slug: string;
     description?: string | null;
-    add_ons?: { id: number; name: string; description?: string | null; price: number; currency: string }[];
+    more_details?: string | null;
+    add_ons?: { id: number; name: string; description?: string | null; more_details?: string | null; price: number; currency: string }[];
   }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
     { name: "Park & Ride", slug: "park-and-ride" }
@@ -468,6 +478,14 @@ export default function CarParkBookingWizard() {
 
   return (
     <div className="w-full font-sans text-[#2c3e50] bg-white relative">
+      {moreDetailsFor && (
+        <MoreDetailsModal
+          onClose={() => setMoreDetailsFor(null)}
+          title={moreDetailsFor.title}
+          html={moreDetailsFor.html}
+        />
+      )}
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 animate-fade-in transition-all duration-300">
@@ -754,11 +772,24 @@ export default function CarParkBookingWizard() {
                           <div>
                             <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
                             <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                              {terminalName(terminal)}
+                              {terminalName(terminal)}{" "}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setMoreDetailsFor({ title: st.name, html: st.more_details });
+                                }}
+                                className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
+                              >
+                                More details
+                              </button>
                             </p>
 
                             {st.description && (
-                              <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{st.description}</p>
+                              <div
+                                className={`mt-5 text-[13px] text-[#555555] leading-relaxed ${RICH_TEXT_CLASSES}`}
+                                dangerouslySetInnerHTML={{ __html: st.description }}
+                              />
                             )}
                           </div>
                         </div>
@@ -822,11 +853,24 @@ export default function CarParkBookingWizard() {
                           <div>
                             <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{addOn.name}</h3>
                             <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                              {terminalName(terminal)}
+                              {terminalName(terminal)}{" "}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setMoreDetailsFor({ title: addOn.name, html: addOn.more_details });
+                                }}
+                                className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
+                              >
+                                More details
+                              </button>
                             </p>
 
                             {addOn.description && (
-                              <p className="mt-5 text-[13px] text-[#555555] leading-relaxed">{addOn.description}</p>
+                              <div
+                                className={`mt-5 text-[13px] text-[#555555] leading-relaxed ${RICH_TEXT_CLASSES}`}
+                                dangerouslySetInnerHTML={{ __html: addOn.description }}
+                              />
                             )}
                           </div>
                         </div>

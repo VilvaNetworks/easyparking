@@ -129,7 +129,7 @@ export default function Navbar() {
 
               {/* RIGHT: Cart + GET IN TOUCH + Hamburger */}
               <div className="flex items-center justify-end mr-[4px]" style={{ width: "16%", gap: 14 }}>
-                <a href="#" aria-label="Cart"
+                {/* <a href="#" aria-label="Cart"
                   className="hidden lg:flex items-center gap-1.5 no-underline transition-colors duration-200"
                   style={{ borderRadius: 5, color: "#303030", fontSize: 13, fontFamily: '"Montserrat",Sans-serif', fontWeight: 600 }}
                   onMouseEnter={(e) => { const svg = (e.currentTarget as HTMLElement).querySelector("svg"); if (svg) svg.style.fill = "#F09A0F"; }}
@@ -137,7 +137,7 @@ export default function Navbar() {
                 >
                   <span>£0.00</span>
                   <SvgIcons.Cart style={{ width: 26, height: 26, fill: "#E7701E", transition: "fill 0.2s" }} />
-                </a>
+                </a> */}
 
                 <button type="button"
                   className="hidden mr-[4px] lg:inline-block cursor-pointer border-none transition-all duration-300"

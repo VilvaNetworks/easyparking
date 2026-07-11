@@ -207,8 +207,11 @@ export default function Hero() {
           >
             <form onSubmit={handleSubmit} className="w-full">
 
-              {/* Form grid — 4 cols desktop, 1 col mobile, gap:20px, mb:25px */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-[20px] mb-[25px]">
+              {/* Form grid — 3 cols desktop, 1 col mobile, gap:20px, mb:25px.
+                  Terminal + Service Type share the 3rd column (stacked, like
+                  the Date/Time pairs in columns 1-2) rather than each getting
+                  a whole column, per the reference layout. */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-[20px] mb-[25px]">
 
                 {/* ── Drop Off Date and Time ── */}
                 <div style={{ minWidth: 0 }}>
@@ -221,6 +224,9 @@ export default function Hero() {
                   </div>
                   {/* Drop Off Date input — h:48px, border:#D1D5DB, 13px 600 uppercase #6B7280 */}
                   <div className="mb-[18px]">
+                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                      Drop Off Date
+                    </label>
                     <input
                       type="date"
                       value={dropOffDate}
@@ -250,6 +256,9 @@ export default function Hero() {
                   </div>
                   {/* Drop Off Time input */}
                   <div>
+                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                      Drop Off Time
+                    </label>
                     <input
                       type="time"
                       value={dropOffTime}
@@ -287,6 +296,9 @@ export default function Hero() {
                     Pickup Date and Time
                   </div>
                   <div className="mb-[18px]">
+                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                      Pickup Date
+                    </label>
                     <input
                       type="date"
                       value={pickupDate}
@@ -315,6 +327,9 @@ export default function Hero() {
                     />
                   </div>
                   <div>
+                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                      Pickup Time
+                    </label>
                     <input
                       type="time"
                       value={pickupTime}
@@ -343,55 +358,7 @@ export default function Hero() {
                   </div>
                 </div>
 
-                {/* ── Select Service ── */}
-                <div style={{ minWidth: 0 }}>
-                  <div
-                    className="text-[15px] md:text-[16px] font-bold mb-[12px] md:mb-[18px] tracking-[0.3px]"
-                    style={{ color: "#004280" }}
-                  >
-                    Select Service
-                  </div>
-                  <div className="relative w-full">
-                    <select
-                      value={serviceType}
-                      onChange={(e) => setServiceType(e.target.value)}
-                      className="w-full outline-none cursor-pointer box-border transition-all duration-300"
-                      style={{
-                        height: 48,
-                        padding: "0 40px 0 16px",
-                        border: "1px solid #D1D5DB",
-                        borderRadius: 4,
-                        backgroundColor: "#FFFFFF",
-                        color: "#1A1A1A",
-                        fontSize: 13,
-                        fontWeight: 500,
-                        fontFamily: "inherit",
-                        letterSpacing: "0.5px",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                      }}
-                      onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
-                      onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                    >
-                      {serviceTypes.map((st) => (
-                        <option key={st.slug} value={st.slug}>{st.name}</option>
-                      ))}
-                    </select>
-                    <SvgIcons.ChevronDown
-                      className="absolute pointer-events-none"
-                      style={{
-                        right: 14,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        width: 18,
-                        height: 18,
-                        color: "#6B7280",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* ── Select Terminal ── */}
+                {/* ── Select Terminal + Select Service (stacked in one column) ── */}
                 <div style={{ minWidth: 0 }}>
                   <div
                     className="text-[15px] md:text-[16px] font-bold mb-[12px] md:mb-[18px] tracking-[0.3px]"
@@ -399,8 +366,11 @@ export default function Hero() {
                   >
                     Select Terminal
                   </div>
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    Terminal
+                  </label>
                   {/* Custom select wrapper — relative, ChevronDown arrow at right:14px */}
-                  <div className="relative w-full">
+                  <div className="relative w-full mb-[18px]">
                     <select
                       value={terminal}
                       onChange={(e) => setTerminal(e.target.value)}
@@ -427,6 +397,47 @@ export default function Hero() {
                       ))}
                     </select>
                     {/* ChevronDown arrow — absolute right:14px top:50%, 18×18px, color:#6B7280, pointer-events:none */}
+                    <SvgIcons.ChevronDown
+                      className="absolute pointer-events-none"
+                      style={{
+                        right: 14,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: 18,
+                        height: 18,
+                        color: "#6B7280",
+                      }}
+                    />
+                  </div>
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    Service Type
+                  </label>
+                  <div className="relative w-full">
+                    <select
+                      value={serviceType}
+                      onChange={(e) => setServiceType(e.target.value)}
+                      className="w-full outline-none cursor-pointer box-border transition-all duration-300"
+                      style={{
+                        height: 48,
+                        padding: "0 40px 0 16px",
+                        border: "1px solid #D1D5DB",
+                        borderRadius: 4,
+                        backgroundColor: "#FFFFFF",
+                        color: "#1A1A1A",
+                        fontSize: 13,
+                        fontWeight: 500,
+                        fontFamily: "inherit",
+                        letterSpacing: "0.5px",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                      }}
+                      onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
+                      onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                    >
+                      {serviceTypes.map((st) => (
+                        <option key={st.slug} value={st.slug}>{st.name}</option>
+                      ))}
+                    </select>
                     <SvgIcons.ChevronDown
                       className="absolute pointer-events-none"
                       style={{
