@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+import BookNowLink from '@/components/BookNowLink';
 
 export const metadata: Metadata = {
   title: 'Airport Parking & Valeting Services | Easy Parking Ltd',
@@ -143,12 +143,11 @@ export default function ServicesPage() {
                 The ultimate convenience! Drive to the terminal, and one of our professional drivers will park your car for you. Upon your return, your car will be ready at the terminal.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
@@ -170,12 +169,11 @@ export default function ServicesPage() {
                 Get complete peace of mind with our valeting service, including both interior and exterior cleaning your choice.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
@@ -223,12 +221,11 @@ export default function ServicesPage() {
                 Inside and Outside wash to make your vehicle look clean and shiny. Hand washed by our experienced valeters using premium products for the perfect finish.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
@@ -250,12 +247,11 @@ export default function ServicesPage() {
                 Where convenience meets quality! Hand washed and dried, clean and dry for only £14.99. You can make choice of washing your car when you are on holidays, we will clean and wash your car inside and outside and ready to drive when you come back from your journey.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
@@ -303,12 +299,11 @@ export default function ServicesPage() {
                 Charge your electric car here. We have a selection of fast chargers, which are located in our security facility. High standard safety and premium service. You pay for it what you charge, no extra charge on top of it.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
@@ -330,12 +325,11 @@ export default function ServicesPage() {
                 We also have transfer services! If you need transport to the airport, hotel or anywhere else, we can assist you. Safe, secure, and stress-free transport solutions. Your space, just a click away.
               </p>
               <div>
-                <Link
-                  href="/car-park-booking-system"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 

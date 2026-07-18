@@ -63,6 +63,18 @@ export default function Hero() {
     fetchTerminals();
   }, []);
 
+  // BookNowLink (used on every other page) sets this flag before navigating
+  // here instead of using a "/#book_now" URL hash — pick it up once mounted
+  // and scroll to the booking widget ourselves.
+  useEffect(() => {
+    if (sessionStorage.getItem("scrollToBooking")) {
+      sessionStorage.removeItem("scrollToBooking");
+      setTimeout(() => {
+        document.getElementById("book_now")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setDateError("");
@@ -112,6 +124,7 @@ export default function Hero() {
             fill
             sizes="100vw"
             priority
+            fetchPriority="high"
             className="object-cover object-center"
           />
           {/* Dark overlay — rgba(0,0,0,0.35), z-index:2 */}

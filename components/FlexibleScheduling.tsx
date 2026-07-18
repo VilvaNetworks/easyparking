@@ -95,6 +95,7 @@ const FlexibleScheduling: React.FC = () => {
               {/* Learn More Button */}
               <Link
                 href={feature.link}
+                aria-label={`Learn more about ${feature.title}`}
                 className="inline-flex items-center gap-2 text-[#1a1a1a] text-base font-semibold hover:text-[#ff8c00] transition-colors duration-300 mt-auto"
               >
                 <span>Learn More</span>

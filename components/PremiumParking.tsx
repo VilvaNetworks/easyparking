@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import BookNowLink from "@/components/BookNowLink";
 
 const PremiumParking: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -66,12 +66,11 @@ const PremiumParking: React.FC = () => {
               </p>
             </div>
             <div>
-              <Link
-                href="/car-park-booking-system"
+              <BookNowLink
                 className="inline-block bg-[#ff8c00] hover:bg-[#e67e00] text-white font-semibold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Book Now
-              </Link>
+              </BookNowLink>
             </div>
           </div>
 

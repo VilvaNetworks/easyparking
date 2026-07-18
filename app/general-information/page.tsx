@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import BookNowLink from "@/components/BookNowLink";
 import SidebarScrollSpy from "./SidebarScrollSpy";
 
 export const metadata: Metadata = {
@@ -139,12 +139,11 @@ export default function GeneralInformationPage() {
                     ))}
                   </ul>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100">
@@ -208,12 +207,11 @@ export default function GeneralInformationPage() {
                     ))}
                   </ul>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
               </div>
@@ -255,12 +253,11 @@ export default function GeneralInformationPage() {
                     ))}
                   </ul>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100">
@@ -319,12 +316,11 @@ export default function GeneralInformationPage() {
                     ))}
                   </ul>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
               </div>
@@ -364,12 +360,11 @@ export default function GeneralInformationPage() {
                     ))}
                   </ul>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100">
@@ -447,12 +442,11 @@ export default function GeneralInformationPage() {
                     </div>
                   </div>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
               </div>
@@ -489,12 +483,11 @@ export default function GeneralInformationPage() {
                     </p>
                   </div>
                   <div className="mt-8">
-                    <Link
-                      href="/car-park-booking-system"
+                    <BookNowLink
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
-                    </Link>
+                    </BookNowLink>
                   </div>
                 </div>
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100">

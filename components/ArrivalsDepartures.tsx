@@ -1,7 +1,7 @@
 // components/ArrivalsDepartures.tsx
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
+import BookNowLink from "@/components/BookNowLink";
 
 const ArrivalsDepartures: React.FC = () => {
   return (
@@ -61,12 +61,11 @@ const ArrivalsDepartures: React.FC = () => {
 
             {/* Book Now Button */}
             <div>
-              <Link
-                href="/car-park-booking-system"
+              <BookNowLink
                 className="inline-block bg-[#ff8c00] hover:bg-[#e67e00] text-white font-semibold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Book Now
-              </Link>
+              </BookNowLink>
             </div>
           </div>
         </div>

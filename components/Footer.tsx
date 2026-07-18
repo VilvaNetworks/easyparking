@@ -330,7 +330,7 @@ export default function Footer() {
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#E67E00")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#E7701E")}
                 >
-                  <SvgIcons.Send style={{ width: 20, height: 20, fill: "#FFFFFF" }} />
+                  <SvgIcons.Send style={{ width: 16, height: 16, fill: "#FFFFFF" }} />
                 </button>
               </div>
             </form>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import BookNowLink from '@/components/BookNowLink';
 import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
@@ -144,12 +145,11 @@ export default function HowItWorksPage() {
               </div>
 
               <div>
-                <Link
-                  href="/"
+                <BookNowLink
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
-                </Link>
+                </BookNowLink>
               </div>
             </div>
 
