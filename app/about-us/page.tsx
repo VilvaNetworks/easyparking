@@ -121,7 +121,6 @@ export default function AboutUsPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, 540px"
                     className="object-cover"
-                    priority
                   />
                 </div>
               </div>
@@ -170,7 +169,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -215,7 +214,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -247,7 +246,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now

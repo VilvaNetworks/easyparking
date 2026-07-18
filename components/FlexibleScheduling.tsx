@@ -1,6 +1,4 @@
 // components/FlexibleScheduling.tsx
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -47,9 +45,9 @@ const FlexibleScheduling: React.FC = () => {
     <section className="w-full bg-white py-16 px-4 md:py-20 md:px-6">
       <div className="max-w-[1300px] mx-auto">
         {/* Small Orange Heading */}
-        <h2 className="text-center text-[#ff8c00] text-base font-bold uppercase tracking-[3px] mb-6">
+        <p className="text-center text-[#ff8c00] text-base font-bold uppercase tracking-[3px] mb-6">
           FLEXIBLE&nbsp;&nbsp;SCHEDULING
-        </h2>
+        </p>
 
         {/* Main Heading */}
         <h2 className="text-center text-[#1a1a1a] text-3xl md:text-4xl lg:text-[42px] font-bold leading-tight mb-14">

@@ -19,7 +19,7 @@ const servicesSchema = {
   "description": "Discover our airport parking services, valeting, car washing, electric vehicle charging, and transfer options at Gatwick Airport.",
   "provider": {
     "@type": "LocalBusiness",
-    "@id": "https://www.easyparkingltd.com/#organization",
+    "@id": "https://www.easyparkingltd.com/#localbusiness",
     "name": "Easy Parking Ltd",
     "telephone": "+443330040262",
     "address": {
@@ -130,7 +130,6 @@ export default function ServicesPage() {
                   fill
                   sizes="(max-width: 768px) 100vw, 580px"
                   className="object-cover"
-                  priority
                 />
               </div>
             </div>
@@ -145,7 +144,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -172,7 +171,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -225,7 +224,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -252,7 +251,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -305,7 +304,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -332,7 +331,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/"
+                  href="/car-park-booking-system"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now

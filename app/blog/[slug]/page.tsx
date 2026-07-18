@@ -113,12 +113,35 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const post = (blogs as BlogPost[]).find((b) => b.slug === slug);
   if (!post) notFound();
 
+  const postSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `https://www.easyparkingltd.com/blog/${post.slug}/#blogpost`,
+    "url": `https://www.easyparkingltd.com/blog/${post.slug}`,
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": `https://www.easyparkingltd.com${post.image}`,
+    "datePublished": post.date,
+    "author": {
+      "@type": "Organization",
+      "name": post.author,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://www.easyparkingltd.com/#organization",
+    },
+  };
+
   const relatedPosts = (blogs as BlogPost[])
     .filter((b) => b.slug !== slug)
     .map((b) => ({ slug: b.slug, title: b.title, date: b.date, image: b.image, excerpt: b.excerpt }));
 
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(postSchema) }}
+      />
       <div className="max-w-[1300px] mx-auto px-4 md:px-8 py-10 md:py-14">
 
         {/* Two-column layout: content left, sidebar right (desktop only) */}

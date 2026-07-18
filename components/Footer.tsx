@@ -298,12 +298,14 @@ export default function Footer() {
               Join Easy Parking Ltd for the latest tips and updates.
             </p>
             <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+              <label htmlFor="footer-newsletter-email" className="sr-only">Email Address</label>
               <div
                 className="flex w-full overflow-hidden"
                 style={{ backgroundColor: "#FFFFFF", borderRadius: 4, boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}
               >
                 {/* Input — flex:1, padding:12px 16px, h:48px, bg white, #333333 14px */}
                 <input
+                  id="footer-newsletter-email"
                   type="email"
                   name="email"
                   placeholder="Email Address"

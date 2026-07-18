@@ -4,8 +4,10 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import axios from "axios";
-import MoreDetailsModal from "./MoreDetailsModal";
+
+const MoreDetailsModal = dynamic(() => import("./MoreDetailsModal"));
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -821,6 +823,7 @@ export default function CarParkBookingWizard() {
                               : pricesLoading ? "…" : "—"}
                           </div>
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedServiceType(st.slug);
@@ -920,6 +923,7 @@ export default function CarParkBookingWizard() {
                   {/* Actions buttons bottom of Step 2 */}
                   <div className="flex items-center justify-between border-t border-gray-100 pt-8 mt-12">
                     <button
+                      type="button"
                       onClick={() => setCurrentStep(1)}
                       className="bg-[#f0f4f8] hover:bg-gray-200 text-[#004280] font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 transition-all cursor-pointer"
                     >
@@ -929,6 +933,7 @@ export default function CarParkBookingWizard() {
                       Select Dates
                     </button>
                     <button
+                      type="button"
                       onClick={handleStep2Submit}
                       className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 shadow-md transition-all cursor-pointer"
                     >
@@ -1267,6 +1272,7 @@ export default function CarParkBookingWizard() {
                   <p className="mt-1">Your booking is saved and still pending payment — it&apos;s safe to try again.</p>
                 </div>
                 <button
+                  type="button"
                   onClick={startCheckout}
                   className="w-full bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase py-3.5 rounded-[4px] tracking-[1px] transition-all cursor-pointer"
                 >

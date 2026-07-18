@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/booking-process',
   },
+  openGraph: {
+    title: 'Booking Process - Easy Parking Ltd',
+    description: 'Any customer can make booking from us through our website or on telephone. Check the prices, choose the dates and book our service based on your need.',
+    url: 'https://www.easyparkingltd.com/booking-process',
+    siteName: 'Easy Parking Ltd',
+    locale: 'en_GB',
+    type: 'website',
+  },
 };
 
 export default function BookingProcessPage() {
@@ -20,9 +28,24 @@ export default function BookingProcessPage() {
     "For customers who choose to be members with us, their data will be saved. Their account will go dormant if they do not make any booking with us in the next 12 months, and their data will be deleted after another 6 months if there is no booking made from the customer in that time."
   ];
 
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Book Our Airport Parking Services",
+    "step": steps.map((step, idx) => ({
+      "@type": "HowToStep",
+      "position": idx + 1,
+      "text": step,
+    })),
+  };
+
   return (
     <div className="w-full bg-white text-[#2c3e50] font-sans pb-16 md:pb-24">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+
       {/* ================= HEADER BANNER ================= */}
       <section className="relative w-full h-[240px] md:h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -64,7 +87,7 @@ export default function BookingProcessPage() {
 
           <div className="mt-12 text-center">
             <Link
-              href="/"
+              href="/car-park-booking-system"
               className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
             >
               Book Your Parking Spot

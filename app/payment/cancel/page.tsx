@@ -51,6 +51,7 @@ function PaymentCancelContent() {
 export default function PaymentCancelPage() {
   return (
     <div className="w-full bg-white py-12 min-h-[60vh] flex flex-col justify-center">
+      <h1 className="sr-only">Payment Not Completed</h1>
       <Suspense fallback={
         <div className="max-w-[800px] mx-auto px-4 text-center py-12">
           <p className="text-gray-500 font-semibold animate-pulse">Loading…</p>

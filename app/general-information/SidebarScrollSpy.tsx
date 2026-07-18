@@ -46,7 +46,8 @@ export default function SidebarScrollSpy({ navItems }: SidebarScrollSpyProps) {
     };
   }, [navItems]);
 
-  const handleScrollTo = (anchor: string) => {
+  const handleScrollTo = (e: React.MouseEvent, anchor: string) => {
+    e.preventDefault();
     const element = document.getElementById(anchor);
     if (element) {
       // Offset scroll by header height + mobile nav height
@@ -61,6 +62,7 @@ export default function SidebarScrollSpy({ navItems }: SidebarScrollSpyProps) {
         behavior: "smooth",
       });
       setActiveAnchor(anchor);
+      window.history.replaceState(null, "", `#${anchor}`);
     }
   };
 
@@ -75,17 +77,18 @@ export default function SidebarScrollSpy({ navItems }: SidebarScrollSpyProps) {
           {navItems.map((item) => {
             const isActive = activeAnchor === item.anchor;
             return (
-              <button
+              <a
                 key={item.anchor}
-                onClick={() => handleScrollTo(item.anchor)}
-                className={`text-left pl-4 py-2 border-l-2 transition-all duration-300 font-semibold text-[14px] ${
+                href={`#${item.anchor}`}
+                onClick={(e) => handleScrollTo(e, item.anchor)}
+                className={`text-left pl-4 py-2 border-l-2 transition-all duration-300 font-semibold text-[14px] no-underline ${
                   isActive
                     ? "border-[#e7701e] text-[#e7701e] bg-orange-50/40"
                     : "border-gray-200 text-gray-500 hover:text-[#2c3e50] hover:border-gray-400"
                 }`}
               >
                 {item.label}
-              </button>
+              </a>
             );
           })}
         </nav>
@@ -97,17 +100,18 @@ export default function SidebarScrollSpy({ navItems }: SidebarScrollSpyProps) {
           {navItems.map((item) => {
             const isActive = activeAnchor === item.anchor;
             return (
-              <button
+              <a
                 key={item.anchor}
-                onClick={() => handleScrollTo(item.anchor)}
-                className={`inline-block px-4 py-1.5 rounded-full text-[13px] font-bold transition-all duration-300 ${
+                href={`#${item.anchor}`}
+                onClick={(e) => handleScrollTo(e, item.anchor)}
+                className={`inline-block px-4 py-1.5 rounded-full text-[13px] font-bold transition-all duration-300 no-underline ${
                   isActive
                     ? "bg-[#e7701e] text-white shadow-sm shadow-orange-500/25"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {item.label}
-              </button>
+              </a>
             );
           })}
         </div>

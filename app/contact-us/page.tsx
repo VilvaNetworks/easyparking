@@ -20,6 +20,7 @@ const contactSchema = {
   "description": "Contact Easy Parking Ltd for airport parking bookings, support, and inquiries at Gatwick Airport.",
   "mainEntity": {
     "@type": "LocalBusiness",
+    "@id": "https://www.easyparkingltd.com/#localbusiness",
     "name": "Easy Parking Ltd",
     "telephone": "+443330040262",
     "email": "Info@easyparkingltd.com",

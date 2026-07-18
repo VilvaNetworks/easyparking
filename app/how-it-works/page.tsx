@@ -82,11 +82,10 @@ export default function HowItWorksPage() {
               <div className="relative w-full aspect-[736/489] overflow-hidden shadow-xl border-4 border-white">
                 <Image
                   src="/images/works/img1.jpeg"
-                  alt="Modern Home Indoor Garage"
+                  alt="Rows of cars parked inside Easy Parking's secure, well-lit indoor facility"
                   fill
                   sizes="(max-width: 768px) 100vw, 620px"
                   className="object-cover"
-                  priority
                 />
               </div>
               <div className="relative w-full aspect-[800/800] max-h-[489px] overflow-hidden shadow-xl border-4 border-white">
@@ -103,41 +102,41 @@ export default function HowItWorksPage() {
             {/* Right Column: Detailed Text */}
             <div className="flex flex-col">
               <h2 className="text-[#1a1a1a] text-[32px] md:text-[38px] font-extrabold leading-[1.2] mb-6 tracking-tight font-sans">
-                How It Works
+                Your Journey With Easy Parking, Step By Step
               </h2>
 
               <div className="space-y-6 text-[#555555] text-[15px] leading-[1.75] mb-8">
                 <div>
-                  <h4 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
+                  <h3 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
                     On The Day Of Your Departure
-                  </h4>
+                  </h3>
                   <p>
                     Drive straight to the terminal, where a professional, insured and DBS-checked Easy Parking employee will meet you with a <span className="font-bold text-[#e7701e]">HAPPY SMILE</span>, take your keys, and take it from there. Your car goes into one of our fully secure, 24/7 CCTV-monitored car parks while you head off to your gate. For the full departure checklist — documents, photos, mileage records — see our <Link href="/general-information#1" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
+                  <h3 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
                     On The Day Of Your Arrival
-                  </h4>
+                  </h3>
                   <p>
                     Landed and ready to go home? Just call us once you&apos;ve collected your luggage, and your car will be waiting at the terminal meeting point by the time you get there — no queues, no shuttle buses. Full collection details are on our <Link href="/general-information#2" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
+                  <h3 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
                     Our Commitment to Quality and Value
-                  </h4>
+                  </h3>
                   <p>
                     At Easy Parking, we are committed to providing affordable, secure, and convenient parking solutions for all travelers. Whether you&apos;re flying from the North or South Terminal, our established team of parking experts will ensure your experience is smooth from start to finish. With on-the-ground experts, you can trust that you&apos;re in safe hands no matter which parking option you choose.
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
+                  <h3 className="text-[#1a1a1a] font-bold text-[16px] mb-2 uppercase tracking-[0.5px]">
                     Book Your Parking Now
-                  </h4>
+                  </h3>
                   <p>
                     Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/car-park-booking-system" className="text-[#e7701e] font-semibold hover:underline">Online Booking Page</Link> or call us at <span className="font-bold text-[#e7701e]">+44 333 004 0262</span>.
                   </p>

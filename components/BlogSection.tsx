@@ -1,46 +1,18 @@
 // components/BlogSection.tsx
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-interface BlogPost {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  link: string;
-}
-
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    image: "/images/blog1.jpg",
-    title: "AIRPORT PARKING SERVICES PROVIDER: EASY PARKING LTD",
-    description:
-      "When it comes to air travel, parking is one of the most overlooked yet crucial aspects of a seamless journey. Whether you're a frequent traveler or flying for the first time, the stress of finding",
-    link: "/blog/airport-parking-services",
-  },
-  {
-    id: 2,
-    image: "/images/blog2.jpg",
-    title: "WHAT ARE THE BENEFITS OF GATWICK AIRPORT PARKING?",
-    description:
-      "Traveling through Gatwick Airport can be a breeze when you've got your parking sorted. With the right parking provider, such as Easy Parking LTD, you can enjoy convenience, security, and peace of mind, making your journey",
-    link: "/blog/benefits-gatwick-parking",
-  },
-  {
-    id: 3,
-    image: "/images/blog3.jpg",
-    title: "WHY CHOOSE EASY PARKING LTD FOR GATWICK AIRPORT PARKING SERVICES?",
-    description:
-      "Traveling through Gatwick Airport can be a stressful experience, especially when it comes to parking. However, with Easy Parking LTD, travelers are guaranteed a smooth, reliable, and hassle-free parking service tailored to their needs. This comprehensive",
-    link: "/blog/why-choose-easy-parking",
-  },
-];
+import blogs from "@/data/blogs.json";
 
 const BlogSection: React.FC = () => {
+  const blogPosts = blogs.map((post) => ({
+    id: post.id,
+    image: post.image,
+    title: post.title,
+    description: post.excerpt,
+    link: `/blog/${post.slug}`,
+  }));
+
   return (
     <section className="w-full bg-[#f5f5f5] py-16 md:py-20 lg:py-24 px-4 md:px-8">
       <div className="max-w-[1400px] mx-auto">

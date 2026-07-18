@@ -52,6 +52,7 @@ export default function FaqAccordion() {
             >
               {/* Accordion Trigger */}
               <button
+                type="button"
                 onClick={() => toggleItem(index)}
                 className="w-full flex items-center justify-between py-5 px-6 sm:px-8 text-left cursor-pointer focus:outline-none select-none transition-colors duration-300"
               >

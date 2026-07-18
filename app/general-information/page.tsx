@@ -16,17 +16,17 @@ const generalInfoSchema = {
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "https://www.easyparkingltd.com/general-information/#webpage",
-      "url": "https://www.easyparkingltd.com/general-information/",
+      "@id": "https://www.easyparkingltd.com/general-information#webpage",
+      "url": "https://www.easyparkingltd.com/general-information",
       "name": "General Information - Easy Parking Ltd",
       "description": "General instructions and airport procedures for Meet & Greet Gatwick parking at Easy Parking Ltd, including departure check-ins, arrival collections, cancellations and differently-abled customer info.",
       "breadcrumb": {
-        "@id": "https://www.easyparkingltd.com/general-information/#breadcrumb"
+        "@id": "https://www.easyparkingltd.com/general-information#breadcrumb"
       }
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://www.easyparkingltd.com/general-information/#breadcrumb",
+      "@id": "https://www.easyparkingltd.com/general-information#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -38,7 +38,7 @@ const generalInfoSchema = {
           "@type": "ListItem",
           "position": 2,
           "name": "General Information",
-          "item": "https://www.easyparkingltd.com/general-information/"
+          "item": "https://www.easyparkingltd.com/general-information"
         }
       ]
     }
@@ -140,7 +140,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -209,7 +209,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -256,7 +256,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -320,7 +320,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -365,7 +365,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -421,9 +421,9 @@ export default function GeneralInformationPage() {
                     </p>
 
                     <div className="border-l-4 border-l-orange-400 pl-4 py-1">
-                      <h4 className="font-extrabold text-[#1a1a1a] text-[15px] uppercase tracking-wider mb-2">
+                      <h3 className="font-extrabold text-[#1a1a1a] text-[15px] uppercase tracking-wider mb-2">
                         North Terminal
-                      </h4>
+                      </h3>
                       <p>
                         For North terminal when entering the North terminal stay in the{" "}
                         <span className="font-bold text-gray-800">left lane</span> following the signs for the{" "}
@@ -435,9 +435,9 @@ export default function GeneralInformationPage() {
                     </div>
 
                     <div className="border-l-4 border-l-orange-400 pl-4 py-1">
-                      <h4 className="font-extrabold text-[#1a1a1a] text-[15px] uppercase tracking-wider mb-2">
+                      <h3 className="font-extrabold text-[#1a1a1a] text-[15px] uppercase tracking-wider mb-2">
                         South Terminal
-                      </h4>
+                      </h3>
                       <p>
                         For South terminal when approaching the south terminal stay in the right-hand lane and follow the signs for the{" "}
                         <span className="font-bold text-gray-800">short stay car park</span> (pick up and drop off). On entering the barrier after taking your ticket you will proceed to the{" "}
@@ -448,7 +448,7 @@ export default function GeneralInformationPage() {
                   </div>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -490,7 +490,7 @@ export default function GeneralInformationPage() {
                   </div>
                   <div className="mt-8">
                     <Link
-                      href="/"
+                      href="/car-park-booking-system"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking

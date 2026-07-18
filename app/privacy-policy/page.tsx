@@ -15,17 +15,17 @@ const privacyPolicySchema = {
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "https://www.easyparkingltd.com/privacy-policy/#webpage",
-      "url": "https://www.easyparkingltd.com/privacy-policy/",
+      "@id": "https://www.easyparkingltd.com/privacy-policy#webpage",
+      "url": "https://www.easyparkingltd.com/privacy-policy",
       "name": "Privacy Policy - Easy Parking Ltd",
       "description": "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights.",
       "breadcrumb": {
-        "@id": "https://www.easyparkingltd.com/privacy-policy/#breadcrumb"
+        "@id": "https://www.easyparkingltd.com/privacy-policy#breadcrumb"
       }
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://www.easyparkingltd.com/privacy-policy/#breadcrumb",
+      "@id": "https://www.easyparkingltd.com/privacy-policy#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -37,7 +37,7 @@ const privacyPolicySchema = {
           "@type": "ListItem",
           "position": 2,
           "name": "Privacy Policy",
-          "item": "https://www.easyparkingltd.com/privacy-policy/"
+          "item": "https://www.easyparkingltd.com/privacy-policy"
         }
       ]
     }

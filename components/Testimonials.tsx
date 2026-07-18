@@ -88,7 +88,7 @@ export default function Testimonials() {
                   <Image src={t.photo} alt={t.name} fill className="object-cover" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#2C3E50]">{t.name}</h4>
+                  <h3 className="font-bold text-[#2C3E50]">{t.name}</h3>
                   <p className="text-[#7A7A7A] text-sm">{t.location}</p>
                 </div>
               </div>

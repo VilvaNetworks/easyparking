@@ -97,13 +97,16 @@ function BookingDetailsContent() {
 
   return (
     <div className="max-w-[800px] mx-auto px-4 w-full" style={{ fontFamily: '"Montserrat",Sans-serif' }}>
+      <h1 className="sr-only">Find Your Booking Details</h1>
       {/* Search Section */}
       <div className="bg-[#fcfbfa] border border-gray-200 rounded-lg p-6 md:p-8 shadow-md mb-8">
         <h2 className="text-[#002f5d] text-[20px] md:text-[24px] font-black text-center mb-6">
           Find Your Booking Details
         </h2>
         <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3">
+          <label htmlFor="booking-ref-search" className="sr-only">Booking reference</label>
           <input
+            id="booking-ref-search"
             type="text"
             value={bookingRef}
             onChange={(e) => setBookingRef(e.target.value.toUpperCase())}

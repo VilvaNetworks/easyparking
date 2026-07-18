@@ -37,9 +37,9 @@ export default function BlogRelatedSwiper({ posts }: { posts: RelatedPost[] }) {
               />
             </div>
             <p className="text-[12px] text-[#888] mb-1">{post.date}</p>
-            <h3 className="text-[#1a1a1a] text-[15px] font-bold leading-snug group-hover:text-[#ff8c00] transition-colors line-clamp-3">
+            <h4 className="text-[#1a1a1a] text-[15px] font-bold leading-snug group-hover:text-[#ff8c00] transition-colors line-clamp-3">
               {post.title}
-            </h3>
+            </h4>
             <p className="text-[#555] text-[13px] leading-[1.65] mt-2 line-clamp-3">
               {post.excerpt}
             </p>

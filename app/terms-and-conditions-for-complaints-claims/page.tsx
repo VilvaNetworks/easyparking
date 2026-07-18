@@ -15,17 +15,17 @@ const complaintsSchema = {
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims/#webpage",
-      "url": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims/",
+      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims#webpage",
+      "url": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims",
       "name": "Terms and Conditions for Complaints/Claims - Easy Parking Ltd",
       "description": "Official terms and conditions outlining policies for complaints, damage claims, repair handling, and vehicle liability with Easy Parking Ltd.",
       "breadcrumb": {
-        "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims/#breadcrumb"
+        "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims#breadcrumb"
       }
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims/#breadcrumb",
+      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -37,7 +37,7 @@ const complaintsSchema = {
           "@type": "ListItem",
           "position": 2,
           "name": "Terms and Conditions for Complaints/Claims",
-          "item": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims/"
+          "item": "https://www.easyparkingltd.com/terms-and-conditions-for-complaints-claims"
         }
       ]
     }

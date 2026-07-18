@@ -52,9 +52,6 @@ export const metadata: Metadata = {
     description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick.',
     images: ['/images/logo.png'],
   },
-  other: {
-    'ahrefs-site-verification': 'ahrefs_site_verification_placeholder_code_1234567890',
-  },
 };
 
 const organizationSchema = {

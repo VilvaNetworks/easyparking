@@ -1,6 +1,4 @@
 // components/AboutSection.tsx
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -143,7 +141,9 @@ const AboutSection: React.FC = () => {
       
 
       {/* Float animation */}
-      <style jsx>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);
@@ -155,7 +155,9 @@ const AboutSection: React.FC = () => {
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
-      `}</style>
+      `,
+        }}
+      />
     </section>
   );
 };

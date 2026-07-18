@@ -9,36 +9,40 @@ export default function BlogCommentForm() {
       </p>
       <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
         <div>
-          <label className="block text-[13px] font-semibold text-[#333] mb-1.5">
+          <label htmlFor="comment-body" className="block text-[13px] font-semibold text-[#333] mb-1.5">
             Comment <span className="text-[#ff8c00]">*</span>
           </label>
           <textarea
+            id="comment-body"
             rows={6}
             className="w-full border border-[#d0d0d0] px-4 py-3 text-[14px] text-[#333] outline-none focus:border-[#ff8c00] resize-none transition-colors"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-[13px] font-semibold text-[#333] mb-1.5">
+            <label htmlFor="comment-name" className="block text-[13px] font-semibold text-[#333] mb-1.5">
               Name <span className="text-[#ff8c00]">*</span>
             </label>
             <input
+              id="comment-name"
               type="text"
               className="w-full border border-[#d0d0d0] px-4 py-2.5 text-[14px] text-[#333] outline-none focus:border-[#ff8c00] transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[13px] font-semibold text-[#333] mb-1.5">
+            <label htmlFor="comment-email" className="block text-[13px] font-semibold text-[#333] mb-1.5">
               Email <span className="text-[#ff8c00]">*</span>
             </label>
             <input
+              id="comment-email"
               type="email"
               className="w-full border border-[#d0d0d0] px-4 py-2.5 text-[14px] text-[#333] outline-none focus:border-[#ff8c00] transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[13px] font-semibold text-[#333] mb-1.5">Website</label>
+            <label htmlFor="comment-website" className="block text-[13px] font-semibold text-[#333] mb-1.5">Website</label>
             <input
+              id="comment-website"
               type="url"
               className="w-full border border-[#d0d0d0] px-4 py-2.5 text-[14px] text-[#333] outline-none focus:border-[#ff8c00] transition-colors"
             />

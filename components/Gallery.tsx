@@ -73,6 +73,7 @@ export default function Gallery() {
               {lightboxIndex + 1} / {images.length}
             </span>
             <button
+              type="button"
               onClick={close}
               className="text-white/70 hover:text-white transition-colors"
               aria-label="Close"
@@ -90,6 +91,7 @@ export default function Gallery() {
           >
             {/* Prev arrow */}
             <button
+              type="button"
               onClick={prev}
               className="shrink-0 text-white/70 hover:text-white transition-colors px-3 md:px-6"
               aria-label="Previous image"
@@ -135,6 +137,7 @@ export default function Gallery() {
 
             {/* Next arrow */}
             <button
+              type="button"
               onClick={next}
               className="shrink-0 text-white/70 hover:text-white transition-colors px-3 md:px-6"
               aria-label="Next image"
@@ -153,6 +156,7 @@ export default function Gallery() {
             {images.map((img, idx) => (
               <button
                 key={img.src}
+                type="button"
                 onClick={() => setLightboxIndex(idx)}
                 className={`relative w-14 h-12 md:w-20 md:h-14 overflow-hidden border-2 transition-all duration-200 ${
                   idx === lightboxIndex

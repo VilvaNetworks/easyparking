@@ -98,8 +98,9 @@ export default function BookingForm() {
               </h4>
               <div className="space-y-2">
                 <div>
-                  <label className="text-white/80 text-xs block mb-1">Drop Off Date</label>
+                  <label htmlFor="bf-dropoff-date" className="text-white/80 text-xs block mb-1">Drop Off Date</label>
                   <input
+                    id="bf-dropoff-date"
                     type="date"
                     value={dropOffDate}
                     onChange={(e) => setDropOffDate(e.target.value)}
@@ -109,8 +110,9 @@ export default function BookingForm() {
                   />
                 </div>
                 <div>
-                  <label className="text-white/80 text-xs block mb-1">Drop Off Time</label>
+                  <label htmlFor="bf-dropoff-time" className="text-white/80 text-xs block mb-1">Drop Off Time</label>
                   <input
+                    id="bf-dropoff-time"
                     type="time"
                     value={dropOffTime}
                     onChange={(e) => setDropOffTime(e.target.value)}
@@ -128,8 +130,9 @@ export default function BookingForm() {
               </h4>
               <div className="space-y-2">
                 <div>
-                  <label className="text-white/80 text-xs block mb-1">Pickup Date</label>
+                  <label htmlFor="bf-pickup-date" className="text-white/80 text-xs block mb-1">Pickup Date</label>
                   <input
+                    id="bf-pickup-date"
                     type="date"
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
@@ -139,8 +142,9 @@ export default function BookingForm() {
                   />
                 </div>
                 <div>
-                  <label className="text-white/80 text-xs block mb-1">Pickup Time</label>
+                  <label htmlFor="bf-pickup-time" className="text-white/80 text-xs block mb-1">Pickup Time</label>
                   <input
+                    id="bf-pickup-time"
                     type="time"
                     value={pickupTime}
                     onChange={(e) => setPickupTime(e.target.value)}
@@ -157,8 +161,9 @@ export default function BookingForm() {
                 Select Service
               </h4>
               <div>
-                <label className="text-white/80 text-xs block mb-1">Service Type</label>
+                <label htmlFor="bf-service-type" className="text-white/80 text-xs block mb-1">Service Type</label>
                 <select
+                  id="bf-service-type"
                   value={serviceType}
                   onChange={(e) => setServiceType(e.target.value)}
                   className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
@@ -176,8 +181,9 @@ export default function BookingForm() {
                 Select Terminal
               </h4>
               <div>
-                <label className="text-white/80 text-xs block mb-1">Terminal</label>
+                <label htmlFor="bf-terminal" className="text-white/80 text-xs block mb-1">Terminal</label>
                 <select
+                  id="bf-terminal"
                   value={terminal}
                   onChange={(e) => setTerminal(e.target.value)}
                   className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"

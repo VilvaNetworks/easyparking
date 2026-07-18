@@ -15,17 +15,17 @@ const finesSchema = {
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices/#webpage",
-      "url": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices/",
+      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices#webpage",
+      "url": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices",
       "name": "Terms and Conditions For Parking Fine/Penalty Notices - Easy Parking Ltd",
       "description": "Official terms and conditions outlining liability, procedure, and timelines for parking fines and penalty charge notices.",
       "breadcrumb": {
-        "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices/#breadcrumb"
+        "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices#breadcrumb"
       }
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices/#breadcrumb",
+      "@id": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -37,7 +37,7 @@ const finesSchema = {
           "@type": "ListItem",
           "position": 2,
           "name": "Terms and Conditions For Parking Fine/Penalty Notices",
-          "item": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices/"
+          "item": "https://www.easyparkingltd.com/terms-and-conditions-for-parking-fine-penalty-notices"
         }
       ]
     }
