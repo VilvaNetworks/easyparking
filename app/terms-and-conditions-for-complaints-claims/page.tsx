@@ -57,7 +57,7 @@ export default function ComplaintsClaimsPage() {
     "We will take responsible care of your vehicle for the period that you have booked with us and paid for. However, if you park for longer than the days you booked with us due to flight delays or other personal reasons, we will charge you in full for those days based on the prices at that time.",
     "If you did not collect your vehicle for longer days and did not attempt to contact us or arrange any alternative plans with us, then we may dispose your vehicle (after reasonable attempts to contact you from our staffs before doing so) and cover any loss incurred by us. We will not refund for any early returns.",
     "You can cancel your bookings up to 14 days after the booking and you will be refunded all the money that you have paid us.",
-    "However, if you wish to cancel after 14 days up to 48 hours prior to your booking, you will be refunded but will be charged an administration fee.",
+    "Cancellations made after that 14-day window but at least 48 hours before your booking start time are still refunded, minus a standard administration fee.",
     "No refunds or credit will be given for cancellations within 48 hours of the booking and for the customers who have a booking with us but did not turn up at the date and time specified."
   ];
 
@@ -114,7 +114,7 @@ export default function ComplaintsClaimsPage() {
 
           <div className="mt-12 text-center">
             <Link
-              href="/#book_now"
+              href="/"
               className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[15px] px-10 py-[12px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
             >
               Back to Home

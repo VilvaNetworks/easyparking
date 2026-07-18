@@ -1,20 +1,8 @@
 import type { Metadata } from 'next';
-import { Roboto, Roboto_Slab, Montserrat, Marcellus, Marck_Script } from 'next/font/google';
+import { Montserrat, Marcellus, Marck_Script } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '900'],
-  variable: '--font-roboto',
-});
-
-const robotoSlab = Roboto_Slab({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-roboto-slab',
-});
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -36,10 +24,7 @@ const marckScript = Marck_Script({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.easyparkingltd.com'),
-  title: {
-    default: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
-    template: '%s | Easy Parking Ltd',
-  },
+  title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
   description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking Ltd today.',
   keywords: ['gatwick parking', 'airport parking', 'meet and greet', 'valet parking', 'easy parking', 'gatwick valet'],
   alternates: {
@@ -117,18 +102,16 @@ const localBusinessSchema = {
       "Tuesday",
       "Wednesday",
       "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
+      "Friday"
     ],
-    "opens": "00:00",
-    "closes": "23:59"
+    "opens": "09:00",
+    "closes": "17:00"
   }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${roboto.variable} ${robotoSlab.variable} ${montserrat.variable} ${marcellus.variable} ${marckScript.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${marcellus.variable} ${marckScript.variable}`}>
       <body className="font-sans bg-white">
         <script
           type="application/ld+json"

@@ -5,6 +5,9 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Booking Terms and Conditions - Easy Parking Ltd',
   description: 'Please read our terms and conditions carefully which applies both to direct bookings made through our website and bookings made through any third party.',
+  alternates: {
+    canonical: '/booking-terms-and-conditions',
+  },
 };
 
 export default function BookingTermsAndConditionsPage() {
@@ -66,7 +69,7 @@ export default function BookingTermsAndConditionsPage() {
 
           <div className="mt-12 text-center">
             <Link
-              href="/#book_now"
+              href="/"
               className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
             >
               Back to Home

@@ -5,6 +5,9 @@ import AccountForms from "@/components/AccountForms";
 export const metadata: Metadata = {
   title: "Account - Easy Parking Ltd",
   description: "Access your Easy Parking Ltd account dashboard, view recent orders, manage addresses, and update account details.",
+  alternates: {
+    canonical: "/account",
+  },
 };
 
 export default function AccountPage() {

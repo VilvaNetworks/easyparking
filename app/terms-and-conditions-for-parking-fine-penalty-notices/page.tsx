@@ -103,7 +103,7 @@ export default function ParkingFinePenaltyPage() {
 
           <div className="mt-12 text-center">
             <Link
-              href="/#book_now"
+              href="/"
               className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[15px] px-10 py-[12px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
             >
               Back to Home

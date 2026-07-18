@@ -5,6 +5,9 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Booking Process - Easy Parking Ltd',
   description: 'Any customer can make booking from us through our website or on telephone. Check the prices, choose the dates and book our service based on your need.',
+  alternates: {
+    canonical: '/booking-process',
+  },
 };
 
 export default function BookingProcessPage() {
@@ -61,7 +64,7 @@ export default function BookingProcessPage() {
 
           <div className="mt-12 text-center">
             <Link
-              href="/#book_now"
+              href="/"
               className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
             >
               Book Your Parking Spot

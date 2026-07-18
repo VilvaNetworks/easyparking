@@ -5,6 +5,9 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Airport Parking & Valeting Services | Easy Parking Ltd',
   description: 'Explore our full range of Gatwick services: Meet & Greet parking, professional valeting, car washing, electric car charging, and direct airport transfer solutions.',
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 const servicesSchema = {
@@ -142,7 +145,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -169,7 +172,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -222,7 +225,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -249,7 +252,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -302,7 +305,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -329,7 +332,7 @@ export default function ServicesPage() {
               </p>
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now

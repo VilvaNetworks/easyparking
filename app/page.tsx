@@ -53,36 +53,6 @@ const homeSchema = {
       "publisher": {
         "@id": "https://www.easyparkingltd.com/#organization"
       }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://www.easyparkingltd.com/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How does the Meet & Greet service work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Drive directly to your Gatwick terminal, where one of our professional chauffeurs will meet you and park your vehicle in our secure facility. On your return, your vehicle is delivered back to the terminal ready for you."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is my vehicle safe in your parking facility?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, your vehicle is highly secure. Our parking facility features 24/7 CCTV surveillance, secure perimeter fencing, and regular security patrols."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I request electric car charging while parked?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes! We offer professional electric car charging options as an add-on service. Your car will be fully charged and ready for you upon your return."
-          }
-        }
-      ]
     }
   ]
 };

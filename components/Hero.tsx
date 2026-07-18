@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import axios from "axios";
 import SvgIcons from "@/components/SvgIcons";
 
@@ -25,11 +26,7 @@ export default function Hero() {
     { name: "Gatwick Airport – North Terminal", code: "LGW-N" },
     { name: "Gatwick Airport – South Terminal", code: "LGW-S" }
   ]);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   useEffect(() => {
-    videoRef.current?.play().catch(() => {});
-
     // Fetch dynamic service types
     const fetchTypes = async () => {
       try {
@@ -107,19 +104,16 @@ export default function Hero() {
         className="relative w-full overflow-hidden flex items-center justify-center"
         style={{ minHeight: 600, height: "80vh", maxHeight: 750 }}
       >
-        {/* Video wrapper — absolute full cover, z-index:1 */}
+        {/* Background image — absolute full cover, z-index:1 */}
         <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 1 }} aria-hidden="true">
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover object-center block"
-            autoPlay
-            muted
-            playsInline
-            loop
-            poster="/images/hero-poster.jpg"
-          >
-            <source src="/images/banner-vid.mkv" type="video/x-matroska" />
-          </video>
+          <Image
+            src="/images/car.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover object-center"
+          />
           {/* Dark overlay — rgba(0,0,0,0.35), z-index:2 */}
           <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.35)", zIndex: 2 }} />
         </div>
@@ -224,10 +218,11 @@ export default function Hero() {
                   </div>
                   {/* Drop Off Date input — h:48px, border:#D1D5DB, 13px 600 uppercase #6B7280 */}
                   <div className="mb-[18px]">
-                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    <label htmlFor="hero-dropoff-date" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Drop Off Date
                     </label>
                     <input
+                      id="hero-dropoff-date"
                       type="date"
                       value={dropOffDate}
                       onChange={(e) => setDropOffDate(e.target.value)}
@@ -256,10 +251,11 @@ export default function Hero() {
                   </div>
                   {/* Drop Off Time input */}
                   <div>
-                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    <label htmlFor="hero-dropoff-time" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Drop Off Time
                     </label>
                     <input
+                      id="hero-dropoff-time"
                       type="time"
                       value={dropOffTime}
                       onChange={(e) => setDropOffTime(e.target.value)}
@@ -296,10 +292,11 @@ export default function Hero() {
                     Pickup Date and Time
                   </div>
                   <div className="mb-[18px]">
-                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    <label htmlFor="hero-pickup-date" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Pickup Date
                     </label>
                     <input
+                      id="hero-pickup-date"
                       type="date"
                       value={pickupDate}
                       onChange={(e) => setPickupDate(e.target.value)}
@@ -327,10 +324,11 @@ export default function Hero() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                    <label htmlFor="hero-pickup-time" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Pickup Time
                     </label>
                     <input
+                      id="hero-pickup-time"
                       type="time"
                       value={pickupTime}
                       onChange={(e) => setPickupTime(e.target.value)}
@@ -366,12 +364,13 @@ export default function Hero() {
                   >
                     Select Terminal
                   </div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                  <label htmlFor="hero-terminal" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                     Terminal
                   </label>
                   {/* Custom select wrapper — relative, ChevronDown arrow at right:14px */}
                   <div className="relative w-full mb-[18px]">
                     <select
+                      id="hero-terminal"
                       value={terminal}
                       onChange={(e) => setTerminal(e.target.value)}
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
@@ -409,11 +408,12 @@ export default function Hero() {
                       }}
                     />
                   </div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
+                  <label htmlFor="hero-service-type" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                     Service Type
                   </label>
                   <div className="relative w-full">
                     <select
+                      id="hero-service-type"
                       value={serviceType}
                       onChange={(e) => setServiceType(e.target.value)}
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
@@ -488,7 +488,7 @@ export default function Hero() {
                   }}
                   onMouseDown={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")}
                 >
-                  Get a Quote
+                  Book Now
                 </button>
               </div>
 

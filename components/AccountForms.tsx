@@ -90,10 +90,11 @@ export default function AccountForms() {
           <div className="border border-gray-200 bg-[#fcfbfa] p-8 md:p-10 shadow-sm">
             <form onSubmit={handleLoginSubmit} className="space-y-5">
               <div>
-                <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
+                <label htmlFor="account-login-username" className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
                   Username or email address <span className="text-[#cf2e2e]">*</span>
                 </label>
                 <input
+                  id="account-login-username"
                   type="text"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
@@ -103,11 +104,12 @@ export default function AccountForms() {
               </div>
 
               <div>
-                <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
+                <label htmlFor="account-login-password" className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
                   Password <span className="text-[#cf2e2e]">*</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="account-login-password"
                     type={showPassword ? "text" : "password"}
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
@@ -172,10 +174,11 @@ export default function AccountForms() {
           <div className="border border-gray-200 bg-[#fcfbfa] p-8 md:p-10 shadow-sm">
             <form onSubmit={handleRegisterSubmit} className="space-y-5">
               <div>
-                <label className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
+                <label htmlFor="account-register-email" className="block text-[14px] font-semibold text-[#1a1a1a] mb-2 select-none">
                   Email address <span className="text-[#cf2e2e]">*</span>
                 </label>
                 <input
+                  id="account-register-email"
                   type="email"
                   value={registerEmail}
                   onChange={(e) => setRegisterEmail(e.target.value)}

@@ -6,6 +6,9 @@ import blogsData from '@/data/blogs.json';
 export const metadata: Metadata = {
   title: 'Airport Parking Blog & Travel Tips | Easy Parking Ltd',
   description: 'Stay updated with airport parking insights, professional valeting tips, Gatwick Airport updates, and holiday travel recommendations from Easy Parking Ltd.',
+  alternates: {
+    canonical: '/blog',
+  },
 };
 
 export default function BlogIndexPage() {

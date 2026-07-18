@@ -3,10 +3,10 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 
 const images = [
-  { src: '/images/img1.png', alt: 'Gallery Image 1' },
-  { src: '/images/img2.png', alt: 'Gallery Image 2' },
-  { src: '/images/img3.png', alt: 'Gallery Image 3' },
-  { src: '/images/img4.png', alt: 'Gallery Image 4' },
+  { src: '/images/img1.png', alt: 'Gold convertible sports car parked on a mountain road' },
+  { src: '/images/img2.png', alt: 'Rose gold luxury coupe parked in a landscaped garden' },
+  { src: '/images/img3.png', alt: 'White sports car driving on a snowy mountain road' },
+  { src: '/images/img4.png', alt: 'Black luxury saloon parked in a driveway, front view' },
 ];
 
 export default function Gallery() {

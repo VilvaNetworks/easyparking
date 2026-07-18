@@ -6,6 +6,9 @@ import posts from '@/data/blogs.json';
 export const metadata: Metadata = {
   title: 'Sitemap - Easy Parking Ltd',
   description: 'User-facing sitemap directory for Easy Parking Ltd. Find quick links to our main pages, airport parking booking system, blog articles, and corporate terms.',
+  alternates: {
+    canonical: '/sitemap',
+  },
 };
 
 export default function SitemapPage() {

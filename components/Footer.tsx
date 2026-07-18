@@ -95,11 +95,9 @@ export default function Footer() {
                 { Icon: SvgIcons.Twitter, label: "Twitter" },
                 { Icon: SvgIcons.Youtube, label: "Youtube" },
               ].map(({ Icon, label }) => (
-                <a
+                <Link
                   key={label}
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/"
                   aria-label={label}
                   className="inline-flex items-center justify-center transition-all duration-300"
                   style={{ width: 32, height: 32, borderRadius: 4, backgroundColor: "#E7701E", textDecoration: "none" }}
@@ -107,7 +105,7 @@ export default function Footer() {
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#E7701E"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
                 >
                   <Icon style={{ width: 16, height: 16, fill: "#FFFFFF" }} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -115,9 +113,9 @@ export default function Footer() {
           {/* ── COL 2: Quick Links ── */}
           <div style={{ minWidth: 0 }}>
             {/* Heading — Montserrat 18px 700 #1a1a1a uppercase, letter-spacing:0.5px, mb:25px */}
-            <h2 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
+            <h3 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
               QUICK LINKS
-            </h2>
+            </h3>
             <ul className="list-none p-0 m-0">
               {quickLinks.map((l) => (
                 <li key={l.href} style={{ marginBottom: 14 }}>
@@ -136,9 +134,9 @@ export default function Footer() {
 
           {/* ── COL 3: General Information ── */}
           <div style={{ minWidth: 0 }}>
-            <h2 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
+            <h3 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
               GENERAL INFORMATION
-            </h2>
+            </h3>
             <ul className="list-none p-0 m-0">
               {generalLinks.map((l) => (
                 <li key={l.href} style={{ marginBottom: 14 }}>
@@ -157,9 +155,9 @@ export default function Footer() {
 
           {/* ── COL 4: Our Services ── */}
           <div style={{ minWidth: 0 }}>
-            <h2 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
+            <h3 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
               OUR SERVICES
-            </h2>
+            </h3>
             <ul className="list-none p-0 m-0">
               {serviceLinks.map((l) => (
                 <li key={l.href} style={{ marginBottom: 14 }}>
@@ -177,10 +175,13 @@ export default function Footer() {
           </div>
 
           {/* ── COL 5: Help & Support — full width on sm/md ── */}
-          <div className="sm:col-span-2 lg:col-span-3 xl:col-span-1" style={{ minWidth: 0, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 30 }}>
-            <h2 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
+          {/* Top border/padding only applies while this column wraps onto its
+              own row (sm/md/lg); at xl it sits inline with cols 2-4, so the
+              separator would push its heading out of line with theirs. */}
+          <div className="sm:col-span-2 lg:col-span-3 xl:col-span-1 border-t border-black/8 pt-7.5 xl:border-t-0 xl:pt-0" style={{ minWidth: 0 }}>
+            <h3 style={{ color: "#1A1A1A", fontSize: 18, fontWeight: 700, margin: "0 0 25px 0", padding: 0, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: '"Montserrat",sans-serif' }}>
               HELP &amp; SUPPORT
-            </h2>
+            </h3>
 
             {/* Contact list — gap:12px per item, icon 16px fill:#E7701E, text 15px #333333, hover #E7701E */}
             <ul className="list-none p-0" style={{ margin: "0 0 25px 0" }}>

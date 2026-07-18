@@ -67,7 +67,7 @@ const PremiumParking: React.FC = () => {
             </div>
             <div>
               <Link
-                href="#book_now"
+                href="/"
                 className="inline-block bg-[#ff8c00] hover:bg-[#e67e00] text-white font-semibold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Book Now
@@ -108,7 +108,6 @@ const PremiumParking: React.FC = () => {
               width={800}
               height={604}
               className="w-full h-full object-contain"
-              priority
             />
           </div>
         </div>

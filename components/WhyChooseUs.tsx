@@ -51,9 +51,13 @@ const WhyChooseUs: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Scroll-driven scale — based on sectionRef so works on both desktop & mobile
+  // Scroll-driven scale — based on sectionRef so works on both desktop & mobile.
+  // rAF-batched so the layout-forcing getBoundingClientRect() call runs at most
+  // once per frame instead of once per scroll event.
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
       if (!sectionRef.current) return;
       const rect     = sectionRef.current.getBoundingClientRect();
       const winH     = window.innerHeight;
@@ -62,8 +66,13 @@ const WhyChooseUs: React.FC = () => {
       const progress = 1 - Math.max(0, Math.min(1, center / winH));
       setCarScale(0.4 + progress * 0.75);
     };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    update();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -131,7 +140,6 @@ const WhyChooseUs: React.FC = () => {
                   width={500}
                   height={500}
                   className="w-full h-auto object-contain"
-                  priority
                 />
               </div>
 
@@ -204,7 +212,7 @@ const WhyChooseUs: React.FC = () => {
                 transition: "transform 0.15s ease-out, opacity 0.3s ease-out",
               }}
             >
-              <Image src="/images/car-move.png" alt="Moving car" width={320} height={220} className="object-contain" />
+              <Image src="/images/carmove.png" alt="Moving car" width={320} height={220} className="object-contain" />
             </div>
 
             {[...rightFeatures].map((f, i) => (

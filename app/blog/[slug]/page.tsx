@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import blogs from "@/data/blogs.json";
 import BlogCommentForm from "@/components/BlogCommentForm";
-import BlogRelatedSwiper from "@/components/BlogRelatedSwiper";
+
+const BlogRelatedSwiper = dynamic(() => import("@/components/BlogRelatedSwiper"));
 
 interface ContentBlock {
   type: string;
@@ -36,9 +38,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = (blogs as BlogPost[]).find((b) => b.slug === slug);
   if (!post) return {};
+  const title = `${post.title} - Easy Parking Ltd`;
   return {
-    title: `${post.title} - Easy Parking Ltd`,
+    title,
     description: post.excerpt,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    openGraph: {
+      title,
+      description: post.excerpt,
+      url: `https://www.easyparkingltd.com/blog/${post.slug}`,
+      siteName: "Easy Parking Ltd",
+      images: [{ url: post.image }],
+      locale: "en_GB",
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: post.excerpt,
+      images: [post.image],
+    },
   };
 }
 

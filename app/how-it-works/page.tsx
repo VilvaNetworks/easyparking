@@ -6,12 +6,51 @@ import FaqAccordion from '@/components/FaqAccordion';
 export const metadata: Metadata = {
   title: 'How Airport Parking Works | Easy Parking Ltd',
   description: 'Discover how simple departure check-ins and arrival car pick-ups are handled at London Gatwick Terminal. Review our parking and valet procedures.',
+  alternates: {
+    canonical: '/how-it-works',
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://www.easyparkingltd.com/how-it-works/#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How far in advance should I book parking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can make a booking with us anytime, even in case your journey was planned at the last moment. We will try our best to provide you with the service you need."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my car safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, your car is extremely safe in our care. Our parking lots are fully secure, featuring 24/7 CCTV monitoring, regular patrols, and secure perimeter fencing. We also take condition photos and mileage records on handover."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer refunds for canceled bookings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we offer refunds for canceled bookings. Cancellations must be made in accordance with our terms and conditions. Generally, you can cancel up to 24 hours prior to your booking start time for a refund, subject to a cancellation fee if applicable. Please refer to our full Terms and Conditions for detailed cancellation rules."
+      }
+    }
+  ]
 };
 
 export default function HowItWorksPage() {
   return (
     <div className="w-full bg-white text-[#2c3e50] font-sans">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       {/* ================= HEADER BANNER ================= */}
       <section className="relative w-full h-[240px] md:h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -73,7 +112,7 @@ export default function HowItWorksPage() {
                     On The Day Of Your Departure
                   </h4>
                   <p>
-                    Drive to the terminal and hand over your car to our professional, insured and DBS checked Easy Parking Employee – who will meet and greet you with a <span className="font-bold text-[#e7701e]">HAPPY SMILE</span> and clarify you of any doubts that you may have. Our staff will take photos of the car and note down the mileage and all the other required details to ensure that your car stays as safe as possible in our care. Sign the necessary documents after reading the instructions carefully which you can also find in the information section here. Hand over your car keys and head forward to your departure terminal, without having to worry about your car as all our car parks are full safe and secure, with CCTV recordings and is monitored 24/7.
+                    Drive straight to the terminal, where a professional, insured and DBS-checked Easy Parking employee will meet you with a <span className="font-bold text-[#e7701e]">HAPPY SMILE</span>, take your keys, and take it from there. Your car goes into one of our fully secure, 24/7 CCTV-monitored car parks while you head off to your gate. For the full departure checklist — documents, photos, mileage records — see our <Link href="/general-information#1" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
                   </p>
                 </div>
 
@@ -82,7 +121,7 @@ export default function HowItWorksPage() {
                     On The Day Of Your Arrival
                   </h4>
                   <p>
-                    On the day of your arrival, which can be a very hectic and tiring day as you would wish to reach your home soon and have a nice warm coffee or rest, give us a call once you land at the Airport and collect your luggage&apos;s. We will have your car ready for collection at the terminal meeting point, where you can collect your car from our staff and drive home with peace.
+                    Landed and ready to go home? Just call us once you&apos;ve collected your luggage, and your car will be waiting at the terminal meeting point by the time you get there — no queues, no shuttle buses. Full collection details are on our <Link href="/general-information#2" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
                   </p>
                 </div>
 
@@ -100,14 +139,14 @@ export default function HowItWorksPage() {
                     Book Your Parking Now
                   </h4>
                   <p>
-                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/#book_now" className="text-[#e7701e] font-semibold hover:underline">[Online Booking Page]</Link> or call us at <span className="font-bold text-[#e7701e]">+44 333 004 0262</span>.
+                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/car-park-booking-system" className="text-[#e7701e] font-semibold hover:underline">Online Booking Page</Link> or call us at <span className="font-bold text-[#e7701e]">+44 333 004 0262</span>.
                   </p>
                 </div>
               </div>
 
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now

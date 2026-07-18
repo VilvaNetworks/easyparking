@@ -41,9 +41,37 @@ function StarRating({ count }: { count: number }) {
   );
 }
 
+const reviewSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://www.easyparkingltd.com/#localbusiness",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1),
+    "reviewCount": testimonials.length,
+  },
+  "review": testimonials.map((t) => ({
+    "@type": "Review",
+    "author": {
+      "@type": "Person",
+      "name": t.name,
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": t.rating,
+      "bestRating": 5,
+    },
+    "reviewBody": t.text,
+  })),
+};
+
 export default function Testimonials() {
   return (
     <section className="py-16 px-4 bg-[#F0F2F8]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+      />
       <div className="max-w-[1140px] mx-auto">
         <div className="text-center mb-10">
           <p className="text-[#E66F1D] font-semibold uppercase text-sm tracking-wider mb-2">Our Testimonials</p>

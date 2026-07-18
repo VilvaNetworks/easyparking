@@ -3,18 +3,20 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const ArrivalsDepartures: React.FC = () => {
   return (
-    <section
-      className="w-full bg-black relative overflow-hidden"
-      style={{
-        backgroundImage: "url('/images/carbg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "left center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <section className="w-full bg-black relative overflow-hidden">
+      <Image
+        src="/images/carbg.png"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-left z-0"
+        aria-hidden="true"
+      />
+
       {/* Dark gradient overlay - fades from transparent left to black right */}
       <div
         className="absolute inset-0 z-0"
@@ -62,7 +64,7 @@ const ArrivalsDepartures: React.FC = () => {
             {/* Book Now Button */}
             <div>
               <Link
-                href="#book_now"
+                href="/"
                 className="inline-block bg-[#ff8c00] hover:bg-[#e67e00] text-white font-semibold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Book Now

@@ -35,7 +35,6 @@ const AboutSection: React.FC = () => {
                   width={560}
                   height={580}
                   className="w-full h-auto object-cover"
-                  priority
                 />
               </div>
             </div>

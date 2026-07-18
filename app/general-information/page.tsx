@@ -140,7 +140,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -209,7 +209,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -256,7 +256,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -320,7 +320,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -365,7 +365,7 @@ export default function GeneralInformationPage() {
                   </ul>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -448,7 +448,7 @@ export default function GeneralInformationPage() {
                   </div>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking
@@ -490,7 +490,7 @@ export default function GeneralInformationPage() {
                   </div>
                   <div className="mt-8">
                     <Link
-                      href="/#book_now"
+                      href="/"
                       className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[14px] px-8 py-[10px] rounded-[6px] transition-all duration-300 shadow-sm"
                     >
                       Book Your Parking

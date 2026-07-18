@@ -76,7 +76,9 @@ export default function ContactForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name Input */}
             <div>
+              <label htmlFor="contact-name" className="sr-only">Name</label>
               <input
+                id="contact-name"
                 type="text"
                 name="name"
                 value={formData.name}
@@ -89,7 +91,9 @@ export default function ContactForm() {
 
             {/* Phone Number Input */}
             <div>
+              <label htmlFor="contact-phone" className="sr-only">Phone Number</label>
               <input
+                id="contact-phone"
                 type="text"
                 name="phone"
                 value={formData.phone}
@@ -104,7 +108,9 @@ export default function ContactForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Email Input */}
             <div>
+              <label htmlFor="contact-email" className="sr-only">Email</label>
               <input
+                id="contact-email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -118,14 +124,18 @@ export default function ContactForm() {
             {/* Custom Select Services Dropdown */}
             <div className="relative">
               {/* Dropdown Trigger */}
-              <div
+              <button
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                aria-label="Service"
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full bg-white text-[#1a1a1a] text-[14px] font-medium px-4 py-3 rounded-[4px] cursor-pointer flex items-center justify-between transition-all select-none focus:ring-2 focus:ring-orange-300 h-[44px]"
               >
                 <span className={formData.service ? "text-[#1a1a1a]" : "text-gray-400"}>
                   {services.find((o) => o.value === formData.service)?.label || "Select Services"}
                 </span>
-                
+
                 {/* Arrow Icon with Rotate animation */}
                 <svg
                   className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
@@ -138,26 +148,29 @@ export default function ContactForm() {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
-              </div>
+              </button>
 
               {/* Floating Options List */}
               {isOpen && (
                 <>
                   {/* Click outside backdrop */}
                   <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-                  
-                  <div className="absolute top-full left-0 w-full mt-1 bg-white border border-gray-200 rounded-[4px] shadow-lg z-20 overflow-hidden py-1">
+
+                  <div role="listbox" aria-label="Service options" className="absolute top-full left-0 w-full mt-1 bg-white border border-gray-200 rounded-[4px] shadow-lg z-20 overflow-hidden py-1">
                     {services.map((option) => (
-                      <div
+                      <button
                         key={option.value}
+                        type="button"
+                        role="option"
+                        aria-selected={formData.service === option.value}
                         onClick={() => {
                           setFormData((prev) => ({ ...prev, service: option.value }));
                           setIsOpen(false);
                         }}
-                        className="py-[2px] px-[4px] text-black text-[14px] font-medium cursor-pointer transition-colors duration-150 hover:bg-[#e7701e] hover:text-white"
+                        className="w-full text-left py-[2px] px-[4px] text-black text-[14px] font-medium cursor-pointer transition-colors duration-150 hover:bg-[#e7701e] hover:text-white"
                       >
                         {option.label}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </>
@@ -167,7 +180,9 @@ export default function ContactForm() {
 
           {/* Message Textarea */}
           <div>
+            <label htmlFor="contact-message" className="sr-only">Message</label>
             <textarea
+              id="contact-message"
               name="message"
               value={formData.message}
               onChange={handleChange}

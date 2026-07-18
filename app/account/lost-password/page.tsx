@@ -5,6 +5,9 @@ import LostPasswordForm from "@/components/LostPasswordForm";
 export const metadata: Metadata = {
   title: "Lost Password - Easy Parking Ltd",
   description: "Retrieve your forgotten password for Easy Parking Ltd account dashboard.",
+  alternates: {
+    canonical: "/account/lost-password",
+  },
 };
 
 export default function LostPasswordPage() {

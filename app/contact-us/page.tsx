@@ -6,6 +6,9 @@ import ContactForm from '@/components/ContactForm';
 export const metadata: Metadata = {
   title: 'Contact Us | Easy Parking Ltd - Gatwick Parking Support',
   description: 'Need assistance with your Gatwick airport parking booking? Contact the Easy Parking customer support team via phone +44 333 004 0262 or email.',
+  alternates: {
+    canonical: '/contact-us',
+  },
 };
 
 const contactSchema = {

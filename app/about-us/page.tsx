@@ -5,6 +5,9 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'About Us | Easy Parking Ltd - Gatwick Airport Valet',
   description: 'Learn about Easy Parking Ltd, a family-run business providing top-tier, secure, and cheap airport valet parking at London Gatwick Airport.',
+  alternates: {
+    canonical: '/about-us',
+  },
 };
 
 const aboutSchema = {
@@ -167,7 +170,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -212,7 +215,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now
@@ -244,7 +247,7 @@ export default function AboutUsPage() {
               {/* Book Now Button */}
               <div>
                 <Link
-                  href="/#book_now"
+                  href="/"
                   className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
                 >
                   Book Now

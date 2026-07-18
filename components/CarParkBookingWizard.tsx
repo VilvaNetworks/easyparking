@@ -157,6 +157,14 @@ export default function CarParkBookingWizard() {
   // which calls startCheckout() directly and bypasses this guard.
   const checkoutStartedRef = useRef(false);
 
+  // Guards the pricing-quote effect below so it waits for the real
+  // service-types fetch to settle instead of firing once for the hardcoded
+  // placeholder list and again for the real data (a duplicate /api/pricing
+  // waterfall back-to-back on every page load). Real state (not a ref) so
+  // settling on the fallback path (fetch failed, placeholder stays as-is)
+  // still triggers the pricing effect once.
+  const [serviceTypesReady, setServiceTypesReady] = useState(false);
+
   const [serviceTypes, setServiceTypes] = useState<{
     id?: number;
     name: string;
@@ -197,6 +205,8 @@ export default function CarParkBookingWizard() {
         }
       } catch (err) {
         console.error("Error fetching service types:", err);
+      } finally {
+        setServiceTypesReady(true);
       }
     };
     fetchTypes();
@@ -225,7 +235,7 @@ export default function CarParkBookingWizard() {
   // selected dates (or the service type list) change — Step 2 must show a
   // live PricingDefault/PricingCalendar-backed total, not a guessed number.
   useEffect(() => {
-    if (!dropOffDate || !pickupDate || serviceTypes.length === 0) return;
+    if (!dropOffDate || !pickupDate || serviceTypes.length === 0 || !serviceTypesReady) return;
 
     let cancelled = false;
     setPricesLoading(true);
@@ -257,7 +267,7 @@ export default function CarParkBookingWizard() {
     return () => {
       cancelled = true;
     };
-  }, [serviceTypes, dropOffDate, pickupDate]);
+  }, [serviceTypes, dropOffDate, pickupDate, serviceTypesReady]);
 
   // Populate terminal fields on terminal state changes
   useEffect(() => {
@@ -586,8 +596,9 @@ export default function CarParkBookingWizard() {
             <h2 className="text-[#1a1a1a] text-[22px] font-extrabold mb-4 font-sans">Select Dates</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Date</label>
+                <label htmlFor="wizard-dropoff-date" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Date</label>
                 <input
+                  id="wizard-dropoff-date"
                   type="date"
                   value={dropOffDate}
                   onChange={(e) => setDropOffDate(e.target.value)}
@@ -597,8 +608,9 @@ export default function CarParkBookingWizard() {
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Time</label>
+                <label htmlFor="wizard-dropoff-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Time</label>
                 <input
+                  id="wizard-dropoff-time"
                   type="time"
                   value={dropOffTime}
                   onChange={(e) => setDropOffTime(e.target.value)}
@@ -607,8 +619,9 @@ export default function CarParkBookingWizard() {
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Date</label>
+                <label htmlFor="wizard-pickup-date" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Date</label>
                 <input
+                  id="wizard-pickup-date"
                   type="date"
                   value={pickupDate}
                   onChange={(e) => setPickupDate(e.target.value)}
@@ -618,8 +631,9 @@ export default function CarParkBookingWizard() {
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Time</label>
+                <label htmlFor="wizard-pickup-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Time</label>
                 <input
+                  id="wizard-pickup-time"
                   type="time"
                   value={pickupTime}
                   onChange={(e) => setPickupTime(e.target.value)}
@@ -628,8 +642,9 @@ export default function CarParkBookingWizard() {
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Service Type</label>
+                <label htmlFor="wizard-service-type" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Service Type</label>
                 <select
+                  id="wizard-service-type"
                   value={selectedServiceType}
                   onChange={(e) => setSelectedServiceType(e.target.value)}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
@@ -640,8 +655,9 @@ export default function CarParkBookingWizard() {
                 </select>
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Terminal</label>
+                <label htmlFor="wizard-terminal" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Terminal</label>
                 <select
+                  id="wizard-terminal"
                   value={terminal}
                   onChange={(e) => setTerminal(e.target.value)}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
@@ -937,8 +953,9 @@ export default function CarParkBookingWizard() {
                   {/* SECTION 1: Personal info */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 border border-gray-150 rounded-[4px]">
                     <div>
-                      <label className="block text-[13px] font-bold text-gray-500 mb-1">First Name *</label>
+                      <label htmlFor="wizard-first-name" className="block text-[13px] font-bold text-gray-500 mb-1">First Name *</label>
                       <input
+                        id="wizard-first-name"
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
@@ -948,8 +965,9 @@ export default function CarParkBookingWizard() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[13px] font-bold text-gray-500 mb-1">Last Name *</label>
+                      <label htmlFor="wizard-last-name" className="block text-[13px] font-bold text-gray-500 mb-1">Last Name *</label>
                       <input
+                        id="wizard-last-name"
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -959,8 +977,9 @@ export default function CarParkBookingWizard() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[13px] font-bold text-gray-500 mb-1">Email Address *</label>
+                      <label htmlFor="wizard-email" className="block text-[13px] font-bold text-gray-500 mb-1">Email Address *</label>
                       <input
+                        id="wizard-email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -970,8 +989,9 @@ export default function CarParkBookingWizard() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[13px] font-bold text-gray-500 mb-1">Mobile Phone *</label>
+                      <label htmlFor="wizard-phone" className="block text-[13px] font-bold text-gray-500 mb-1">Mobile Phone *</label>
                       <input
+                        id="wizard-phone"
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
@@ -990,8 +1010,9 @@ export default function CarParkBookingWizard() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="md:col-span-2">
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Address Line 1 *</label>
+                        <label htmlFor="wizard-address1" className="block text-[13px] font-bold text-gray-500 mb-1">Address Line 1 *</label>
                         <input
+                          id="wizard-address1"
                           type="text"
                           value={billingAddress1}
                           onChange={(e) => setBillingAddress1(e.target.value)}
@@ -1001,8 +1022,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Address Line 2</label>
+                        <label htmlFor="wizard-address2" className="block text-[13px] font-bold text-gray-500 mb-1">Address Line 2</label>
                         <input
+                          id="wizard-address2"
                           type="text"
                           value={billingAddress2}
                           onChange={(e) => setBillingAddress2(e.target.value)}
@@ -1011,8 +1033,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Town / City *</label>
+                        <label htmlFor="wizard-city" className="block text-[13px] font-bold text-gray-500 mb-1">Town / City *</label>
                         <input
+                          id="wizard-city"
                           type="text"
                           value={billingCity}
                           onChange={(e) => setBillingCity(e.target.value)}
@@ -1022,8 +1045,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Postcode *</label>
+                        <label htmlFor="wizard-postcode" className="block text-[13px] font-bold text-gray-500 mb-1">Postcode *</label>
                         <input
+                          id="wizard-postcode"
                           type="text"
                           value={billingPostcode}
                           onChange={(e) => setBillingPostcode(e.target.value)}
@@ -1033,8 +1057,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">State / Province</label>
+                        <label htmlFor="wizard-state" className="block text-[13px] font-bold text-gray-500 mb-1">State / Province</label>
                         <input
+                          id="wizard-state"
                           type="text"
                           value={billingState}
                           onChange={(e) => setBillingState(e.target.value)}
@@ -1043,8 +1068,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Country *</label>
+                        <label htmlFor="wizard-country" className="block text-[13px] font-bold text-gray-500 mb-1">Country *</label>
                         <select
+                          id="wizard-country"
                           value={billingCountry}
                           onChange={(e) => setBillingCountry(e.target.value)}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px] appearance-none"
@@ -1068,8 +1094,9 @@ export default function CarParkBookingWizard() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Departure Terminal *</label>
+                        <label htmlFor="wizard-dep-terminal" className="block text-[13px] font-bold text-gray-500 mb-1">Departure Terminal *</label>
                         <select
+                          id="wizard-dep-terminal"
                           value={depTerminal}
                           onChange={(e) => setDepTerminal(e.target.value)}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
@@ -1080,8 +1107,9 @@ export default function CarParkBookingWizard() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Return Terminal *</label>
+                        <label htmlFor="wizard-ret-terminal" className="block text-[13px] font-bold text-gray-500 mb-1">Return Terminal *</label>
                         <select
+                          id="wizard-ret-terminal"
                           value={retTerminal}
                           onChange={(e) => setRetTerminal(e.target.value)}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
@@ -1092,8 +1120,9 @@ export default function CarParkBookingWizard() {
                         </select>
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Return Flight Number</label>
+                        <label htmlFor="wizard-flight-num" className="block text-[13px] font-bold text-gray-500 mb-1">Return Flight Number</label>
                         <input
+                          id="wizard-flight-num"
                           type="text"
                           value={flightNum}
                           onChange={(e) => setFlightNum(e.target.value.toUpperCase())}
@@ -1112,8 +1141,9 @@ export default function CarParkBookingWizard() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Make *</label>
+                        <label htmlFor="wizard-vehicle-make" className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Make *</label>
                         <input
+                          id="wizard-vehicle-make"
                           type="text"
                           value={vehicleMake}
                           onChange={(e) => setVehicleMake(e.target.value)}
@@ -1123,8 +1153,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Model *</label>
+                        <label htmlFor="wizard-vehicle-model" className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Model *</label>
                         <input
+                          id="wizard-vehicle-model"
                           type="text"
                           value={vehicleModel}
                           onChange={(e) => setVehicleModel(e.target.value)}
@@ -1134,8 +1165,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Color *</label>
+                        <label htmlFor="wizard-vehicle-color" className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Color *</label>
                         <input
+                          id="wizard-vehicle-color"
                           type="text"
                           value={vehicleColor}
                           onChange={(e) => setVehicleColor(e.target.value)}
@@ -1145,8 +1177,9 @@ export default function CarParkBookingWizard() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Registration No *</label>
+                        <label htmlFor="wizard-vehicle-reg" className="block text-[13px] font-bold text-gray-500 mb-1">Vehicle Registration No *</label>
                         <input
+                          id="wizard-vehicle-reg"
                           type="text"
                           value={vehicleReg}
                           onChange={(e) => setVehicleReg(e.target.value.toUpperCase())}
