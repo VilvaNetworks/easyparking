@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import TimeDropdown from "./TimeDropdown";
 
 const MoreDetailsModal = dynamic(() => import("./MoreDetailsModal"));
 
@@ -628,16 +629,11 @@ export default function CarParkBookingWizard() {
               </div>
               <div>
                 <label htmlFor="wizard-dropoff-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Time</label>
-                <input
+                <TimeDropdown
                   id="wizard-dropoff-time"
-                  type="time"
                   value={dropOffTime}
-                  onChange={(e) => setDropOffTime(e.target.value)}
-                  onClick={(e) => e.currentTarget.showPicker?.()}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
-                  required
+                  onChange={setDropOffTime}
+                  className="w-full bg-white text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                 />
               </div>
               <div>
@@ -654,16 +650,11 @@ export default function CarParkBookingWizard() {
               </div>
               <div>
                 <label htmlFor="wizard-pickup-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Time</label>
-                <input
+                <TimeDropdown
                   id="wizard-pickup-time"
-                  type="time"
                   value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  onClick={(e) => e.currentTarget.showPicker?.()}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
-                  required
+                  onChange={setPickupTime}
+                  className="w-full bg-white text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                 />
               </div>
               <div>

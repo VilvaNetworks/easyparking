@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
 import SvgIcons from "@/components/SvgIcons";
+import TimeDropdown from "@/components/TimeDropdown";
 
 export default function Hero() {
   const router = useRouter();
@@ -267,13 +268,11 @@ export default function Hero() {
                     <label htmlFor="hero-dropoff-time" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Drop Off Time
                     </label>
-                    <input
+                    <TimeDropdown
                       id="hero-dropoff-time"
-                      type="time"
                       value={dropOffTime}
-                      onChange={(e) => setDropOffTime(e.target.value)}
-                      required
-                      className="w-full outline-none cursor-pointer box-border transition-all duration-300"
+                      onChange={setDropOffTime}
+                      className="outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
                         padding: "0 16px",
@@ -286,12 +285,9 @@ export default function Hero() {
                         fontFamily: "inherit",
                         textTransform: "uppercase",
                         letterSpacing: "0.5px",
-                        appearance: "none",
-                        WebkitAppearance: "none",
                       }}
-                      onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
-                      onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                      autoComplete="off"
+                      onFocus={(e: React.FocusEvent<HTMLButtonElement>) => { e.currentTarget.style.borderColor = "#E7701E"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
+                      onBlur={(e: React.FocusEvent<HTMLButtonElement>) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }}
                     />
                   </div>
                 </div>
@@ -340,13 +336,11 @@ export default function Hero() {
                     <label htmlFor="hero-pickup-time" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                       Pickup Time
                     </label>
-                    <input
+                    <TimeDropdown
                       id="hero-pickup-time"
-                      type="time"
                       value={pickupTime}
-                      onChange={(e) => setPickupTime(e.target.value)}
-                      required
-                      className="w-full outline-none cursor-pointer box-border transition-all duration-300"
+                      onChange={setPickupTime}
+                      className="outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
                         padding: "0 16px",
@@ -359,12 +353,9 @@ export default function Hero() {
                         fontFamily: "inherit",
                         textTransform: "uppercase",
                         letterSpacing: "0.5px",
-                        appearance: "none",
-                        WebkitAppearance: "none",
                       }}
-                      onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
-                      onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                      autoComplete="off"
+                      onFocus={(e: React.FocusEvent<HTMLButtonElement>) => { e.currentTarget.style.borderColor = "#E7701E"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
+                      onBlur={(e: React.FocusEvent<HTMLButtonElement>) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }}
                     />
                   </div>
                 </div>
