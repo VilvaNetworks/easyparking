@@ -334,14 +334,18 @@ export default function CarParkBookingWizard() {
   // the fetched terminals list, falling back to the raw code if not found.
   const terminalName = (code: string) => terminals.find((t) => t.code === code)?.name || code;
 
-  // Days Calculation (minimum 1 day)
+  // Inclusive of both the drop-off AND pick-up calendar dates, matching
+  // PricingCalculator.php on the backend — a parking space is occupied on
+  // both of those dates, so 22nd -> 30th is 9 days (22,23,...,30), not the
+  // 8 "nights" a hotel would count between check-in/check-out. The +1 also
+  // guarantees at least 1 day for a same-day booking.
   const calculateDays = (date1Str: string, date2Str: string) => {
     if (!date1Str || !date2Str) return 1;
     const d1 = new Date(date1Str);
     const d2 = new Date(date2Str);
     const diffTime = Math.abs(d2.getTime() - d1.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays || 1;
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays + 1;
   };
 
   const bookingDays = calculateDays(dropOffDate, pickupDate);
