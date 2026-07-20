@@ -43,6 +43,15 @@ const getPaymentErrorMessage = (err: unknown): string => {
   return fallback;
 };
 
+// Strip characters as the customer types, rather than only rejecting on
+// submit — matches the backend's own validation regex in
+// Api/V1/BookingController.php exactly, so nothing that passes here can
+// still be rejected by the server for a different reason.
+const filterName = (value: string): string => value.replace(/[^\p{L}\s.'-]/gu, "");
+const filterPhone = (value: string): string => value.replace(/[^0-9+\-\s()]/g, "");
+const filterMakeModel = (value: string): string => value.replace(/[^\p{L}0-9\s.'-]/gu, "");
+const filterReg = (value: string): string => value.replace(/[^A-Za-z0-9\s]/g, "");
+
 // Minor units (pence) -> display string, matching bookings-details/page.tsx.
 const formatAmount = (amount: number, currency: string): string => {
   const value = amount / 100;
@@ -971,8 +980,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-first-name"
                         type="text"
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(e) => setFirstName(filterName(e.target.value))}
                         placeholder="First Name"
+                        pattern="[\p{L}\s.'-]+"
+                        title="Letters only (spaces, hyphens and apostrophes are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -983,8 +994,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-last-name"
                         type="text"
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        onChange={(e) => setLastName(filterName(e.target.value))}
                         placeholder="Last Name"
+                        pattern="[\p{L}\s.'-]+"
+                        title="Letters only (spaces, hyphens and apostrophes are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -1007,8 +1020,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-phone"
                         type="tel"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(filterPhone(e.target.value))}
                         placeholder="Mobile Phone"
+                        pattern="[0-9+\-\s()]+"
+                        title="Numbers only (spaces, +, - and brackets are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -1159,8 +1174,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-make"
                           type="text"
                           value={vehicleMake}
-                          onChange={(e) => setVehicleMake(e.target.value)}
+                          onChange={(e) => setVehicleMake(filterMakeModel(e.target.value))}
                           placeholder="e.g. Ford, BMW"
+                          pattern="[\p{L}0-9\s.'-]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1171,8 +1188,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-model"
                           type="text"
                           value={vehicleModel}
-                          onChange={(e) => setVehicleModel(e.target.value)}
+                          onChange={(e) => setVehicleModel(filterMakeModel(e.target.value))}
                           placeholder="e.g. Fiesta, 3 Series"
+                          pattern="[\p{L}0-9\s.'-]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1183,8 +1202,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-color"
                           type="text"
                           value={vehicleColor}
-                          onChange={(e) => setVehicleColor(e.target.value)}
+                          onChange={(e) => setVehicleColor(filterName(e.target.value))}
                           placeholder="e.g. Black, Silver"
+                          pattern="[\p{L}\s.'-]+"
+                          title="Letters only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1195,8 +1216,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-reg"
                           type="text"
                           value={vehicleReg}
-                          onChange={(e) => setVehicleReg(e.target.value.toUpperCase())}
+                          onChange={(e) => setVehicleReg(filterReg(e.target.value.toUpperCase()))}
                           placeholder="e.g. GJ71 REG"
+                          pattern="[A-Za-z0-9\s]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
