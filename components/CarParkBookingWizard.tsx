@@ -552,40 +552,48 @@ export default function CarParkBookingWizard() {
 
       {/* ================= STEP INDICATOR BAR ================= */}
       <div className="max-w-[1320px] mx-auto mb-10 px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 border border-gray-200 bg-[#fcfbfa] p-6 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-0 md:gap-4 border border-gray-200 bg-[#fcfbfa] p-6 shadow-sm">
             {[
               { num: 1, label: "Select Dates" },
               { num: 2, label: "Parking Space" },
               { num: 3, label: "Customer Details" },
               { num: 4, label: "Payment" },
-            ].map((s) => {
+            ].map((s, idx, arr) => {
               const isCompleted = currentStep > s.num;
               const isActive = currentStep === s.num;
+              const isLast = idx === arr.length - 1;
               return (
-                <div key={s.num} className="flex items-center gap-3 w-full justify-center md:justify-start">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#e7701e] text-white ring-4 ring-orange-100"
-                        : isCompleted
-                        ? "bg-black text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {isCompleted ? "✓" : s.num}
+                <React.Fragment key={s.num}>
+                  <div className="flex items-center gap-3 w-full md:w-auto">
+                    <div
+                      className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${
+                        isActive
+                          ? "bg-[#e7701e] text-white ring-4 ring-orange-100"
+                          : isCompleted
+                          ? "bg-black text-white"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
+                      {isCompleted ? "✓" : s.num}
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className={`text-[12px] font-bold uppercase tracking-[1px] ${isActive ? "text-[#e7701e]" : "text-gray-400"}`}>
+                        Step {s.num}
+                      </span>
+                      <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"}`}>
+                        {s.label}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col text-center md:text-left">
-                    <span className={`text-[12px] font-bold uppercase tracking-[1px] ${isActive ? "text-[#e7701e]" : "text-gray-400"}`}>
-                      Step {s.num}
-                    </span>
-                    <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"}`}>
-                      {s.label}
-                    </span>
-                  </div>
-                  {s.num < 4 && (
-                    <div className="hidden xl:block flex-1 h-[2px] bg-gray-200 mx-6" />
+                  {/* Connector to the next step — a short vertical tick between
+                      stacked rows on mobile/tablet (flex-col), a full-width
+                      horizontal line once the bar goes flex-row at md. Kept as
+                      its own sibling (not nested in the step above) so it works
+                      the same way regardless of which layout is active. */}
+                  {!isLast && (
+                    <div className="w-0.5 h-5 md:h-0.5 md:flex-1 bg-gray-200 ml-5 md:ml-0 md:mx-6" />
                   )}
-                </div>
+                </React.Fragment>
               );
             })}
           </div>
