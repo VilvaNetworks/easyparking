@@ -633,7 +633,10 @@ export default function CarParkBookingWizard() {
                   type="time"
                   value={dropOffTime}
                   onChange={(e) => setDropOffTime(e.target.value)}
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
+                  onClick={(e) => e.currentTarget.showPicker?.()}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly
+                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                   required
                 />
               </div>
@@ -656,7 +659,10 @@ export default function CarParkBookingWizard() {
                   type="time"
                   value={pickupTime}
                   onChange={(e) => setPickupTime(e.target.value)}
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
+                  onClick={(e) => e.currentTarget.showPicker?.()}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly
+                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                   required
                 />
               </div>
@@ -858,84 +864,74 @@ export default function CarParkBookingWizard() {
                     );
                   })}
 
-                  {/* One full card per optional add-on for the selected service
-                      type — a checkbox (not an exclusive "Select") since any
-                      number of extras can be added on top of the base price. */}
-                  {availableAddOns.map((addOn) => {
-                    const isChecked = selectedAddOnIds.includes(addOn.id);
+                  {/* Add-ons are optional extras on top of the chosen parking
+                      space, not another space to pick — deliberately a
+                      different, more compact layout (no fake logo box, no
+                      "Select" button) so they don't read as another service. */}
+                  {availableAddOns.length > 0 && (
+                    <div className="pt-2">
+                      <h3 className="text-[#002f5d] text-[16px] font-extrabold tracking-tight">Optional Extras</h3>
+                      <p className="text-gray-400 text-[12px] font-bold mt-0.5 mb-4 uppercase tracking-[0.5px]">
+                        Add any of these on top of your selected parking
+                      </p>
 
-                    return (
-                      <div
-                        key={addOn.id}
-                        onClick={() => toggleAddOn(addOn.id)}
-                        className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
-                          isChecked ? "ring-2 ring-[#e7701e] border-transparent" : ""
-                        }`}
-                      >
-                        {/* Logo area */}
-                        <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
-                          <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
-                            <div className="relative w-full h-[60px]">
-                              <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
-                            </div>
-                            <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
-                              Add-on
-                            </div>
-                          </div>
-                        </div>
+                      <div className="space-y-3">
+                        {availableAddOns.map((addOn) => {
+                          const isChecked = selectedAddOnIds.includes(addOn.id);
 
-                        {/* Middle details */}
-                        <div className="flex-1 p-6 flex flex-col justify-between">
-                          <div>
-                            <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{addOn.name}</h3>
-                            <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                              {terminalName(terminal)}{" "}
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setMoreDetailsFor({ title: addOn.name, html: addOn.more_details });
-                                }}
-                                className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
-                              >
-                                More details
-                              </button>
-                            </p>
-
-                            {addOn.description && (
-                              <div
-                                className={`mt-5 text-[13px] text-[#555555] leading-relaxed ${RICH_TEXT_CLASSES}`}
-                                dangerouslySetInnerHTML={{ __html: addOn.description }}
+                          return (
+                            <label
+                              key={addOn.id}
+                              onClick={() => toggleAddOn(addOn.id)}
+                              className={`flex items-center gap-4 border rounded-[8px] bg-white p-4 cursor-pointer transition-all duration-200 ${
+                                isChecked
+                                  ? "border-[#e7701e] ring-1 ring-[#e7701e] bg-[#fff8f3]"
+                                  : "border-dashed border-gray-300 hover:border-gray-400"
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => toggleAddOn(addOn.id)}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-5 h-5 accent-[#e7701e] shrink-0"
                               />
-                            )}
-                          </div>
-                        </div>
 
-                        {/* Right Price/Checkbox box */}
-                        <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
-                          <div className="text-[28px] font-black text-[#002f5d]">
-                            +{formatAmount(addOn.price, addOn.currency)}
-                          </div>
-                          <label
-                            onClick={(e) => e.stopPropagation()}
-                            className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                              isChecked
-                                ? "bg-[#e7701e] text-white shadow-md"
-                                : "bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={() => toggleAddOn(addOn.id)}
-                              className="w-4 h-4 accent-white"
-                            />
-                            Add
-                          </label>
-                        </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-[#002f5d] text-[15px] font-bold">{addOn.name}</span>
+                                  <span className="text-[10px] font-bold uppercase tracking-[0.5px] text-[#e7701e] bg-[#fdeee3] px-1.5 py-0.5 rounded">
+                                    Extra
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setMoreDetailsFor({ title: addOn.name, html: addOn.more_details });
+                                    }}
+                                    className="text-[#e7701e] text-[11px] font-normal underline cursor-pointer bg-transparent border-none p-0"
+                                  >
+                                    More details
+                                  </button>
+                                </div>
+
+                                {addOn.description && (
+                                  <div
+                                    className={`mt-1 text-[13px] text-[#666666] leading-snug ${RICH_TEXT_CLASSES}`}
+                                    dangerouslySetInnerHTML={{ __html: addOn.description }}
+                                  />
+                                )}
+                              </div>
+
+                              <div className="text-[18px] font-black text-[#002f5d] shrink-0 whitespace-nowrap">
+                                +{formatAmount(addOn.price, addOn.currency)}
+                              </div>
+                            </label>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
+                    </div>
+                  )}
 
                   {/* Actions buttons bottom of Step 2 */}
                   <div className="flex items-center justify-between border-t border-gray-100 pt-8 mt-12">
