@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import TimeDropdown from "./TimeDropdown";
 
 const MoreDetailsModal = dynamic(() => import("./MoreDetailsModal"));
 
@@ -333,14 +334,18 @@ export default function CarParkBookingWizard() {
   // the fetched terminals list, falling back to the raw code if not found.
   const terminalName = (code: string) => terminals.find((t) => t.code === code)?.name || code;
 
-  // Days Calculation (minimum 1 day)
+  // Inclusive of both the drop-off AND pick-up calendar dates, matching
+  // PricingCalculator.php on the backend — a parking space is occupied on
+  // both of those dates, so 22nd -> 30th is 9 days (22,23,...,30), not the
+  // 8 "nights" a hotel would count between check-in/check-out. The +1 also
+  // guarantees at least 1 day for a same-day booking.
   const calculateDays = (date1Str: string, date2Str: string) => {
     if (!date1Str || !date2Str) return 1;
     const d1 = new Date(date1Str);
     const d2 = new Date(date2Str);
     const diffTime = Math.abs(d2.getTime() - d1.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays || 1;
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays + 1;
   };
 
   const bookingDays = calculateDays(dropOffDate, pickupDate);
@@ -628,16 +633,11 @@ export default function CarParkBookingWizard() {
               </div>
               <div>
                 <label htmlFor="wizard-dropoff-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Drop Off Time</label>
-                <input
+                <TimeDropdown
                   id="wizard-dropoff-time"
-                  type="time"
                   value={dropOffTime}
-                  onChange={(e) => setDropOffTime(e.target.value)}
-                  onClick={(e) => e.currentTarget.showPicker?.()}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
-                  required
+                  onChange={setDropOffTime}
+                  className="w-full bg-white text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                 />
               </div>
               <div>
@@ -654,16 +654,11 @@ export default function CarParkBookingWizard() {
               </div>
               <div>
                 <label htmlFor="wizard-pickup-time" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Pickup Time</label>
-                <input
+                <TimeDropdown
                   id="wizard-pickup-time"
-                  type="time"
                   value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  onClick={(e) => e.currentTarget.showPicker?.()}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly
-                  className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
-                  required
+                  onChange={setPickupTime}
+                  className="w-full bg-white text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] cursor-pointer"
                 />
               </div>
               <div>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import TimeDropdown from '@/components/TimeDropdown';
 
 export default function BookingForm() {
   const router = useRouter();
@@ -111,13 +112,11 @@ export default function BookingForm() {
                 </div>
                 <div>
                   <label htmlFor="bf-dropoff-time" className="text-white/80 text-xs block mb-1">Drop Off Time</label>
-                  <input
+                  <TimeDropdown
                     id="bf-dropoff-time"
-                    type="time"
                     value={dropOffTime}
-                    onChange={(e) => setDropOffTime(e.target.value)}
-                    required
-                    className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
+                    onChange={setDropOffTime}
+                    className="bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
                   />
                 </div>
               </div>
@@ -143,13 +142,11 @@ export default function BookingForm() {
                 </div>
                 <div>
                   <label htmlFor="bf-pickup-time" className="text-white/80 text-xs block mb-1">Pickup Time</label>
-                  <input
+                  <TimeDropdown
                     id="bf-pickup-time"
-                    type="time"
                     value={pickupTime}
-                    onChange={(e) => setPickupTime(e.target.value)}
-                    required
-                    className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
+                    onChange={setPickupTime}
+                    className="bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
                   />
                 </div>
               </div>
