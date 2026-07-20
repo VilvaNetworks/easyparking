@@ -52,6 +52,11 @@ const filterName = (value: string): string => value.replace(/[^\p{L}\s.'-]/gu, "
 const filterPhone = (value: string): string => value.replace(/[^0-9+\-\s()]/g, "");
 const filterMakeModel = (value: string): string => value.replace(/[^\p{L}0-9\s.'-]/gu, "");
 const filterReg = (value: string): string => value.replace(/[^A-Za-z0-9\s]/g, "");
+// Billing address fields aren't sent to the backend at all (display/UX only,
+// see the booking payload below) so there's no server-side rule to mirror —
+// this just needs to allow normal address punctuation (house numbers, "#",
+// "/", commas) while still blocking stray symbol strings.
+const filterAddress = (value: string): string => value.replace(/[^\p{L}0-9\s,.'\-#/]/gu, "");
 
 // Minor units (pence) -> display string, matching bookings-details/page.tsx.
 const formatAmount = (amount: number, currency: string): string => {
@@ -1034,7 +1039,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-address1"
                           type="text"
                           value={billingAddress1}
-                          onChange={(e) => setBillingAddress1(e.target.value)}
+                          onChange={(e) => setBillingAddress1(filterAddress(e.target.value))}
                           placeholder="Street address line 1"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
@@ -1046,7 +1051,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-address2"
                           type="text"
                           value={billingAddress2}
-                          onChange={(e) => setBillingAddress2(e.target.value)}
+                          onChange={(e) => setBillingAddress2(filterAddress(e.target.value))}
                           placeholder="Apartment, suite, unit etc. (optional)"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         />
@@ -1057,7 +1062,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-city"
                           type="text"
                           value={billingCity}
-                          onChange={(e) => setBillingCity(e.target.value)}
+                          onChange={(e) => setBillingCity(filterAddress(e.target.value))}
                           placeholder="City"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
@@ -1069,7 +1074,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-postcode"
                           type="text"
                           value={billingPostcode}
-                          onChange={(e) => setBillingPostcode(e.target.value)}
+                          onChange={(e) => setBillingPostcode(filterAddress(e.target.value))}
                           placeholder="Postcode"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
@@ -1081,7 +1086,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-state"
                           type="text"
                           value={billingState}
-                          onChange={(e) => setBillingState(e.target.value)}
+                          onChange={(e) => setBillingState(filterAddress(e.target.value))}
                           placeholder="State"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         />
