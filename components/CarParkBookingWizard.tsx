@@ -43,6 +43,15 @@ const getPaymentErrorMessage = (err: unknown): string => {
   return fallback;
 };
 
+// Strip characters as the customer types, rather than only rejecting on
+// submit — matches the backend's own validation regex in
+// Api/V1/BookingController.php exactly, so nothing that passes here can
+// still be rejected by the server for a different reason.
+const filterName = (value: string): string => value.replace(/[^\p{L}\s.'-]/gu, "");
+const filterPhone = (value: string): string => value.replace(/[^0-9+\-\s()]/g, "");
+const filterMakeModel = (value: string): string => value.replace(/[^\p{L}0-9\s.'-]/gu, "");
+const filterReg = (value: string): string => value.replace(/[^A-Za-z0-9\s]/g, "");
+
 // Minor units (pence) -> display string, matching bookings-details/page.tsx.
 const formatAmount = (amount: number, currency: string): string => {
   const value = amount / 100;
@@ -552,40 +561,48 @@ export default function CarParkBookingWizard() {
 
       {/* ================= STEP INDICATOR BAR ================= */}
       <div className="max-w-[1320px] mx-auto mb-10 px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 border border-gray-200 bg-[#fcfbfa] p-6 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-0 md:gap-4 border border-gray-200 bg-[#fcfbfa] p-6 shadow-sm">
             {[
               { num: 1, label: "Select Dates" },
               { num: 2, label: "Parking Space" },
               { num: 3, label: "Customer Details" },
               { num: 4, label: "Payment" },
-            ].map((s) => {
+            ].map((s, idx, arr) => {
               const isCompleted = currentStep > s.num;
               const isActive = currentStep === s.num;
+              const isLast = idx === arr.length - 1;
               return (
-                <div key={s.num} className="flex items-center gap-3 w-full justify-center md:justify-start">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#e7701e] text-white ring-4 ring-orange-100"
-                        : isCompleted
-                        ? "bg-black text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {isCompleted ? "✓" : s.num}
+                <React.Fragment key={s.num}>
+                  <div className="flex items-center gap-3 w-full md:w-auto">
+                    <div
+                      className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${
+                        isActive
+                          ? "bg-[#e7701e] text-white ring-4 ring-orange-100"
+                          : isCompleted
+                          ? "bg-black text-white"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
+                      {isCompleted ? "✓" : s.num}
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className={`text-[12px] font-bold uppercase tracking-[1px] ${isActive ? "text-[#e7701e]" : "text-gray-400"}`}>
+                        Step {s.num}
+                      </span>
+                      <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"}`}>
+                        {s.label}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col text-center md:text-left">
-                    <span className={`text-[12px] font-bold uppercase tracking-[1px] ${isActive ? "text-[#e7701e]" : "text-gray-400"}`}>
-                      Step {s.num}
-                    </span>
-                    <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"}`}>
-                      {s.label}
-                    </span>
-                  </div>
-                  {s.num < 4 && (
-                    <div className="hidden xl:block flex-1 h-[2px] bg-gray-200 mx-6" />
+                  {/* Connector to the next step — a short vertical tick between
+                      stacked rows on mobile/tablet (flex-col), a full-width
+                      horizontal line once the bar goes flex-row at md. Kept as
+                      its own sibling (not nested in the step above) so it works
+                      the same way regardless of which layout is active. */}
+                  {!isLast && (
+                    <div className="w-0.5 h-5 md:h-0.5 md:flex-1 bg-gray-200 ml-5 md:ml-0 md:mx-6" />
                   )}
-                </div>
+                </React.Fragment>
               );
             })}
           </div>
@@ -963,8 +980,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-first-name"
                         type="text"
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(e) => setFirstName(filterName(e.target.value))}
                         placeholder="First Name"
+                        pattern="[\p{L}\s.'-]+"
+                        title="Letters only (spaces, hyphens and apostrophes are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -975,8 +994,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-last-name"
                         type="text"
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        onChange={(e) => setLastName(filterName(e.target.value))}
                         placeholder="Last Name"
+                        pattern="[\p{L}\s.'-]+"
+                        title="Letters only (spaces, hyphens and apostrophes are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -999,8 +1020,10 @@ export default function CarParkBookingWizard() {
                         id="wizard-phone"
                         type="tel"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(filterPhone(e.target.value))}
                         placeholder="Mobile Phone"
+                        pattern="[0-9+\-\s()]+"
+                        title="Numbers only (spaces, +, - and brackets are fine)"
                         className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         required
                       />
@@ -1151,8 +1174,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-make"
                           type="text"
                           value={vehicleMake}
-                          onChange={(e) => setVehicleMake(e.target.value)}
+                          onChange={(e) => setVehicleMake(filterMakeModel(e.target.value))}
                           placeholder="e.g. Ford, BMW"
+                          pattern="[\p{L}0-9\s.'-]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1163,8 +1188,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-model"
                           type="text"
                           value={vehicleModel}
-                          onChange={(e) => setVehicleModel(e.target.value)}
+                          onChange={(e) => setVehicleModel(filterMakeModel(e.target.value))}
                           placeholder="e.g. Fiesta, 3 Series"
+                          pattern="[\p{L}0-9\s.'-]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1175,8 +1202,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-color"
                           type="text"
                           value={vehicleColor}
-                          onChange={(e) => setVehicleColor(e.target.value)}
+                          onChange={(e) => setVehicleColor(filterName(e.target.value))}
                           placeholder="e.g. Black, Silver"
+                          pattern="[\p{L}\s.'-]+"
+                          title="Letters only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
@@ -1187,8 +1216,10 @@ export default function CarParkBookingWizard() {
                           id="wizard-vehicle-reg"
                           type="text"
                           value={vehicleReg}
-                          onChange={(e) => setVehicleReg(e.target.value.toUpperCase())}
+                          onChange={(e) => setVehicleReg(filterReg(e.target.value.toUpperCase()))}
                           placeholder="e.g. GJ71 REG"
+                          pattern="[A-Za-z0-9\s]+"
+                          title="Letters and numbers only"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                           required
                         />
