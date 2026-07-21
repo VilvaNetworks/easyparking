@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import TimeDropdown from "./TimeDropdown";
+import SelectDropdown from "./SelectDropdown";
 
 const MoreDetailsModal = dynamic(() => import("./MoreDetailsModal"));
 
@@ -668,29 +669,23 @@ export default function CarParkBookingWizard() {
               </div>
               <div>
                 <label htmlFor="wizard-service-type" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Service Type</label>
-                <select
+                <SelectDropdown
                   id="wizard-service-type"
                   value={selectedServiceType}
-                  onChange={(e) => setSelectedServiceType(e.target.value)}
+                  onChange={setSelectedServiceType}
+                  options={serviceTypes.map((st) => ({ value: st.slug, label: st.name }))}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
-                >
-                  {serviceTypes.map((st) => (
-                    <option key={st.slug} value={st.slug}>{st.name}</option>
-                  ))}
-                </select>
+                />
               </div>
               <div>
                 <label htmlFor="wizard-terminal" className="block text-[13px] font-bold text-gray-500 mb-1 select-none">Terminal</label>
-                <select
+                <SelectDropdown
                   id="wizard-terminal"
                   value={terminal}
-                  onChange={(e) => setTerminal(e.target.value)}
+                  onChange={setTerminal}
+                  options={terminals.map((t) => ({ value: t.code, label: t.name }))}
                   className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e]"
-                >
-                  {terminals.map((t) => (
-                    <option key={t.code} value={t.code}>{t.name}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
             {dateError && (
@@ -948,7 +943,13 @@ export default function CarParkBookingWizard() {
                     <button
                       type="button"
                       onClick={handleStep2Submit}
-                      className="bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 shadow-md transition-all cursor-pointer"
+                      disabled={pricesLoading || !selectedQuote}
+                      title={pricesLoading || !selectedQuote ? "Waiting for the price to finish loading…" : undefined}
+                      className={`bg-[#e7701e] text-white font-extrabold text-[14px] uppercase px-8 py-3.5 rounded-[4px] inline-flex items-center gap-2 shadow-md transition-all ${
+                        pricesLoading || !selectedQuote
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:bg-[#d56113] cursor-pointer"
+                      }`}
                     >
                       Customer Details
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -1093,19 +1094,19 @@ export default function CarParkBookingWizard() {
                       </div>
                       <div>
                         <label htmlFor="wizard-country" className="block text-[13px] font-bold text-gray-500 mb-1">Country *</label>
-                        <select
+                        <SelectDropdown
                           id="wizard-country"
                           value={billingCountry}
-                          onChange={(e) => setBillingCountry(e.target.value)}
-                          className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px] appearance-none"
-                          style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"/></svg>')", backgroundPosition: "right 16px center", backgroundSize: "16px", backgroundRepeat: "no-repeat" }}
-                        >
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="Afghanistan">Afghanistan</option>
-                          <option value="Germany">Germany</option>
-                          <option value="France">France</option>
-                          <option value="United States">United States</option>
-                        </select>
+                          onChange={setBillingCountry}
+                          options={[
+                            { value: "United Kingdom", label: "United Kingdom" },
+                            { value: "Afghanistan", label: "Afghanistan" },
+                            { value: "Germany", label: "Germany" },
+                            { value: "France", label: "France" },
+                            { value: "United States", label: "United States" },
+                          ]}
+                          className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1119,29 +1120,23 @@ export default function CarParkBookingWizard() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="wizard-dep-terminal" className="block text-[13px] font-bold text-gray-500 mb-1">Departure Terminal *</label>
-                        <select
+                        <SelectDropdown
                           id="wizard-dep-terminal"
                           value={depTerminal}
-                          onChange={(e) => setDepTerminal(e.target.value)}
+                          onChange={setDepTerminal}
+                          options={terminals.map((t) => ({ value: t.code, label: t.name }))}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                        >
-                          {terminals.map((t) => (
-                            <option key={t.code} value={t.code}>{t.name}</option>
-                          ))}
-                        </select>
+                        />
                       </div>
                       <div>
                         <label htmlFor="wizard-ret-terminal" className="block text-[13px] font-bold text-gray-500 mb-1">Return Terminal *</label>
-                        <select
+                        <SelectDropdown
                           id="wizard-ret-terminal"
                           value={retTerminal}
-                          onChange={(e) => setRetTerminal(e.target.value)}
+                          onChange={setRetTerminal}
+                          options={terminals.map((t) => ({ value: t.code, label: t.name }))}
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
-                        >
-                          {terminals.map((t) => (
-                            <option key={t.code} value={t.code}>{t.name}</option>
-                          ))}
-                        </select>
+                        />
                       </div>
                       <div className="md:col-span-2">
                         <label htmlFor="wizard-flight-num" className="block text-[13px] font-bold text-gray-500 mb-1">Return Flight Number</label>

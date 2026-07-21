@@ -16,6 +16,7 @@ interface BookingSummary {
   currency: string;
   status: string;
   payment_status: string;
+  is_test: boolean;
 }
 
 // Minor units (pence) -> display string, matching bookings-details/page.tsx.
@@ -121,6 +122,15 @@ function PaymentSuccessContent() {
 
         {status === 'confirmed' && (
           <>
+            {booking?.is_test && (
+              <span
+                title="Paid through the sandbox/test gateway, not a real charge"
+                className="inline-block bg-amber-100 text-amber-700 text-[11px] font-extrabold uppercase tracking-[1px] px-3 py-1 rounded-full"
+              >
+                Test Mode
+              </span>
+            )}
+
             <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto ring-8 ring-green-50">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-10 h-10">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
