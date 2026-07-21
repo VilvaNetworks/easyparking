@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
+import SelectDropdown from "@/components/SelectDropdown";
 
 interface GetInTouchPopupProps {
   open: boolean;
@@ -101,16 +102,22 @@ export default function GetInTouchPopup({ open, onClose }: GetInTouchPopupProps)
                   <input id="git-email" type="email" name="email" value={gitForm.email} onChange={handleGetInTouchChange} placeholder="Email" required className="w-full outline-none"
                     style={{ padding: "12px 14px", border: "1px solid #DDDDDD", fontSize: 14, backgroundColor: "#FFFFFF" }} />
                   <label htmlFor="git-service" className="sr-only">Service</label>
-                  <select id="git-service" name="service" value={gitForm.service} onChange={handleGetInTouchChange} required className="w-full outline-none"
-                    style={{ padding: "12px 14px", border: "1px solid #DDDDDD", fontSize: 14, backgroundColor: "#FFFFFF" }}>
-                    <option value="">Select Services</option>
-                    <option value="Meet & Greet Parking at Gatwick">Meet &amp; Greet Parking at Gatwick</option>
-                    <option value="Secure Airport Parking">Secure Airport Parking</option>
-                    <option value="Photographic Vehicle Checks">Photographic Vehicle Checks</option>
-                    <option value="Convenient Collection & Return">Convenient Collection &amp; Return</option>
-                    <option value="24/7 Customer Support">24/7 Customer Support</option>
-                    <option value="Affordable & Reliable">Affordable &amp; Reliable</option>
-                  </select>
+                  <SelectDropdown
+                    id="git-service"
+                    value={gitForm.service}
+                    onChange={(value) => setGitForm((prev) => ({ ...prev, service: value }))}
+                    placeholder="Select Services"
+                    options={[
+                      { value: "Meet & Greet Parking at Gatwick", label: "Meet & Greet Parking at Gatwick" },
+                      { value: "Secure Airport Parking", label: "Secure Airport Parking" },
+                      { value: "Photographic Vehicle Checks", label: "Photographic Vehicle Checks" },
+                      { value: "Convenient Collection & Return", label: "Convenient Collection & Return" },
+                      { value: "24/7 Customer Support", label: "24/7 Customer Support" },
+                      { value: "Affordable & Reliable", label: "Affordable & Reliable" },
+                    ]}
+                    className="w-full outline-none"
+                    style={{ padding: "12px 14px", border: "1px solid #DDDDDD", fontSize: 14, backgroundColor: "#FFFFFF" }}
+                  />
                 </div>
                 <label htmlFor="git-message" className="sr-only">Message</label>
                 <textarea id="git-message" rows={4} name="message" value={gitForm.message} onChange={handleGetInTouchChange} placeholder="Message" required className="w-full outline-none mb-3"

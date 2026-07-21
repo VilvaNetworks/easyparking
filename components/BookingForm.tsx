@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import TimeDropdown from '@/components/TimeDropdown';
+import SelectDropdown from '@/components/SelectDropdown';
 
 export default function BookingForm() {
   const router = useRouter();
@@ -159,16 +160,13 @@ export default function BookingForm() {
               </h4>
               <div>
                 <label htmlFor="bf-service-type" className="text-white/80 text-xs block mb-1">Service Type</label>
-                <select
+                <SelectDropdown
                   id="bf-service-type"
                   value={serviceType}
-                  onChange={(e) => setServiceType(e.target.value)}
+                  onChange={setServiceType}
+                  options={serviceTypes.map((st) => ({ value: st.slug, label: st.name }))}
                   className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
-                >
-                  {serviceTypes.map((st) => (
-                    <option key={st.slug} value={st.slug}>{st.name}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
@@ -179,16 +177,13 @@ export default function BookingForm() {
               </h4>
               <div>
                 <label htmlFor="bf-terminal" className="text-white/80 text-xs block mb-1">Terminal</label>
-                <select
+                <SelectDropdown
                   id="bf-terminal"
                   value={terminal}
-                  onChange={(e) => setTerminal(e.target.value)}
+                  onChange={setTerminal}
+                  options={terminals.map((t) => ({ value: t.code, label: t.name }))}
                   className="w-full bg-white text-[#2C3E50] text-sm px-3 py-2 rounded border border-gray-200 focus:outline-none focus:border-[#E66F1D]"
-                >
-                  {terminals.map((t) => (
-                    <option key={t.code} value={t.code}>{t.name}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 

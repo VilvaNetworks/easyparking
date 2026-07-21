@@ -6,6 +6,7 @@ import Image from "next/image";
 import axios from "axios";
 import SvgIcons from "@/components/SvgIcons";
 import TimeDropdown from "@/components/TimeDropdown";
+import SelectDropdown from "@/components/SelectDropdown";
 
 export default function Hero() {
   const router = useRouter();
@@ -371,16 +372,16 @@ export default function Hero() {
                   <label htmlFor="hero-terminal" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                     Terminal
                   </label>
-                  {/* Custom select wrapper — relative, ChevronDown arrow at right:14px */}
                   <div className="relative w-full mb-[18px]">
-                    <select
+                    <SelectDropdown
                       id="hero-terminal"
                       value={terminal}
-                      onChange={(e) => setTerminal(e.target.value)}
+                      onChange={setTerminal}
+                      options={terminals.map((t) => ({ value: t.code, label: t.name }))}
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
-                        padding: "0 40px 0 16px",
+                        padding: "0 16px",
                         border: "1px solid #D1D5DB",
                         borderRadius: 4,
                         backgroundColor: "#FFFFFF",
@@ -389,41 +390,24 @@ export default function Hero() {
                         fontWeight: 500,
                         fontFamily: "inherit",
                         letterSpacing: "0.5px",
-                        appearance: "none",
-                        WebkitAppearance: "none",
                       }}
                       onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
                       onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                    >
-                      {terminals.map((t) => (
-                        <option key={t.code} value={t.code}>{t.name}</option>
-                      ))}
-                    </select>
-                    {/* ChevronDown arrow — absolute right:14px top:50%, 18×18px, color:#6B7280, pointer-events:none */}
-                    <SvgIcons.ChevronDown
-                      className="absolute pointer-events-none"
-                      style={{
-                        right: 14,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        width: 18,
-                        height: 18,
-                        color: "#6B7280",
-                      }}
                     />
                   </div>
                   <label htmlFor="hero-service-type" className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.5px] mb-[6px]">
                     Service Type
                   </label>
                   <div className="relative w-full">
-                    <select
+                    <SelectDropdown
                       id="hero-service-type"
                       value={serviceType}
-                      onChange={(e) => setServiceType(e.target.value)}
+                      onChange={setServiceType}
+                      options={serviceTypes.map((st) => ({ value: st.slug, label: st.name }))}
                       className="w-full outline-none cursor-pointer box-border transition-all duration-300"
                       style={{
                         height: 48,
-                        padding: "0 40px 0 16px",
+                        padding: "0 16px",
                         border: "1px solid #D1D5DB",
                         borderRadius: 4,
                         backgroundColor: "#FFFFFF",
@@ -432,26 +416,9 @@ export default function Hero() {
                         fontWeight: 500,
                         fontFamily: "inherit",
                         letterSpacing: "0.5px",
-                        appearance: "none",
-                        WebkitAppearance: "none",
                       }}
                       onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E7701E"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(231,112,30,0.1)"; }}
                       onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#D1D5DB"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                    >
-                      {serviceTypes.map((st) => (
-                        <option key={st.slug} value={st.slug}>{st.name}</option>
-                      ))}
-                    </select>
-                    <SvgIcons.ChevronDown
-                      className="absolute pointer-events-none"
-                      style={{
-                        right: 14,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        width: 18,
-                        height: 18,
-                        color: "#6B7280",
-                      }}
                     />
                   </div>
                 </div>
