@@ -1149,7 +1149,7 @@ export default function CarParkBookingWizard() {
                           id="wizard-flight-num"
                           type="text"
                           value={flightNum}
-                          onChange={(e) => setFlightNum(e.target.value.toUpperCase())}
+                          onChange={(e) => setFlightNum(filterReg(e.target.value.toUpperCase()))}
                           placeholder="e.g. EZY8123"
                           className="w-full bg-white text-black text-sm px-4 py-3 border border-gray-300 outline-none focus:border-[#e7701e] rounded-[4px]"
                         />
