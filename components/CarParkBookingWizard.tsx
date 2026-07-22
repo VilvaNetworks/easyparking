@@ -16,10 +16,13 @@ type Step = 1 | 2 | 3 | 4;
 // The proxy route wraps the backend's ApiResponse error shape one level
 // deeper (`{ error: true, message: <backend body> }`), so a validation
 // failure surfaces at err.response.data.message.message — unwrap both
-// levels before falling back to a generic message.
-const getPaymentErrorMessage = (err: unknown): string => {
-  const fallback = "Unable to start payment. Please try again.";
-
+// levels before falling back to a generic message. Shared across every API
+// call in this wizard (pricing, booking creation, checkout), not just
+// payment — previously only checkout used this, so a pricing or
+// booking-creation validation failure either failed silently or showed
+// Axios's generic "Request failed with status code 422" instead of the
+// actual reason, which was only ever visible via DevTools.
+const getApiErrorMessage = (err: unknown, fallback: string): string => {
   if (axios.isAxiosError(err)) {
     const payload = err.response?.data as { message?: unknown } | undefined;
     const inner = payload?.message;
@@ -259,6 +262,7 @@ export default function CarParkBookingWizard() {
     setPricesLoading(true);
 
     const fetchPrices = async () => {
+      let firstError: unknown = null;
       const entries = await Promise.all(
         serviceTypes.map(async (st) => {
           try {
@@ -269,6 +273,7 @@ export default function CarParkBookingWizard() {
             return [st.slug, data ? { total: data.total, currency: data.currency } : null] as const;
           } catch (err) {
             console.error(`Error fetching price for ${st.slug}:`, err);
+            firstError = firstError ?? err;
             return [st.slug, null] as const;
           }
         })
@@ -277,6 +282,12 @@ export default function CarParkBookingWizard() {
       if (!cancelled) {
         setServicePrices(Object.fromEntries(entries));
         setPricesLoading(false);
+        if (firstError) {
+          setToastMessage({
+            type: 'error',
+            text: getApiErrorMessage(firstError, "Could not load pricing for one or more services. Please check your dates and try again."),
+          });
+        }
       }
     };
 
@@ -418,9 +429,9 @@ export default function CarParkBookingWizard() {
       } else {
         throw new Error(result?.message || "Booking reference not returned from server");
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setToastMessage({ type: 'error', text: err.message || "Something went wrong while creating booking. Please try again." });
+      setToastMessage({ type: 'error', text: getApiErrorMessage(err, "Something went wrong while creating booking. Please try again.") });
     } finally {
       setIsSubmitting(false);
     }
@@ -449,7 +460,7 @@ export default function CarParkBookingWizard() {
       window.location.href = redirectUrl;
     } catch (err) {
       console.error(err);
-      setCheckoutError(getPaymentErrorMessage(err));
+      setCheckoutError(getApiErrorMessage(err, "Unable to start payment. Please try again."));
     }
   }, [createdRef]);
 
@@ -840,20 +851,28 @@ export default function CarParkBookingWizard() {
                                 )
                               : pricesLoading ? "…" : "—"}
                           </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedServiceType(st.slug);
-                            }}
-                            className={`w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer ${
-                              isSelected
-                                ? "bg-[#e7701e] text-white shadow-md"
-                                : "bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
-                            }`}
-                          >
-                            Select
-                          </button>
+                          {isSelected ? (
+                            // Already selected — the card's own orange border already
+                            // shows that, so a second orange "Select" button here just
+                            // duplicates it without doing anything new on click.
+                            <div className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] text-[#e7701e] text-center flex items-center justify-center gap-1.5">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              </svg>
+                              Selected
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedServiceType(st.slug);
+                              }}
+                              className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
+                            >
+                              Select
+                            </button>
+                          )}
                         </div>
                       </div>
                     );
