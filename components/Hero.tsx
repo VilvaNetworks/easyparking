@@ -8,12 +8,30 @@ import SvgIcons from "@/components/SvgIcons";
 import TimeDropdown from "@/components/TimeDropdown";
 import SelectDropdown from "@/components/SelectDropdown";
 
+// Default drop off = today, default pickup = 3 days later, so the widget
+// never looks empty on first load.
+const getDefaultDropOffISO = () => new Date().toISOString().split("T")[0];
+const getDefaultPickupISO = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 3);
+  return d.toISOString().split("T")[0];
+};
+// TimeDropdown only offers 15-minute slots — round up to the next one so
+// "now" never defaults to a slot that's already in the past.
+const getCurrentTimeSlot = () => {
+  const d = new Date();
+  const rounded = Math.ceil((d.getHours() * 60 + d.getMinutes()) / 15) * 15;
+  const hours = String(Math.floor(rounded / 60) % 24).padStart(2, "0");
+  const minutes = String(rounded % 60).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
 export default function Hero() {
   const router = useRouter();
-  const [dropOffDate, setDropOffDate] = useState("");
-  const [dropOffTime, setDropOffTime] = useState("");
-  const [pickupDate, setPickupDate] = useState("");
-  const [pickupTime, setPickupTime] = useState("");
+  const [dropOffDate, setDropOffDate] = useState(getDefaultDropOffISO);
+  const [dropOffTime, setDropOffTime] = useState(getCurrentTimeSlot);
+  const [pickupDate, setPickupDate] = useState(getDefaultPickupISO);
+  const [pickupTime, setPickupTime] = useState(getCurrentTimeSlot);
   const [terminal, setTerminal] = useState("LGW-N");
   const [serviceType, setServiceType] = useState("meet-and-greet");
   const [dateError, setDateError] = useState("");

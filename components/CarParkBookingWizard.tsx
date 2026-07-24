@@ -11,6 +11,24 @@ import SelectDropdown from "./SelectDropdown";
 
 const MoreDetailsModal = dynamic(() => import("./MoreDetailsModal"));
 
+// Default drop off = today, default pickup = 3 days later, so Step 1 never
+// looks empty when this page is reached without dates already in the URL.
+const getDefaultDropOffISO = () => new Date().toISOString().split("T")[0];
+const getDefaultPickupISO = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 3);
+  return d.toISOString().split("T")[0];
+};
+// TimeDropdown only offers 15-minute slots — round up to the next one so
+// "now" never defaults to a slot that's already in the past.
+const getCurrentTimeSlot = () => {
+  const d = new Date();
+  const rounded = Math.ceil((d.getHours() * 60 + d.getMinutes()) / 15) * 15;
+  const hours = String(Math.floor(rounded / 60) % 24).padStart(2, "0");
+  const minutes = String(rounded % 60).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
 type Step = 1 | 2 | 3 | 4;
 
 // The proxy route wraps the backend's ApiResponse error shape one level
@@ -116,11 +134,14 @@ export default function CarParkBookingWizard() {
   // carried in via query params are actually still valid.
   const [currentStep, setCurrentStep] = useState<Step>(hasValidInitialDates ? 2 : 1);
 
-  // Step 1: Dates & Terminal
-  const [dropOffDate, setDropOffDate] = useState(initialDropOffDate);
-  const [dropOffTime, setDropOffTime] = useState(initialDropOffTime);
-  const [pickupDate, setPickupDate] = useState(initialPickupDate);
-  const [pickupTime, setPickupTime] = useState(initialPickupTime);
+  // Step 1: Dates & Terminal — fall back to a sensible default range only
+  // when nothing came in via the URL; hasValidInitialDates above still
+  // judges the raw query params so a direct/bookmarked link without dates
+  // correctly lands on Step 1 instead of skipping ahead.
+  const [dropOffDate, setDropOffDate] = useState(initialDropOffDate || getDefaultDropOffISO());
+  const [dropOffTime, setDropOffTime] = useState(initialDropOffTime || getCurrentTimeSlot());
+  const [pickupDate, setPickupDate] = useState(initialPickupDate || getDefaultPickupISO());
+  const [pickupTime, setPickupTime] = useState(initialPickupTime || getCurrentTimeSlot());
   const [terminal, setTerminal] = useState(initialTerminal);
   const [selectedServiceType, setSelectedServiceType] = useState(initialServiceType);
   const [dateError, setDateError] = useState("");
