@@ -53,20 +53,20 @@ export default function Navbar() {
             {/* LEFT: Email + Phone */}
             <ul className="flex items-center gap-4.5 list-none m-0 p-0">
               <li>
-                <a href="mailto:Bookings@easyparkingltd.com" className="group flex items-center gap-1.5 no-underline"
+                <a href="mailto:info@easyparkingltd.com" className="group flex items-center gap-1.5 no-underline"
                   style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 15, fontWeight: 600, color: "#FFFFFF" }}>
                   <SvgIcons.Email className="shrink-0 transition-all duration-300 group-hover:fill-[#FFC595]" style={{ width: 14, height: 14, fill: "#FFFFFF" }} />
                   <span className="transition-colors duration-300 group-hover:text-[#FFC595]" style={{ color: "#FFFFFF" }}>
-                    Bookings@easyparkingltd.com
+                    info@easyparkingltd.com
                   </span>
                 </a>
               </li>
               <li>
-                <a href="tel:+443330040262" className="group flex items-center gap-1.5 no-underline"
+                <a href="tel:03330040262" className="group flex items-center gap-1.5 no-underline"
                   style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 15, fontWeight: 600, color: "#FFFFFF" }}>
                   <SvgIcons.Phone className="shrink-0 transition-all duration-300 group-hover:fill-[#FFC595]" style={{ width: 14, height: 14, fill: "#FFFFFF" }} />
                   <span className="transition-colors duration-300 group-hover:text-[#FFC595]" style={{ color: "#FFFFFF" }}>
-                    Booking Helpline: +44 333 004 0262
+                    Booking Helpline: 0333 004 0262
                   </span>
                 </a>
               </li>
@@ -114,7 +114,7 @@ export default function Navbar() {
               {/* LOGO */}
               <div className="flex items-center justify-start">
                 <Link href="/" className="block">
-                  <Image src="/images/logo.png" alt="easyparking ltd" width={246} height={85} priority
+                  <Image src="/images/logo.png" alt="easyparking" width={246} height={85} priority
                     className="w-full lg:h-[100px] h-auto object-contain" style={{ maxWidth: 246 }} />
                 </Link>
               </div>
@@ -205,7 +205,7 @@ export default function Navbar() {
         {/* Logo + close */}
         <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid #EBEBEB" }}>
           <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-            <Image src="/images/logo.png" alt="Easy Parking Ltd" width={160} height={56} className="object-contain" />
+            <Image src="/images/logo.png" alt="Easy Parking" width={160} height={56} className="object-contain" />
           </Link>
           <button type="button" aria-label="Close menu" onClick={() => setMobileMenuOpen(false)}
             className="flex items-center justify-center border-none cursor-pointer"
@@ -216,15 +216,15 @@ export default function Navbar() {
 
         {/* Topbar data: email / phone / my account / socials */}
         <div style={{ backgroundImage: "linear-gradient(180deg,#E7701E 0%,#F09A0F 100%)", padding: "14px 16px 14px" }}>
-          <a href="mailto:Bookings@easyparkingltd.com" className="flex items-center gap-2 no-underline mb-3"
+          <a href="mailto:info@easyparkingltd.com" className="flex items-center gap-2 no-underline mb-3"
             style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 13, fontWeight: 600, color: "#FFFFFF" }}>
             <SvgIcons.Email style={{ width: 13, height: 13, fill: "#FFFFFF", flexShrink: 0 }} />
-            Bookings@easyparkingltd.com
+            info@easyparkingltd.com
           </a>
-          <a href="tel:+443330040262" className="flex items-center gap-2 no-underline mb-3"
+          <a href="tel:03330040262" className="flex items-center gap-2 no-underline mb-3"
             style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 13, fontWeight: 600, color: "#FFFFFF" }}>
             <SvgIcons.Phone style={{ width: 13, height: 13, fill: "#FFFFFF", flexShrink: 0 }} />
-            Booking Helpline: +44 333 004 0262
+            Booking Helpline: 0333 004 0262
           </a>
           {/* <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 no-underline mb-4"
             style={{ fontFamily: '"Montserrat",Sans-serif', fontSize: 13, fontWeight: 500, color: "#FFFFFF" }}>

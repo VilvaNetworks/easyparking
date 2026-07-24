@@ -12,19 +12,19 @@ import Testimonials from '@/components/Testimonials';
 import BlogSection from '@/components/BlogSection';
 
 export const metadata: Metadata = {
-  title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
-  description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+  title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking',
+  description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle. Affordable Meet & Greet valet airport parking services.',
   openGraph: {
-    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
-    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking',
+    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle. Affordable Meet & Greet valet airport parking services.',
     url: 'https://www.easyparkingltd.com',
-    siteName: 'Easy Parking Ltd',
+    siteName: 'Easy Parking',
     images: [
       {
         url: '/images/logo.png',
         width: 1200,
         height: 630,
-        alt: 'Easy Parking Ltd Gatwick Airport Meet & Greet Logo',
+        alt: 'Easy Parking Gatwick Airport Meet & Greet Logo',
       },
     ],
     locale: 'en_GB',
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking Ltd',
-    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle securely. Affordable Meet & Greet valet airport parking services.',
+    title: 'Gatwick Airport Parking - Meet & Greet | Easy Parking',
+    description: 'Drive directly to the Gatwick terminal, and our insured drivers will park your vehicle. Affordable Meet & Greet valet airport parking services.',
     images: ['/images/logo.png'],
   },
 };
@@ -48,8 +48,8 @@ const homeSchema = {
       "@type": "WebSite",
       "@id": "https://www.easyparkingltd.com/#website",
       "url": "https://www.easyparkingltd.com",
-      "name": "Easy Parking Ltd",
-      "description": "Smart, secure, and stress-free airport parking solutions at Gatwick Airport.",
+      "name": "Easy Parking",
+      "description": "Smart and stress-free airport parking solutions at Gatwick Airport.",
       "publisher": {
         "@id": "https://www.easyparkingltd.com/#organization"
       }

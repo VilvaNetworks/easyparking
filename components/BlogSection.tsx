@@ -22,7 +22,7 @@ const BlogSection: React.FC = () => {
             OUR&nbsp;&nbsp;BLOG
           </p>
           <h2 className="text-[#1a1a1a] text-[32px] md:text-[40px] lg:text-[44px] font-extrabold leading-[1.2] tracking-tight">
-            Park Smart at Gatwick: Easy Parking LTD
+            Park Smart at Gatwick: Easy Parking
             <br />
             Has You Covered
           </h2>

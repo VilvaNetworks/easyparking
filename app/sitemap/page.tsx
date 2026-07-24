@@ -4,8 +4,8 @@ import Link from 'next/link';
 import posts from '@/data/blogs.json';
 
 export const metadata: Metadata = {
-  title: 'Sitemap - Easy Parking Ltd',
-  description: 'User-facing sitemap directory for Easy Parking Ltd. Find quick links to our main pages, airport parking booking system, blog articles, and corporate terms.',
+  title: 'Sitemap - Easy Parking',
+  description: 'User-facing sitemap directory for Easy Parking. Find quick links to our main pages, airport parking booking system, blog articles, and corporate terms.',
   alternates: {
     canonical: '/sitemap',
   },
@@ -25,21 +25,13 @@ export default function SitemapPage() {
   const bookingServices = [
     { label: "Car Park Booking System (Get a Quote)", href: "/car-park-booking-system" },
     { label: "Meet & Greet Parking Service", href: "/services#1" },
-    { label: "Valeting Service", href: "/services#2" },
-    { label: "Full Car Wash Service (£34.99)", href: "/services#3" },
-    { label: "Outside Only Car Wash (£14.99)", href: "/services#4" },
-    { label: "Electric Vehicle Fast Charging", href: "/services#5" },
-    { label: "Transfer & Chauffeur Services", href: "/services#6" },
+    { label: "Full Car Wash Service (£34.99)", href: "/services#2" },
+    { label: "Outside Only Car Wash (£14.99)", href: "/services#3" },
   ];
 
   const infoPolicies = [
-    { label: "Booking Process & Guidelines", href: "/booking-process" },
-    { label: "Booking Terms and Conditions", href: "/booking-terms-and-conditions" },
-    { label: "On the Day of Departure Info", href: "/general-information#1" },
-    { label: "On the Day of Arrival Info", href: "/general-information#2" },
-    { label: "Cancellations / Refund Policy", href: "/general-information#3" },
-    { label: "Complaints & Claims Terms", href: "/terms-and-conditions-for-complaints-claims" },
-    { label: "Parking Fine / Penalty Notices Terms", href: "/terms-and-conditions-for-parking-fine-penalty-notices" },
+    { label: "Standard Operating Procedure", href: "/standard-operating-procedure" },
+    { label: "Terms and Conditions", href: "/terms-and-conditions" },
     { label: "Corporate Privacy Policy", href: "/privacy-policy" },
   ];
 
@@ -76,7 +68,7 @@ export default function SitemapPage() {
               Website Link Directory
             </h2>
             <p className="text-[#555555] text-[15px] leading-relaxed">
-              Navigate easily through all the pages, services, articles, and legal documents of the Easy Parking Ltd airport parking web portal.
+              Navigate easily through all the pages, services, articles, and legal documents of the Easy Parking airport parking web portal.
             </p>
           </div>
 

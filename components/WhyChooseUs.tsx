@@ -6,7 +6,7 @@ import Image from "next/image";
 const leftFeatures = [
   { id: 1, title: "Close to Terminals",   description: "Only minutes away from both North and South Terminals." },
   { id: 2, title: "Fast & Easy",          description: "Drop off and pick up at the terminal no waiting." },
-  { id: 3, title: "Safe & Secure",        description: "24/7 CCTV, gated lots, and advanced security." },
+  { id: 3, title: "Safe & Monitored",     description: "24/7 CCTV, gated lots, and advanced security." },
   { id: 4, title: "Ultimate Convenience", description: "Straight to check-in after handover." },
 ];
 

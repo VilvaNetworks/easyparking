@@ -34,7 +34,7 @@ function PaymentCancelContent() {
 
         <p className="text-[#555555] text-[14px] leading-relaxed max-w-[600px] mx-auto">
           To retry payment, please call our Booking Hotline on{' '}
-          <strong className="text-[#002f5d]">+44 333 004 0262</strong> and quote your reservation code above.
+          <strong className="text-[#002f5d]">0333 004 0262</strong> and quote your reservation code above.
         </p>
 
         <Link

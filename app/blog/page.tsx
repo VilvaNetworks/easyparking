@@ -4,8 +4,8 @@ import Link from 'next/link';
 import blogsData from '@/data/blogs.json';
 
 export const metadata: Metadata = {
-  title: 'Airport Parking Blog & Travel Tips | Easy Parking Ltd',
-  description: 'Stay updated with airport parking insights, professional valeting tips, Gatwick Airport updates, and holiday travel recommendations from Easy Parking Ltd.',
+  title: 'Airport Parking Blog & Travel Tips | Easy Parking',
+  description: 'Stay updated with airport parking insights, professional valeting tips, Gatwick Airport updates, and holiday travel recommendations from Easy Parking.',
   alternates: {
     canonical: '/blog',
   },
@@ -17,12 +17,12 @@ export default function BlogIndexPage() {
     "@type": "Blog",
     "@id": "https://www.easyparkingltd.com/blog/#blog",
     "url": "https://www.easyparkingltd.com/blog",
-    "name": "Blog - Easy Parking Ltd",
+    "name": "Blog - Easy Parking",
     "description": "Read our latest news and tips about airport parking services, Gatwick parking benefits, and more.",
     "publisher": {
       "@type": "Organization",
       "@id": "https://www.easyparkingltd.com/#organization",
-      "name": "Easy Parking Ltd",
+      "name": "Easy Parking",
       "url": "https://www.easyparkingltd.com"
     },
     "blogPost": blogsData.map((post) => ({

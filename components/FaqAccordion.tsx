@@ -17,7 +17,7 @@ export default function FaqAccordion() {
     },
     {
       question: "Is my car safe?",
-      answer: "Yes, your car is extremely safe in our care. Our parking lots are fully secure, featuring 24/7 CCTV monitoring, regular patrols, and secure perimeter fencing. We also take condition photos and mileage records on handover."
+      answer: "Yes, your car is extremely safe in our care. Our parking lots feature 24/7 CCTV monitoring, regular patrols, and perimeter fencing. We also take condition photos and mileage records on handover."
     },
     {
       question: "Do you offer refunds for canceled bookings?",

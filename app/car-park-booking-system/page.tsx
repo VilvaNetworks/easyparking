@@ -3,16 +3,16 @@ import { Suspense } from 'react';
 import CarParkBookingWizard from '@/components/CarParkBookingWizard';
 
 export const metadata: Metadata = {
-  title: 'Car Park Booking System - Easy Parking Ltd',
+  title: 'Car Park Booking System - Easy Parking',
   description: 'Book your airport parking at Gatwick Airport. Choose North or South terminal, parking options, valeting services, and complete your reservation.',
   alternates: {
     canonical: '/car-park-booking-system',
   },
   openGraph: {
-    title: 'Car Park Booking System - Easy Parking Ltd',
+    title: 'Car Park Booking System - Easy Parking',
     description: 'Book your airport parking at Gatwick Airport. Choose North or South terminal, parking options, valeting services, and complete your reservation.',
     url: 'https://www.easyparkingltd.com/car-park-booking-system',
-    siteName: 'Easy Parking Ltd',
+    siteName: 'Easy Parking',
     locale: 'en_GB',
     type: 'website',
   },

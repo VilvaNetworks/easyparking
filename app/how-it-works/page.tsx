@@ -5,7 +5,7 @@ import BookNowLink from '@/components/BookNowLink';
 import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
-  title: 'How Airport Parking Works | Easy Parking Ltd',
+  title: 'How Airport Parking Works | Easy Parking',
   description: 'Discover how simple departure check-ins and arrival car pick-ups are handled at London Gatwick Terminal. Review our parking and valet procedures.',
   alternates: {
     canonical: '/how-it-works',
@@ -30,7 +30,7 @@ const faqSchema = {
       "name": "Is my car safe?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, your car is extremely safe in our care. Our parking lots are fully secure, featuring 24/7 CCTV monitoring, regular patrols, and secure perimeter fencing. We also take condition photos and mileage records on handover."
+        "text": "Yes, your car is extremely safe in our care. Our parking lots feature 24/7 CCTV monitoring, regular patrols, and perimeter fencing. We also take condition photos and mileage records on handover."
       }
     },
     {
@@ -83,7 +83,7 @@ export default function HowItWorksPage() {
               <div className="relative w-full aspect-[736/489] overflow-hidden shadow-xl border-4 border-white">
                 <Image
                   src="/images/works/img1.jpeg"
-                  alt="Rows of cars parked inside Easy Parking's secure, well-lit indoor facility"
+                  alt="Rows of cars parked inside Easy Parking's well-lit indoor facility"
                   fill
                   sizes="(max-width: 768px) 100vw, 620px"
                   className="object-cover"
@@ -112,7 +112,7 @@ export default function HowItWorksPage() {
                     On The Day Of Your Departure
                   </h3>
                   <p>
-                    Drive straight to the terminal, where a professional, insured and DBS-checked Easy Parking employee will meet you with a <span className="font-bold text-[#e7701e]">HAPPY SMILE</span>, take your keys, and take it from there. Your car goes into one of our fully secure, 24/7 CCTV-monitored car parks while you head off to your gate. For the full departure checklist — documents, photos, mileage records — see our <Link href="/general-information#1" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
+                    Drive straight to the terminal, where a professional, insured and DBS-checked Easy Parking employee will meet you with a <span className="font-bold text-[#e7701e]">HAPPY SMILE</span>, take your keys, and take it from there. Your car goes into one of our 24/7 CCTV-monitored car parks while you head off to your gate. For the full departure checklist — documents, photos, mileage records — see our <Link href="/standard-operating-procedure#1" className="text-[#e7701e] font-semibold hover:underline">Standard Operating Procedure</Link> page.
                   </p>
                 </div>
 
@@ -121,7 +121,7 @@ export default function HowItWorksPage() {
                     On The Day Of Your Arrival
                   </h3>
                   <p>
-                    Landed and ready to go home? Just call us once you&apos;ve collected your luggage, and your car will be waiting at the terminal meeting point by the time you get there — no queues, no shuttle buses. Full collection details are on our <Link href="/general-information#2" className="text-[#e7701e] font-semibold hover:underline">General Information</Link> page.
+                    Landed and ready to go home? Just call us once you&apos;ve collected your luggage, and your car will be waiting at the terminal meeting point by the time you get there — no queues, no shuttle buses. Full collection details are on our <Link href="/standard-operating-procedure#2" className="text-[#e7701e] font-semibold hover:underline">Standard Operating Procedure</Link> page.
                   </p>
                 </div>
 
@@ -130,7 +130,7 @@ export default function HowItWorksPage() {
                     Our Commitment to Quality and Value
                   </h3>
                   <p>
-                    At Easy Parking, we are committed to providing affordable, secure, and convenient parking solutions for all travelers. Whether you&apos;re flying from the North or South Terminal, our established team of parking experts will ensure your experience is smooth from start to finish. With on-the-ground experts, you can trust that you&apos;re in safe hands no matter which parking option you choose.
+                    At Easy Parking, we are committed to providing affordable and convenient parking solutions for all travelers. Whether you&apos;re flying from the North or South Terminal, our established team of parking experts will ensure your experience is smooth from start to finish. With on-the-ground experts, you can trust that you&apos;re in safe hands no matter which parking option you choose.
                   </p>
                 </div>
 
@@ -139,7 +139,7 @@ export default function HowItWorksPage() {
                     Book Your Parking Now
                   </h3>
                   <p>
-                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/car-park-booking-system" className="text-[#e7701e] font-semibold hover:underline">Online Booking Page</Link> or call us at <span className="font-bold text-[#e7701e]">+44 333 004 0262</span>.
+                    Secure your spot today and enjoy hassle-free airport parking at Gatwick. Visit our <Link href="/car-park-booking-system" className="text-[#e7701e] font-semibold hover:underline">Online Booking Page</Link> or call us at <span className="font-bold text-[#e7701e]">0333 004 0262</span>.
                   </p>
                 </div>
               </div>

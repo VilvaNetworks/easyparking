@@ -33,7 +33,7 @@ const features: FeatureCard[] = [
   {
     id: 3,
     icon: "/images/three.gif",
-    title: "Safe & Secure Facilities",
+    title: "Safe & Monitored Facilities",
     description:
       "We understand the safety of your vehicle is our prime responsibility. Our parking lots have round the clock surveillance and security along with trained security personnel present on the premises to ensure that your vehicle is safe with us",
     link: "/how-it-works",

@@ -71,7 +71,7 @@ export default function GetInTouchPopup({ open, onClose }: GetInTouchPopupProps)
             ×
           </button>
 
-          <Image src="/images/logo.png" alt="easyparking ltd" width={200} height={70} />
+          <Image src="/images/logo.png" alt="easyparking" width={200} height={70} />
           <h2 style={{ fontSize: 26, margin: "16px 0 8px", color: "#1a1a1a" }}>Customer Support</h2>
 
           {gitSubmitted ? (
@@ -85,7 +85,7 @@ export default function GetInTouchPopup({ open, onClose }: GetInTouchPopupProps)
           ) : (
             <>
               <p style={{ color: "#555555", marginBottom: 18, fontSize: 14 }}>
-                Complete the form to confirm your query<br />easy, quick, and secure.
+                Complete the form to confirm your query<br />easy and quick.
               </p>
 
               <form onSubmit={handleGetInTouchSubmit}>
@@ -109,7 +109,7 @@ export default function GetInTouchPopup({ open, onClose }: GetInTouchPopupProps)
                     placeholder="Select Services"
                     options={[
                       { value: "Meet & Greet Parking at Gatwick", label: "Meet & Greet Parking at Gatwick" },
-                      { value: "Secure Airport Parking", label: "Secure Airport Parking" },
+                      { value: "Airport Parking", label: "Airport Parking" },
                       { value: "Photographic Vehicle Checks", label: "Photographic Vehicle Checks" },
                       { value: "Convenient Collection & Return", label: "Convenient Collection & Return" },
                       { value: "24/7 Customer Support", label: "24/7 Customer Support" },

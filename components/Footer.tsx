@@ -14,23 +14,15 @@ const quickLinks = [
 ];
 
 const generalLinks = [
-  { label: "On the Day of Your Departure", href: "/general-information#1" },
-  { label: "On the Day of Arrival", href: "/general-information#2" },
-  { label: "Cancellations / Refund Policy", href: "/general-information#3" },
-  { label: "Booking Process", href: "/booking-process" },
-  { label: "Booking Terms and Conditions", href: "/booking-terms-and-conditions" },
-  { label: "Terms and Conditions for Complaints/Claims", href: "/terms-and-conditions-for-complaints-claims" },
-  { label: "Terms and Conditions For Parking Fine/Penalty Notices", href: "/terms-and-conditions-for-parking-fine-penalty-notices" },
+  { label: "Standard Operating Procedure", href: "/standard-operating-procedure" },
+  { label: "Terms and Conditions", href: "/terms-and-conditions" },
   { label: "Privacy Policy", href: "/privacy-policy" },
 ];
 
 const serviceLinks = [
   { label: "Meet & Greet Airport Parking Service", href: "/services#1" },
-  { label: "Valeting Service", href: "/services#2" },
-  { label: "Full Car Wash Service – £34.99", href: "/services#3" },
-  { label: "Car Wash Outside Only – £14.99", href: "/services#4" },
-  { label: "Electric Car Charging", href: "/services#5" },
-  { label: "Transfer Services", href: "/services#6" },
+  { label: "Full Car Wash Service – £34.99", href: "/services#2" },
+  { label: "Car Wash Outside Only – £14.99", href: "/services#3" },
 ];
 
 /* Reusable link hover handler */
@@ -73,7 +65,7 @@ export default function Footer() {
               <Link href="/">
                 <Image
                   src="/images/logo.png"
-                  alt="easyparking ltd"
+                  alt="easyparking"
                   width={180}
                   height={62}
                   className="h-auto"
@@ -188,7 +180,7 @@ export default function Footer() {
               {/* Phone */}
               <li style={{ marginBottom: 16 }}>
                 <a
-                  href="tel:+443330040262"
+                  href="tel:03330040262"
                   className="flex items-start no-underline transition-colors duration-300 group"
                   style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
@@ -198,7 +190,7 @@ export default function Footer() {
                   <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
                     <SvgIcons.Phone style={{ width: 16, height: 16, fill: "#E7701E" }} />
                   </span>
-                  <span style={{ flex: 1 }}>+44 333 004 0262</span>
+                  <span style={{ flex: 1 }}>0333 004 0262</span>
                 </a>
               </li>
 
@@ -223,10 +215,11 @@ export default function Footer() {
                 </a>
               </li>
 
-              {/* Info email */}
+              {/* Email — was 3 separate rows (Info/Bookings/Complaints) that all
+                  pointed at the same address once consolidated; one row now. */}
               <li style={{ marginBottom: 16 }}>
                 <a
-                  href="mailto:Info@easyparkingltd.com"
+                  href="mailto:info@easyparkingltd.com"
                   className="flex items-start no-underline transition-colors duration-300"
                   style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
@@ -235,105 +228,10 @@ export default function Footer() {
                   <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
                     <SvgIcons.Email style={{ width: 16, height: 16, fill: "#E7701E" }} />
                   </span>
-                  <span style={{ flex: 1 }}>Info@easyparkingltd.com</span>
-                </a>
-              </li>
-
-              {/* Bookings email */}
-              <li style={{ marginBottom: 16 }}>
-                <a
-                  href="mailto:Bookings@easyparkingltd.com"
-                  className="flex items-start no-underline transition-colors duration-300"
-                  style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#333333")}
-                >
-                  <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
-                    <SvgIcons.Email style={{ width: 16, height: 16, fill: "#E7701E" }} />
-                  </span>
-                  <span style={{ flex: 1 }}>Bookings@easyparkingltd.com</span>
-                </a>
-              </li>
-
-              {/* Complaints email */}
-              <li style={{ marginBottom: 16 }}>
-                <a
-                  href="mailto:Complaints@easyparkingltd.com"
-                  className="flex items-start no-underline transition-colors duration-300"
-                  style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#333333")}
-                >
-                  <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
-                    <SvgIcons.Email style={{ width: 16, height: 16, fill: "#E7701E" }} />
-                  </span>
-                  <span style={{ flex: 1 }}>Complaints@easyparkingltd.com</span>
-                </a>
-              </li>
-
-              {/* Registered Address */}
-              <li style={{ marginBottom: 16 }}>
-                <a
-                  href="https://www.google.com/maps/place/1-2+Johnston+Rd,+Woodford,+Woodford+Green+IG8+0XA,+UK"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start no-underline transition-colors duration-300"
-                  style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#333333")}
-                >
-                  <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
-                    <SvgIcons.MapPin style={{ width: 16, height: 16, fill: "#E7701E" }} />
-                  </span>
-                  <span style={{ flex: 1 }}>
-                    <strong style={{ color: "#1A1A1A", fontWeight: 700, display: "inline-block" }}>Registered address</strong>
-                    <br />1-2, Johnston Road, Woodford Green, England, IG8 0XA
-                  </span>
+                  <span style={{ flex: 1 }}>info@easyparkingltd.com</span>
                 </a>
               </li>
             </ul>
-
-            {/* Newsletter — text 15px #333333, input h:48px padding:12px 16px, submit 60×48px bg:#E7701E */}
-            <p style={{ color: "#333333", fontSize: 15, margin: "20px 0 15px 0", lineHeight: 1.5 }}>
-              Join Easy Parking Ltd for the latest tips and updates.
-            </p>
-            <form className="w-full" onSubmit={(e) => e.preventDefault()}>
-              <label htmlFor="footer-newsletter-email" className="sr-only">Email Address</label>
-              <div
-                className="flex w-full overflow-hidden"
-                style={{ backgroundColor: "#FFFFFF", borderRadius: 4, boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}
-              >
-                {/* Input — flex:1, padding:12px 16px, h:48px, bg white, #333333 14px */}
-                <input
-                  id="footer-newsletter-email"
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  required
-                  className="flex-1 border-none outline-none"
-                  style={{
-                    padding: "12px 16px",
-                    backgroundColor: "#FFFFFF",
-                    color: "#333333",
-                    fontSize: 14,
-                    height: 48,
-                    boxSizing: "border-box",
-                    fontFamily: "inherit",
-                  }}
-                />
-                {/* Submit button — 60×48px, bg:#E7701E, icon 20px white, hover bg:#E67E00 */}
-                <button
-                  type="submit"
-                  aria-label="Submit"
-                  className="flex items-center justify-center border-none cursor-pointer shrink-0 transition-colors duration-300"
-                  style={{ width: 60, height: 48, backgroundColor: "#E7701E", padding: 0 }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#E67E00")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#E7701E")}
-                >
-                  <SvgIcons.Send style={{ width: 16, height: 16, fill: "#FFFFFF" }} />
-                </button>
-              </div>
-            </form>
           </div>
 
         </div>
@@ -343,7 +241,7 @@ export default function Footer() {
       <div style={{ backgroundColor: "#E7701E", padding: "18px 0" }}>
         <div className="mx-auto text-center px-5 sm:px-10" style={{ maxWidth: 1400 }}>
           <p style={{ color: "#FFFFFF", fontSize: 14, margin: 0, fontWeight: 400 }}>
-            © Copyright 2025. All Rights Reserved By Easy Parking Ltd.
+            © Copyright 2025. All Rights Reserved By Easy Parking.
           </p>
         </div>
       </div>

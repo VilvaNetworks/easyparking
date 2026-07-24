@@ -142,7 +142,7 @@ function PaymentSuccessContent() {
             </h2>
 
             <p className="text-[#555555] text-[16px] leading-relaxed max-w-[600px] mx-auto">
-              Your payment was successful and your airport parking reservation with Easy Parking Ltd is confirmed.
+              Your payment was successful and your airport parking reservation with Easy Parking is confirmed.
             </p>
 
             <div className="bg-[#f0f4f8] border border-gray-200 p-6 max-w-[500px] mx-auto text-left space-y-2 text-sm text-[#4a4a4a] rounded-[4px]">
