@@ -402,7 +402,10 @@ export default function CarParkBookingWizard() {
   const availableAddOns = serviceTypes.find((st) => st.slug === selectedServiceType)?.add_ons ?? [];
   const selectedAddOns = availableAddOns.filter((a) => selectedAddOnIds.includes(a.id));
   const addOnsTotal = selectedAddOns.reduce((sum, a) => sum + a.price, 0) / 100;
-  const totalPrice = spacePrice + addOnsTotal;
+  // Flat, hardcoded booking charge shown on top of the space + add-ons —
+  // display only, not (yet) part of the backend's own price calculation.
+  const BOOKING_CHARGE = 1.95;
+  const totalPrice = spacePrice + addOnsTotal + BOOKING_CHARGE;
 
   const toggleAddOn = (id: number) => {
     setSelectedAddOnIds((prev) => (prev.includes(id) ? prev.filter((existing) => existing !== id) : [...prev, id]));
@@ -787,6 +790,11 @@ export default function CarParkBookingWizard() {
                   </>
                 )}
 
+                <div className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2">
+                  <span>Booking Charge</span>
+                  <span>£{BOOKING_CHARGE.toFixed(2)}</span>
+                </div>
+
                 <div className="flex justify-between items-end border-t border-dashed border-gray-200 pt-3">
                   <span className="text-[#004280] text-[15px] font-extrabold uppercase">Total</span>
                   <span className="text-[22px] font-black text-[#004280]">£{totalPrice.toFixed(2)}</span>
@@ -810,34 +818,36 @@ export default function CarParkBookingWizard() {
                   {/* Only the service type already chosen (homepage widget or
                       Step 1's dropdown) — price is a live quote from the
                       backend's pricing engine (PricingDefault + PricingCalendar),
-                      not a guessed number. */}
-                  {stepTwoServiceTypes.map((st) => {
-                    const quote = servicePrices[st.slug];
-                    const isSelected = selectedServiceType === st.slug;
+                      not a guessed number. Cards are stacked vertically (image
+                      on top, details, then price/select) and laid out in a
+                      grid so more than one fits per row. */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {stepTwoServiceTypes.map((st) => {
+                      const quote = servicePrices[st.slug];
+                      const isSelected = selectedServiceType === st.slug;
 
-                    return (
-                      <div
-                        key={st.slug}
-                        onClick={() => setSelectedServiceType(st.slug)}
-                        className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col md:flex-row hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
-                          isSelected ? "ring-2 ring-[#e7701e] border-transparent" : ""
-                        }`}
-                      >
-                        {/* Logo area */}
-                        <div className="md:w-[220px] bg-white p-5 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center shrink-0">
-                          <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
-                            <div className="relative w-full h-[60px]">
-                              <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
-                            </div>
-                            <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
-                              {st.name}
+                      return (
+                        <div
+                          key={st.slug}
+                          onClick={() => setSelectedServiceType(st.slug)}
+                          className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
+                            isSelected ? "ring-2 ring-[#e7701e] border-transparent" : ""
+                          }`}
+                        >
+                          {/* Logo area */}
+                          <div className="bg-white p-5 border-b border-gray-100 flex flex-col items-center justify-center">
+                            <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
+                              <div className="relative w-full h-[60px]">
+                                <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
+                              </div>
+                              <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
+                                {st.name}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* Middle details */}
-                        <div className="flex-1 p-6 flex flex-col justify-between">
-                          <div>
+                          {/* Details */}
+                          <div className="flex-1 p-6">
                             <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
                             <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
                               {terminalName(terminal)}{" "}
@@ -860,44 +870,44 @@ export default function CarParkBookingWizard() {
                               />
                             )}
                           </div>
-                        </div>
 
-                        {/* Right Price/Select box */}
-                        <div className="md:w-[180px] p-6 bg-white flex flex-col justify-between items-center md:items-end md:text-right shrink-0 border-t md:border-t-0 md:border-l border-gray-100">
-                          <div className="text-[28px] font-black text-[#002f5d]">
-                            {quote
-                              ? formatAmount(
-                                  quote.total + (isSelected ? selectedAddOns.reduce((sum, a) => sum + a.price, 0) : 0),
-                                  quote.currency
-                                )
-                              : pricesLoading ? "…" : "—"}
-                          </div>
-                          {isSelected ? (
-                            // Already selected — the card's own orange border already
-                            // shows that, so a second orange "Select" button here just
-                            // duplicates it without doing anything new on click.
-                            <div className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] text-[#e7701e] text-center flex items-center justify-center gap-1.5">
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                              </svg>
-                              Selected
+                          {/* Price / Select — stacked below the details */}
+                          <div className="p-6 pt-4 bg-white border-t border-gray-100">
+                            <div className="text-[28px] font-black text-[#002f5d] mb-3">
+                              {quote
+                                ? formatAmount(
+                                    quote.total + (isSelected ? selectedAddOns.reduce((sum, a) => sum + a.price, 0) : 0),
+                                    quote.currency
+                                  )
+                                : pricesLoading ? "…" : "—"}
                             </div>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedServiceType(st.slug);
-                              }}
-                              className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] mt-6 tracking-[0.5px] transition-all cursor-pointer bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
-                            >
-                              Select
-                            </button>
-                          )}
+                            {isSelected ? (
+                              // Already selected — the card's own orange border already
+                              // shows that, so a second orange "Select" button here just
+                              // duplicates it without doing anything new on click.
+                              <div className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] tracking-[0.5px] text-[#e7701e] text-center flex items-center justify-center gap-1.5">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                </svg>
+                                Selected
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedServiceType(st.slug);
+                                }}
+                                className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] tracking-[0.5px] transition-all cursor-pointer bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
+                              >
+                                Select
+                              </button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
 
                   {/* Add-ons are optional extras on top of the chosen parking
                       space, not another space to pick — deliberately a
@@ -1348,7 +1358,7 @@ export default function CarParkBookingWizard() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
                 <h2 className="text-[#1a1a1a] text-[22px] font-extrabold font-sans">
-                  Redirecting you to our secure payment provider…
+                  Redirecting you to our payment provider…
                 </h2>
                 <p className="text-[#555555] text-[14px] leading-relaxed">
                   Please don&apos;t close this window. You&apos;ll be taken to our payment provider to complete your card payment.

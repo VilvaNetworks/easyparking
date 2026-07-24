@@ -5,7 +5,7 @@ const testimonials = [
     name: 'Bobby Farel',
     location: 'Brighton',
     photo: 'https://www.easyparkingltd.com/wp-content/uploads/2025/07/smiling-businessman-face-portrait-wearing-suit-300x214.jpg',
-    text: 'Easy Parking made everything simple. I booked online, drove to the terminal, and handed over my keys in minutes. My car was waiting when I landed—clean and secure. I\'ll definitely use them again.',
+    text: 'Easy Parking made everything simple. I booked online, drove to the terminal, and handed over my keys in minutes. My car was waiting when I landed—clean and in great condition. I\'ll definitely use them again.',
     rating: 5,
   },
   {

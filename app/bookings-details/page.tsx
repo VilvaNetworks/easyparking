@@ -141,7 +141,7 @@ function BookingDetailsContent() {
       {/* Loading Placeholder */}
       {loading && (
         <div className="bg-white border border-gray-200 rounded-lg p-12 text-center shadow-md animate-pulse">
-          <p className="text-gray-500 font-bold">Retrieving secure booking details...</p>
+          <p className="text-gray-500 font-bold">Retrieving your booking details...</p>
         </div>
       )}
 
@@ -241,7 +241,7 @@ export default function BookingsDetailsPage() {
     <div className="w-full bg-white py-12 min-h-[60vh] flex flex-col justify-center">
       <Suspense fallback={
         <div className="max-w-[800px] mx-auto px-4 text-center py-12">
-          <p className="text-gray-500 font-semibold animate-pulse">Loading secure system...</p>
+          <p className="text-gray-500 font-semibold animate-pulse">Loading...</p>
         </div>
       }>
         <BookingDetailsContent />
