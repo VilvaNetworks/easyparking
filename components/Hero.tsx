@@ -449,7 +449,7 @@ export default function Hero() {
                 </p>
               )}
 
-              {/* ── Get a Quote button — full width, h:52px, bg:#E7701E, 16px 600, white ── */}
+              {/* ── Book Now button — full width, h:52px, bg:#E7701E, 16px 600, white ── */}
               <div className="w-full mt-[25px]">
                 <button
                   type="submit"

@@ -390,13 +390,6 @@ export default function CarParkBookingWizard() {
   const selectedQuote = servicePrices[selectedServiceType];
   const spacePrice = selectedQuote ? selectedQuote.total / 100 : 0;
 
-  // Step 2 confirms whatever service type was already chosen (homepage
-  // widget or Step 1's dropdown) — it doesn't offer a switcher. Falls back
-  // to showing every active type only if the selection doesn't match any
-  // real service type (e.g. a stale/invalid slug in the URL).
-  const matchingServiceTypes = serviceTypes.filter((st) => st.slug === selectedServiceType);
-  const stepTwoServiceTypes = matchingServiceTypes.length > 0 ? matchingServiceTypes : serviceTypes;
-
   // Add-ons are flat one-time fees (not multiplied by nights) tied to
   // whichever service type is currently selected.
   const availableAddOns = serviceTypes.find((st) => st.slug === selectedServiceType)?.add_ons ?? [];
@@ -732,7 +725,7 @@ export default function CarParkBookingWizard() {
               type="submit"
               className="w-full bg-[#e7701e] hover:bg-[#d56113] text-white font-extrabold text-[16px] py-4 uppercase tracking-[1px] transition-all duration-300 cursor-pointer"
             >
-              Get a Quote
+              Book Now
             </button>
           </form>
         </div>
@@ -790,7 +783,7 @@ export default function CarParkBookingWizard() {
                   </>
                 )}
 
-                <div className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2">
+                <div className="flex justify-between items-center text-sm text-[#4a4a4a] mb-2 font-bold">
                   <span>Booking Charge</span>
                   <span>£{BOOKING_CHARGE.toFixed(2)}</span>
                 </div>
@@ -811,103 +804,125 @@ export default function CarParkBookingWizard() {
                   <div>
                     <h2 className="text-[#002f5d] text-[24px] font-extrabold tracking-tight">Parking Space</h2>
                     <p className="text-gray-400 text-[14px] mt-1 font-bold">
-                      {stepTwoServiceTypes.length + availableAddOns.length} Result{stepTwoServiceTypes.length + availableAddOns.length !== 1 ? "s" : ""} Found
+                      {serviceTypes.length + availableAddOns.length} Result{serviceTypes.length + availableAddOns.length !== 1 ? "s" : ""} Found
                     </p>
                   </div>
 
-                  {/* Only the service type already chosen (homepage widget or
-                      Step 1's dropdown) — price is a live quote from the
-                      backend's pricing engine (PricingDefault + PricingCalendar),
-                      not a guessed number. Cards are stacked vertically (image
-                      on top, details, then price/select) and laid out in a
-                      grid so more than one fits per row. */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {stepTwoServiceTypes.map((st) => {
-                      const quote = servicePrices[st.slug];
-                      const isSelected = selectedServiceType === st.slug;
-
-                      return (
-                        <div
-                          key={st.slug}
-                          onClick={() => setSelectedServiceType(st.slug)}
-                          className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
-                            isSelected ? "ring-2 ring-[#e7701e] border-transparent" : ""
-                          }`}
-                        >
-                          {/* Logo area */}
-                          <div className="bg-white p-5 border-b border-gray-100 flex flex-col items-center justify-center">
-                            <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
-                              <div className="relative w-full h-[60px]">
-                                <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
-                              </div>
-                              <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
-                                {st.name}
-                              </div>
+                  {/* Every active service type is shown — the customer picks
+                      between them here (not locked to whatever was chosen on
+                      the homepage widget or Step 1's dropdown). Price is a
+                      live quote from the backend's pricing engine
+                      (PricingDefault + PricingCalendar), not a guessed
+                      number. Cards are stacked vertically (image on top,
+                      details, then price/select) and laid out in a grid so
+                      more than one fits per row.
+                      While prices are still loading, the whole grid renders
+                      as skeleton placeholders instead of real cards with a
+                      "…" price — a half-loaded card (real title/image, fake
+                      price) reads as broken, not "loading". */}
+                  {pricesLoading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {serviceTypes.map((st) => (
+                        <div key={st.slug} className="border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden animate-pulse">
+                          <div className="bg-white p-5 border-b border-gray-100">
+                            <div className="border border-gray-200 rounded-[10px] bg-white p-4">
+                              <div className="h-[60px] bg-gray-200 rounded" />
+                              <div className="h-6 bg-gray-200 rounded mt-3" />
                             </div>
                           </div>
-
-                          {/* Details */}
-                          <div className="flex-1 p-6">
-                            <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
-                            <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                              {terminalName(terminal)}{" "}
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setMoreDetailsFor({ title: st.name, html: st.more_details });
-                                }}
-                                className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
-                              >
-                                More details
-                              </button>
-                            </p>
-
-                            {st.description && (
-                              <div
-                                className={`mt-5 text-[13px] text-[#555555] leading-relaxed ${RICH_TEXT_CLASSES}`}
-                                dangerouslySetInnerHTML={{ __html: st.description }}
-                              />
-                            )}
+                          <div className="p-6 space-y-3">
+                            <div className="h-5 bg-gray-200 rounded w-2/3" />
+                            <div className="h-3 bg-gray-200 rounded w-1/2" />
+                            <div className="h-3 bg-gray-200 rounded w-full mt-4" />
+                            <div className="h-3 bg-gray-200 rounded w-5/6" />
                           </div>
-
-                          {/* Price / Select — stacked below the details */}
-                          <div className="p-6 pt-4 bg-white border-t border-gray-100">
-                            <div className="text-[28px] font-black text-[#002f5d] mb-3">
-                              {quote
-                                ? formatAmount(
-                                    quote.total + (isSelected ? selectedAddOns.reduce((sum, a) => sum + a.price, 0) : 0),
-                                    quote.currency
-                                  )
-                                : pricesLoading ? "…" : "—"}
-                            </div>
-                            {isSelected ? (
-                              // Already selected — the card's own orange border already
-                              // shows that, so a second orange "Select" button here just
-                              // duplicates it without doing anything new on click.
-                              <div className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] tracking-[0.5px] text-[#e7701e] text-center flex items-center justify-center gap-1.5">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                </svg>
-                                Selected
-                              </div>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedServiceType(st.slug);
-                                }}
-                                className="w-full font-extrabold text-[14px] uppercase py-2.5 rounded-[4px] tracking-[0.5px] transition-all cursor-pointer bg-gray-150 text-[#2c3e50] hover:bg-gray-200"
-                              >
-                                Select
-                              </button>
-                            )}
+                          <div className="p-6 pt-4 border-t border-gray-100 space-y-3">
+                            <div className="h-8 bg-gray-200 rounded w-1/3" />
+                            <div className="h-10 bg-gray-200 rounded w-full" />
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {serviceTypes.map((st) => {
+                        const quote = servicePrices[st.slug];
+                        const isSelected = selectedServiceType === st.slug;
+
+                        return (
+                          <div
+                            key={st.slug}
+                            onClick={() => setSelectedServiceType(st.slug)}
+                            className={`border border-gray-200 bg-[#f9fcff] rounded-[8px] overflow-hidden flex flex-col hover:border-[#e7701e] transition-all duration-300 cursor-pointer ${
+                              isSelected ? "ring-2 ring-[#e7701e] border-transparent" : ""
+                            }`}
+                          >
+                            {/* Logo area */}
+                            <div className="bg-white relative p-5 border-b border-gray-100 flex flex-col items-center justify-center">
+
+                               {isSelected && (
+                                <span
+                                  className="w-fit right-0 top-0 px-2  bg-amber-600 absolute font-extrabold text-[14px] uppercase py-2 rounded-tr-none rounded-full tracking-[0.5px] transition-all cursor-pointer text-[#fff] hover:bg-gray-200"
+                                >
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
+                                </span>
+                              )}
+                              <div className="border border-gray-200 rounded-[10px] bg-white p-4 shadow-sm w-full flex flex-col items-center">
+                                <div className="relative w-full h-[60px]">
+                                  <Image src="/images/logo.png" fill sizes="150px" className="object-contain" alt="Easy Parking Logo" />
+                                </div>
+                                <div className="w-full bg-[#1e2a53] text-white text-[11px] py-1 mt-3 text-center uppercase tracking-[0.5px] font-bold rounded-[3px]">
+                                  {st.name}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Details */}
+                            <div className="flex-1 p-6">
+                              <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
+                              <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
+                                {terminalName(terminal)}{" "}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setMoreDetailsFor({ title: st.name, html: st.more_details });
+                                  }}
+                                  className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
+                                >
+                                  More details
+                                </button>
+                              </p>
+
+                              {st.description && (
+                                <div
+                                  className={`mt-5 text-[13px] text-[#555555] leading-relaxed ${RICH_TEXT_CLASSES}`}
+                                  dangerouslySetInnerHTML={{ __html: st.description }}
+                                />
+                              )}
+                            </div>
+
+                            {/* Price / Select — stacked below the details */}
+                            <div className="p-6 pt-4 bg-white border-t border-gray-100">
+                              <div className="text-[28px] font-black text-[#002f5d]">
+                                {quote
+                                  ? formatAmount(
+                                      quote.total + (isSelected ? selectedAddOns.reduce((sum, a) => sum + a.price, 0) : 0),
+                                      quote.currency
+                                    )
+                                  : "—"}
+                              </div>
+                              {/* Unselected only — once selected, the card's own
+                                  orange ring border already communicates that, so
+                                  a second "Selected" label/button here was pure
+                                  duplication. */}
+                             
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   {/* Add-ons are optional extras on top of the chosen parking
                       space, not another space to pick — deliberately a
@@ -927,18 +942,25 @@ export default function CarParkBookingWizard() {
                           return (
                             <label
                               key={addOn.id}
-                              onClick={() => toggleAddOn(addOn.id)}
                               className={`flex items-center gap-4 border rounded-[8px] bg-white p-4 cursor-pointer transition-all duration-200 ${
                                 isChecked
                                   ? "border-[#e7701e] ring-1 ring-[#e7701e] bg-[#fff8f3]"
                                   : "border-dashed border-gray-300 hover:border-gray-400"
                               }`}
                             >
+                              {/* No onClick on the <label> itself — a <label>
+                                  wrapping its checkbox already makes the whole
+                                  card clickable natively (clicking anywhere
+                                  forwards a click to the checkbox). Adding a
+                                  manual onClick here too fired toggleAddOn a
+                                  SECOND time for every click that landed
+                                  outside the checkbox itself, so the two
+                                  toggles cancelled each other out and the
+                                  card silently never seemed to select. */}
                               <input
                                 type="checkbox"
                                 checked={isChecked}
                                 onChange={() => toggleAddOn(addOn.id)}
-                                onClick={(e) => e.stopPropagation()}
                                 className="w-5 h-5 accent-[#e7701e] shrink-0"
                               />
 
