@@ -23,7 +23,7 @@ export default function SitemapPage() {
   ];
 
   const bookingServices = [
-    { label: "Car Park Booking System (Get a Quote)", href: "/car-park-booking-system" },
+    { label: "Car Park Booking System (Book Now)", href: "/car-park-booking-system" },
     { label: "Meet & Greet Parking Service", href: "/services#1" },
     { label: "Full Car Wash Service (£34.99)", href: "/services#2" },
     { label: "Outside Only Car Wash (£14.99)", href: "/services#3" },

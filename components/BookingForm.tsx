@@ -193,7 +193,7 @@ export default function BookingForm() {
                 type="submit"
                 className="w-full block text-center bg-[#E66F1D] text-white font-bold text-sm uppercase px-6 py-3 rounded hover:bg-[#c85d15] transition-colors cursor-pointer border-none"
               >
-                Get a Quote
+                Book Now
               </button>
             </div>
 

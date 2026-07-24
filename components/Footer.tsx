@@ -76,7 +76,7 @@ export default function Footer() {
 
             {/* Description — #333333 15px 400, line-height 1.6, max-width 280px */}
             <p style={{ color: "#333333", fontSize: 15, lineHeight: 1.6, margin: "0 0 20px 0", maxWidth: 280, fontWeight: 400 }}>
-              Smart, secure, and stress-free parking solutions. Your space, just a click away.
+              Smart, convenient, and stress-free parking solutions. Your space, just a click away.
             </p>
 
             {/* Social Icons — 32×32px, bg:#E7701E, border-radius:4px, icon 16px white, gap:8px */}
@@ -196,15 +196,7 @@ export default function Footer() {
 
               {/* Business Hours */}
               <li style={{ marginBottom: 16 }}>
-                <a
-                  href="https://www.google.com/maps/place/1-2+Johnston+Rd,+Woodford,+Woodford+Green+IG8+0XA,+UK"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start no-underline transition-colors duration-300"
-                  style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#E7701E")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#333333")}
-                >
+                <div className="flex items-start" style={{ gap: 12, color: "#333333", fontSize: 15, lineHeight: 1.5 }}>
                   <span className="inline-flex items-center justify-center shrink-0" style={{ width: 18, height: 18, marginTop: 3 }}>
                     <SvgIcons.Clock style={{ width: 16, height: 16, fill: "#E7701E" }} />
                   </span>
@@ -212,7 +204,7 @@ export default function Footer() {
                     <strong style={{ color: "#1A1A1A", fontWeight: 700, display: "inline-block" }}>Business Hours</strong>
                     <br />Monday to Friday 9 AM–5 PM
                   </span>
-                </a>
+                </div>
               </li>
 
               {/* Email — was 3 separate rows (Info/Bookings/Complaints) that all
