@@ -3,8 +3,8 @@ import Image from 'next/image';
 import BookNowLink from '@/components/BookNowLink';
 
 export const metadata: Metadata = {
-  title: 'Airport Parking & Valeting Services | Easy Parking Ltd',
-  description: 'Explore our full range of Gatwick services: Meet & Greet parking, professional valeting, car washing, electric car charging, and direct airport transfer solutions.',
+  title: 'Airport Parking & Car Wash Services | Easy Parking',
+  description: 'Explore our full range of Gatwick services: Meet & Greet parking, full car wash, and exterior-only car wash solutions.',
   alternates: {
     canonical: '/services',
   },
@@ -15,21 +15,13 @@ const servicesSchema = {
   "@type": "Service",
   "@id": "https://www.easyparkingltd.com/services/#servicepage",
   "url": "https://www.easyparkingltd.com/services",
-  "name": "Airport Parking Services - Easy Parking Ltd",
-  "description": "Discover our airport parking services, valeting, car washing, electric vehicle charging, and transfer options at Gatwick Airport.",
+  "name": "Airport Parking Services - Easy Parking",
+  "description": "Discover our airport parking services and car washing options at Gatwick Airport.",
   "provider": {
     "@type": "LocalBusiness",
     "@id": "https://www.easyparkingltd.com/#localbusiness",
-    "name": "Easy Parking Ltd",
-    "telephone": "+443330040262",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "1-2, Johnston Road, Woodford Green",
-      "addressLocality": "London",
-      "addressRegion": "England",
-      "postalCode": "IG8 0XA",
-      "addressCountry": "GB"
-    }
+    "name": "Easy Parking",
+    "telephone": "+443330040262"
   },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -47,14 +39,6 @@ const servicesSchema = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Valeting Service",
-          "description": "Complete interior and exterior cleaning of your vehicle."
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
           "name": "Full Car Wash Service",
           "description": "Hand washed by experienced valeters using premium products for a perfect finish."
         }
@@ -65,22 +49,6 @@ const servicesSchema = {
           "@type": "Service",
           "name": "Car Wash Outside Only",
           "description": "Hand washed and dried exterior clean for £14.99."
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Electric Car Charging",
-          "description": "Fast chargers located in our secure facility. Pay only for what you charge."
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Transfer Services",
-          "description": "Safe, secure, and stress-free transport to the airport, hotel, or anywhere else."
         }
       }
     ]
@@ -155,47 +123,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================= SERVICE 2: VALETING SERVICE ================= */}
-      <section id="2" className="scroll-mt-20 w-full bg-[#f5f5f5] py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative border-t border-b border-gray-200">
-        <div className="max-w-[1320px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
-            {/* Left Column: Content (Alternating) */}
-            <div className="flex flex-col order-2 lg:order-1">
-              <h2 className="text-[#1a1a1a] text-[28px] md:text-[34px] lg:text-[38px] font-extrabold leading-[1.15] mb-6 tracking-tight font-sans">
-                Valeting Service
-              </h2>
-              <p className="text-[#555555] text-[15px] leading-[1.75] mb-8">
-                Get complete peace of mind with our valeting service, including both interior and exterior cleaning your choice.
-              </p>
-              <div>
-                <BookNowLink
-                  className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
-                >
-                  Book Now
-                </BookNowLink>
-              </div>
-            </div>
-
-            {/* Right Column: Image */}
-            <div className="relative w-full flex justify-center lg:justify-end order-1 lg:order-2">
-              <div className="relative w-full max-w-[540px] aspect-[500/350] overflow-hidden shadow-xl border-4 border-white">
-                <Image
-                  src="/images/services/img2.png"
-                  alt="Valeting Service"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 540px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ================= SERVICE 3: FULL CAR WASH ================= */}
-      <section id="3" className="scroll-mt-20 w-full bg-white py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
+      {/* ================= SERVICE 2: FULL CAR WASH ================= */}
+      <section id="2" className="scroll-mt-20 w-full bg-white py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
         <div className="max-w-[1320px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
@@ -233,8 +162,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================= SERVICE 4: CAR WASH OUTSIDE ONLY ================= */}
-      <section id="4" className="scroll-mt-20 w-full bg-[#f5f5f5] py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative border-t border-b border-gray-200">
+      {/* ================= SERVICE 3: CAR WASH OUTSIDE ONLY ================= */}
+      <section id="3" className="scroll-mt-20 w-full bg-[#f5f5f5] py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative border-t border-b border-gray-200">
         <div className="max-w-[1320px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
@@ -261,84 +190,6 @@ export default function ServicesPage() {
                 <Image
                   src="/images/services/img4.png"
                   alt="Car Wash Outside Only"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 540px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ================= SERVICE 5: ELECTRIC CAR CHARGING ================= */}
-      <section id="5" className="scroll-mt-20 w-full bg-white py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
-        <div className="max-w-[1320px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
-            {/* Left Column: Image */}
-            <div className="relative w-full flex justify-center lg:justify-start">
-              <div className="relative w-full max-w-[540px] aspect-[500/350] overflow-hidden shadow-xl border-4 border-white">
-                <Image
-                  src="/images/services/img5.png"
-                  alt="Electric Car Charging"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 540px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Right Column: Content */}
-            <div className="flex flex-col">
-              <h2 className="text-[#1a1a1a] text-[28px] md:text-[34px] lg:text-[38px] font-extrabold leading-[1.15] mb-6 tracking-tight font-sans">
-                Electric Car Charging
-              </h2>
-              <p className="text-[#555555] text-[15px] leading-[1.75] mb-8">
-                Charge your electric car here. We have a selection of fast chargers, which are located in our security facility. High standard safety and premium service. You pay for it what you charge, no extra charge on top of it.
-              </p>
-              <div>
-                <BookNowLink
-                  className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
-                >
-                  Book Now
-                </BookNowLink>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ================= SERVICE 6: TRANSFER SERVICES ================= */}
-      <section id="6" className="scroll-mt-20 w-full bg-[#f5f5f5] py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative border-t border-b border-gray-200">
-        <div className="max-w-[1320px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
-            {/* Left Column: Content (Alternating) */}
-            <div className="flex flex-col order-2 lg:order-1">
-              <h2 className="text-[#1a1a1a] text-[28px] md:text-[34px] lg:text-[38px] font-extrabold leading-[1.15] mb-6 tracking-tight font-sans">
-                Transfer Services
-              </h2>
-              <p className="text-[#555555] text-[15px] leading-[1.75] mb-8">
-                We also have transfer services! If you need transport to the airport, hotel or anywhere else, we can assist you. Safe, secure, and stress-free transport solutions. Your space, just a click away.
-              </p>
-              <div>
-                <BookNowLink
-                  className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
-                >
-                  Book Now
-                </BookNowLink>
-              </div>
-            </div>
-
-            {/* Right Column: Image */}
-            <div className="relative w-full flex justify-center lg:justify-end order-1 lg:order-2">
-              <div className="relative w-full max-w-[540px] aspect-[500/350] overflow-hidden shadow-xl border-4 border-white">
-                <Image
-                  src="/images/services/img6.png"
-                  alt="Transfer Services"
                   fill
                   sizes="(max-width: 768px) 100vw, 540px"
                   className="object-cover"

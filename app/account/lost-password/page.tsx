@@ -3,8 +3,8 @@ import Image from "next/image";
 import LostPasswordForm from "@/components/LostPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Lost Password - Easy Parking Ltd",
-  description: "Retrieve your forgotten password for Easy Parking Ltd account dashboard.",
+  title: "Lost Password - Easy Parking",
+  description: "Retrieve your forgotten password for Easy Parking account dashboard.",
   alternates: {
     canonical: "/account/lost-password",
   },

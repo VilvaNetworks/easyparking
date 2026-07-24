@@ -18,43 +18,19 @@ const services = [
   },
   {
     id: 2,
-    icon: "/images/driver.gif",
-    title: "Valeting Service",
-    description:
-      "Enjoy our professional valet service with a full clean and inspection, ensuring your car is spotless and well-maintained when you collect it.",
-    link: "/services#2",
-  },
-  {
-    id: 3,
     icon: "/images/car-wash.gif",
     title: "Full Car Wash Service",
     description:
       "Comprehensive inside and outside cleaning exterior wash, vacuum, glass polish, dashboard and bumper shine, tyre polish, plus a free fragrance, all for £34.99.",
-    link: "/services#3",
+    link: "/services#2",
   },
   {
-    id: 4,
+    id: 3,
     icon: "/images/car-wash-1.gif",
     title: "Car Wash Only Service",
     description:
       "Full exterior wash to make your car shine brilliantly for only £14.99. Book in advance or at drop-off, with payment by card or cash upon return.",
-    link: "/services#4",
-  },
-  {
-    id: 5,
-    icon: "/images/charging-station.gif",
-    title: "Electric Car Charging",
-    description:
-      "We can fully charge your car efficiently while you're away. Simply book online or at drop-off and pay upon your return by card or cash.",
-    link: "/services#5",
-  },
-  {
-    id: 6,
-    icon: "/images/inheritance.gif",
-    title: "Transfer Services",
-    description:
-      "Need your car at a different airport or seaport? We'll deliver it for you. Call ahead to arrange this convenient additional service.",
-    link: "/services#6",
+    link: "/services#3",
   },
 ];
 
@@ -97,7 +73,7 @@ const OurServices: React.FC = () => {
             OUR PARKING SERVICES
           </p>
           <h2 className="text-[#1a1a1a] text-[32px] md:text-[40px] lg:text-[44px] font-extrabold leading-[1.2] tracking-tight">
-            Secure, convenient, and easy on your wallet
+            Convenient and easy on your wallet
           </h2>
         </div>
 

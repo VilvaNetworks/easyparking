@@ -53,7 +53,7 @@ const PremiumParking: React.FC = () => {
             <div className="text-[#4a4a4a] text-[16px] leading-[1.75] mb-8 max-w-[600px]">
               <p>
                 Enjoy a seamless, first class parking experience with Easy
-                Parking Ltd. Our premium Meet &amp; Greet service ensures you
+                Parking. Our premium Meet &amp; Greet service ensures you
                 park stress free with door to terminal convenience and comfort.
                 Our professionals take care of your parking and your vehicle
                 behind your back so you can travel with complete peace of mind.

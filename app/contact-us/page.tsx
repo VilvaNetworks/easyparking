@@ -4,8 +4,8 @@ import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Easy Parking Ltd - Gatwick Parking Support',
-  description: 'Need assistance with your Gatwick airport parking booking? Contact the Easy Parking customer support team via phone +44 333 004 0262 or email.',
+  title: 'Contact Us | Easy Parking - Gatwick Parking Support',
+  description: 'Need assistance with your Gatwick airport parking booking? Contact the Easy Parking customer support team via phone 0333 004 0262 or email.',
   alternates: {
     canonical: '/contact-us',
   },
@@ -16,22 +16,14 @@ const contactSchema = {
   "@type": "ContactPage",
   "@id": "https://www.easyparkingltd.com/contact-us/#contactpage",
   "url": "https://www.easyparkingltd.com/contact-us",
-  "name": "Contact Us - Easy Parking Ltd",
-  "description": "Contact Easy Parking Ltd for airport parking bookings, support, and inquiries at Gatwick Airport.",
+  "name": "Contact Us - Easy Parking",
+  "description": "Contact Easy Parking for airport parking bookings, support, and inquiries at Gatwick Airport.",
   "mainEntity": {
     "@type": "LocalBusiness",
     "@id": "https://www.easyparkingltd.com/#localbusiness",
-    "name": "Easy Parking Ltd",
+    "name": "Easy Parking",
     "telephone": "+443330040262",
-    "email": "Info@easyparkingltd.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "1-2, Johnston Road, Woodford Green",
-      "addressLocality": "London",
-      "addressRegion": "England",
-      "postalCode": "IG8 0XA",
-      "addressCountry": "GB"
-    }
+    "email": "Info@easyparkingltd.com"
   }
 };
 
@@ -80,8 +72,8 @@ export default function ContactUsPage() {
                 Booking Helpline
               </h3>
               <p className="text-[#555555] text-[16px] font-semibold">
-                <Link href="tel:+443330040262" className="hover:text-[#e7701e] transition-colors duration-300">
-                  +44 333 004 0262
+                <Link href="tel:03330040262" className="hover:text-[#e7701e] transition-colors duration-300">
+                  0333 004 0262
                 </Link>
               </p>
             </div>
@@ -140,20 +132,6 @@ export default function ContactUsPage() {
 
           </div>
         </div>
-      </section>
-
-      {/* ================= GOOGLE MAPS EMBED ================= */}
-      <section className="w-full h-[450px] relative overflow-hidden border-t border-gray-200">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2477.7570554212252!2d0.0225129!3d51.60933989999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a0b7f14bfd41%3A0x3ed6ec43c77d837d!2s1-2%20Johnston%20Rd%2C%20Woodford%2C%20Woodford%20Green%20IG8%200XA%2C%20UK!5e0!3m2!1sen!2sin!4v1781519520967!5m2!1sen!2sin"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen={true}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Easy Parking Registered Office Map Location"
-        />
       </section>
 
     </div>

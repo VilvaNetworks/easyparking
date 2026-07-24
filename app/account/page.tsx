@@ -3,8 +3,8 @@ import Image from "next/image";
 import AccountForms from "@/components/AccountForms";
 
 export const metadata: Metadata = {
-  title: "Account - Easy Parking Ltd",
-  description: "Access your Easy Parking Ltd account dashboard, view recent orders, manage addresses, and update account details.",
+  title: "Account - Easy Parking",
+  description: "Access your Easy Parking account dashboard, view recent orders, manage addresses, and update account details.",
   alternates: {
     canonical: "/account",
   },

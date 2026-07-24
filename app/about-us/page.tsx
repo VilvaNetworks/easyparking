@@ -3,8 +3,8 @@ import Image from 'next/image';
 import BookNowLink from '@/components/BookNowLink';
 
 export const metadata: Metadata = {
-  title: 'About Us | Easy Parking Ltd - Gatwick Airport Valet',
-  description: 'Learn about Easy Parking Ltd, a family-run business providing top-tier, secure, and cheap airport valet parking at London Gatwick Airport.',
+  title: 'About Us | Easy Parking - Gatwick Airport Valet',
+  description: 'Learn about Easy Parking, a family-run business providing top-tier and cheap airport valet parking at London Gatwick Airport.',
   alternates: {
     canonical: '/about-us',
   },
@@ -15,26 +15,18 @@ const aboutSchema = {
   "@type": "AboutPage",
   "@id": "https://www.easyparkingltd.com/about-us/#aboutpage",
   "url": "https://www.easyparkingltd.com/about-us",
-  "name": "About Us - Easy Parking Ltd",
+  "name": "About Us - Easy Parking",
   "description": "We are a family run business who strive to provide the best possible service to make your holidays a joyous and unforgettable one.",
   "mainEntity": {
     "@type": "Organization",
     "@id": "https://www.easyparkingltd.com/#organization",
-    "name": "Easy Parking Ltd",
+    "name": "Easy Parking",
     "url": "https://www.easyparkingltd.com",
-    "description": "Family-run airport parking business providing affordable, secure, and reliable parking solutions at Gatwick Airport.",
+    "description": "Family-run airport parking business providing affordable and reliable parking solutions at Gatwick Airport.",
     "foundingDate": "2020",
     "areaServed": {
       "@type": "Place",
       "name": "Gatwick Airport, London, UK"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "1-2, Johnston Road, Woodford Green",
-      "addressLocality": "London",
-      "addressRegion": "England",
-      "postalCode": "IG8 0XA",
-      "addressCountry": "GB"
     },
     "telephone": "+443330040262",
     "email": "Info@easyparkingltd.com",
@@ -52,7 +44,7 @@ const aboutSchema = {
 export default function AboutUsPage() {
   const features = [
     ['01. Affordable Rates', '02. 24/7 Service'],
-    ['03. Secure Parking', '04. Fast Transfers'],
+    ['03. Gated Parking', '04. Fast Transfers'],
     ['05. Near Locations', '06. Valet Parking'],
     ['07. Flexible Booking', '08. No Hidden Fees'],
   ];

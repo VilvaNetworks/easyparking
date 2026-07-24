@@ -6,7 +6,7 @@ import Image from "next/image";
 const AboutSection: React.FC = () => {
   const features = [
     ["01. Affordable Rates", "02. 24/7 Service"],
-    ["03. Secure Parking", "04. Fast Transfers"],
+    ["03. Gated Parking", "04. Fast Transfers"],
     ["05. Near Locations", "06. Valet Parking"],
     ["07. Flexible Booking", "08. No Hidden Fees"],
   ];

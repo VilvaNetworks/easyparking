@@ -575,7 +575,7 @@ export default function CarParkBookingWizard() {
                 Booking Hotline
               </p>
               <p className="text-white font-black text-[22px] md:text-[26px] tracking-wide mt-1">
-                +44 333 004 0262
+                0333 004 0262
               </p>
             </div>
           </div>

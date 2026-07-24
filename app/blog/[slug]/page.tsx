@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = (blogs as BlogPost[]).find((b) => b.slug === slug);
   if (!post) return {};
-  const title = `${post.title} - Easy Parking Ltd`;
+  const title = `${post.title} - Easy Parking`;
   return {
     title,
     description: post.excerpt,
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description: post.excerpt,
       url: `https://www.easyparkingltd.com/blog/${post.slug}`,
-      siteName: "Easy Parking Ltd",
+      siteName: "Easy Parking",
       images: [{ url: post.image }],
       locale: "en_GB",
       type: "article",

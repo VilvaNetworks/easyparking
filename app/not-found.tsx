@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Page Not Found | Easy Parking Ltd",
+  title: "Page Not Found | Easy Parking",
   description: "The page you're looking for could not be found.",
 };
 

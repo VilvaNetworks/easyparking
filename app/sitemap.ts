@@ -12,13 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/how-it-works',
     '/services',
     '/blog',
-    '/booking-process',
-    '/booking-terms-and-conditions',
     '/car-park-booking-system',
     '/sitemap',
-    '/general-information',
-    '/terms-and-conditions-for-complaints-claims',
-    '/terms-and-conditions-for-parking-fine-penalty-notices',
+    '/standard-operating-procedure',
+    '/terms-and-conditions',
     '/privacy-policy',
   ];
 

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Easy Parking Ltd',
+  title: 'Privacy Policy - Easy Parking',
   description: 'This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights.',
   alternates: {
     canonical: '/privacy-policy',
@@ -17,7 +17,7 @@ const privacyPolicySchema = {
       "@type": "WebPage",
       "@id": "https://www.easyparkingltd.com/privacy-policy#webpage",
       "url": "https://www.easyparkingltd.com/privacy-policy",
-      "name": "Privacy Policy - Easy Parking Ltd",
+      "name": "Privacy Policy - Easy Parking",
       "description": "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights.",
       "breadcrumb": {
         "@id": "https://www.easyparkingltd.com/privacy-policy#breadcrumb"

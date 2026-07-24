@@ -43,9 +43,9 @@ export default function MoreDetailsModal({ onClose, html, title }: MoreDetailsMo
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
             <p className="text-[#e7701e] text-[12px] font-bold uppercase tracking-[0.5px] mb-2">Contact</p>
-            <p className="text-[14px] text-[#1a1a1a]">Phone: +44 333 004 0262</p>
-            <a href="mailto:Bookings@easyparkingltd.com" className="text-[14px] text-[#e7701e] hover:underline">
-              Bookings@easyparkingltd.com
+            <p className="text-[14px] text-[#1a1a1a]">Phone: 0333 004 0262</p>
+            <a href="mailto:info@easyparkingltd.com" className="text-[14px] text-[#e7701e] hover:underline">
+              info@easyparkingltd.com
             </a>
           </div>
           <div>

@@ -24,23 +24,23 @@ const marckScript = Marck_Script({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.easyparkingltd.com'),
-  title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
-  description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking Ltd today.',
+  title: 'Easy Parking - Gatwick Airport Meet & Greet Parking',
+  description: 'Smart and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking today.',
   keywords: ['gatwick parking', 'airport parking', 'meet and greet', 'valet parking', 'easy parking', 'gatwick valet'],
   alternates: {
     canonical: './',
   },
   openGraph: {
-    title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
-    description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking Ltd today.',
+    title: 'Easy Parking - Gatwick Airport Meet & Greet Parking',
+    description: 'Smart and stress-free airport parking solutions at London Gatwick. Book your Meet & Greet or Valet parking space with Easy Parking today.',
     url: 'https://www.easyparkingltd.com',
-    siteName: 'Easy Parking Ltd',
+    siteName: 'Easy Parking',
     images: [
       {
         url: '/images/logo.png',
         width: 1200,
         height: 630,
-        alt: 'Easy Parking Ltd Gatwick Airport Meet & Greet Logo',
+        alt: 'Easy Parking Gatwick Airport Meet & Greet Logo',
       },
     ],
     locale: 'en_GB',
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Easy Parking Ltd - Secure Gatwick Airport Meet & Greet Parking',
-    description: 'Smart, secure, and stress-free airport parking solutions at London Gatwick.',
+    title: 'Easy Parking - Gatwick Airport Meet & Greet Parking',
+    description: 'Smart and stress-free airport parking solutions at London Gatwick.',
     images: ['/images/logo.png'],
   },
 };
@@ -58,7 +58,7 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": "https://www.easyparkingltd.com/#organization",
-  "name": "Easy Parking Ltd",
+  "name": "Easy Parking",
   "url": "https://www.easyparkingltd.com",
   "logo": {
     "@type": "ImageObject",
@@ -74,19 +74,11 @@ const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": "https://www.easyparkingltd.com/#localbusiness",
-  "name": "Easy Parking Ltd",
+  "name": "Easy Parking",
   "image": "https://www.easyparkingltd.com/images/car.jpg",
   "url": "https://www.easyparkingltd.com",
   "telephone": "+443330040262",
   "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "1-2, Johnston Road, Woodford Green",
-    "addressLocality": "London",
-    "addressRegion": "England",
-    "postalCode": "IG8 0XA",
-    "addressCountry": "GB"
-  },
   "geo": {
     "@type": "GeoCoordinates",
     "latitude": 51.605378,
