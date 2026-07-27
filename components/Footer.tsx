@@ -231,7 +231,7 @@ export default function Footer() {
               {/* Trust badges — SiteLock / SSL Secure Connection */}
             <div className="flex flex-wrap items-center" style={{ gap: 10, marginTop: 20 }}>
               <Image
-                src="/images/footerimages/sitelock.avif"
+                src="/images/footerimages/siteLock.avif"
                 alt="SiteLock — Malware-Free"
                 width={250}
                 height={56}
