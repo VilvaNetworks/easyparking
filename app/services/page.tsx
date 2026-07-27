@@ -4,7 +4,7 @@ import BookNowLink from '@/components/BookNowLink';
 
 export const metadata: Metadata = {
   title: 'Airport Parking & Car Wash Services | Easy Parking',
-  description: 'Explore our full range of Gatwick services: Meet & Greet parking, full car wash, and exterior-only car wash solutions.',
+  description: 'Explore our full range of Gatwick services: Meet & Greet parking, Park & Ride, full car wash, and exterior-only car wash solutions.',
   alternates: {
     canonical: '/services',
   },
@@ -33,6 +33,14 @@ const servicesSchema = {
           "@type": "Service",
           "name": "Meet & Greet Airport Parking",
           "description": "Drive to the terminal and our professional driver will park your car. Upon return, your car will be ready at the terminal."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Park & Ride Airport Parking",
+          "description": "Drive to our secure car park, leave your car safely parked, and take our shuttle straight to the terminal."
         }
       },
       {
@@ -194,6 +202,45 @@ export default function ServicesPage() {
                   sizes="(max-width: 768px) 100vw, 540px"
                   className="object-cover"
                 />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================= SERVICE 4: PARK & RIDE ================= */}
+      <section id="4" className="scroll-mt-20 w-full bg-white py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Left Column: Image */}
+            <div className="relative w-full flex justify-center lg:justify-start">
+              <div className="relative w-full max-w-[580px] aspect-[500/350] overflow-hidden shadow-xl border-4 border-white">
+                <Image
+                  src="/images/car.jpg"
+                  alt="Park & Ride Airport Parking Service"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 580px"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Right Column: Content */}
+            <div className="flex flex-col">
+              <h2 className="text-[#1a1a1a] text-[28px] md:text-[34px] lg:text-[38px] font-extrabold leading-[1.15] mb-6 tracking-tight font-sans">
+                Park &amp; Ride Airport Parking Service
+              </h2>
+              <p className="text-[#555555] text-[15px] leading-[1.75] mb-8">
+                Prefer to park your own car? Drive to our secure car park, leave your vehicle safely parked, and hop straight onto our shuttle to the terminal. On your return, the same shuttle brings you back to collect your car — a simple, affordable way to park for your trip.
+              </p>
+              <div>
+                <BookNowLink
+                  className="inline-block bg-[#e7701e] hover:bg-[#d56113] text-white font-bold text-[16px] px-12 py-[14px] rounded-[6px] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-orange-500/20"
+                >
+                  Book Now
+                </BookNowLink>
               </div>
             </div>
 

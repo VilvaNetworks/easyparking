@@ -878,7 +878,7 @@ export default function CarParkBookingWizard() {
                             </div>
 
                             {/* Details */}
-                            <div className="flex-1 p-6">
+                            <div className="flex-1 px-6 py-4">
                               <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
                               <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
                                 {terminalName(terminal)}{" "}
@@ -903,7 +903,7 @@ export default function CarParkBookingWizard() {
                             </div>
 
                             {/* Price / Select — stacked below the details */}
-                            <div className="p-6 pt-4 bg-white border-t border-gray-100">
+                            <div className="px-6 py-3 bg-white border-t border-gray-100">
                               <div className="text-[28px] font-black text-[#002f5d]">
                                 {quote
                                   ? formatAmount(
