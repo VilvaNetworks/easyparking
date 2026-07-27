@@ -120,7 +120,13 @@ const StarRating = ({ rating, reviewCount }: { rating?: number | null; reviewCou
       </div>
       <span className="text-[13px] font-bold text-[#002f5d]">{clamped.toFixed(1)}</span>
       {!!reviewCount && (
-        <span className="text-[12px] text-gray-400">({reviewCount})</span>
+        <span className="inline-flex items-center gap-1 text-[12px] text-gray-400">
+          (
+          <svg viewBox="0 0 20 20" width={11} height={11} fill="currentColor" className="shrink-0">
+            <path d="M10 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM3.5 17a6.5 6.5 0 0113 0 .75.75 0 01-.75.75h-11.5a.75.75 0 01-.75-.75z" />
+          </svg>
+          {reviewCount})
+        </span>
       )}
     </div>
   );
@@ -651,13 +657,21 @@ export default function CarParkBookingWizard() {
               const isLast = idx === arr.length - 1;
               return (
                 <React.Fragment key={s.num}>
-                  <div className="flex items-center gap-3 w-full md:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => isCompleted && setCurrentStep(s.num as Step)}
+                    disabled={!isCompleted}
+                    title={isCompleted ? `Back to ${s.label}` : undefined}
+                    className={`flex items-center gap-3 w-full md:w-auto bg-transparent border-none p-0 text-left ${
+                      isCompleted ? "cursor-pointer" : "cursor-default"
+                    }`}
+                  >
                     <div
                       className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${
                         isActive
                           ? "bg-[#e7701e] text-white ring-4 ring-orange-100"
                           : isCompleted
-                          ? "bg-black text-white"
+                          ? "bg-black text-white hover:bg-[#e7701e]"
                           : "bg-gray-200 text-gray-500"
                       }`}
                     >
@@ -667,11 +681,11 @@ export default function CarParkBookingWizard() {
                       <span className={`text-[12px] font-bold uppercase tracking-[1px] ${isActive ? "text-[#e7701e]" : "text-gray-400"}`}>
                         Step {s.num}
                       </span>
-                      <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"}`}>
+                      <span className={`text-[15px] font-extrabold ${isActive || isCompleted ? "text-[#1a1a1a]" : "text-gray-500"} ${isCompleted ? "hover:text-[#e7701e]" : ""}`}>
                         {s.label}
                       </span>
                     </div>
-                  </div>
+                  </button>
                   {/* Connector to the next step — a short vertical tick between
                       stacked rows on mobile/tablet (flex-col), a full-width
                       horizontal line once the bar goes flex-row at md. Kept as
