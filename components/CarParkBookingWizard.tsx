@@ -89,6 +89,43 @@ const formatAmount = (amount: number, currency: string): string => {
   });
 };
 
+// Star rating shown on a service type card — driven entirely by the admin's
+// own `rating`/`review_count` fields (Service Types edit form), never faked
+// or auto-incremented. Renders nothing when rating hasn't been set yet, so a
+// service type with no reviews entered shows no rating row at all rather
+// than a misleading "0.0 (0)".
+const StarRating = ({ rating, reviewCount }: { rating?: number | null; reviewCount?: number | null }) => {
+  if (rating === null || rating === undefined) return null;
+
+  const clamped = Math.max(0, Math.min(5, rating));
+
+  return (
+    <div className="flex items-center gap-1.5 mt-2" aria-label={`Rated ${clamped} out of 5`}>
+      <div className="flex items-center" style={{ gap: 1 }}>
+        {Array.from({ length: 5 }, (_, i) => {
+          const fill = Math.max(0, Math.min(1, clamped - i)) * 100;
+          return (
+            <span key={i} className="relative inline-block" style={{ width: 14, height: 14 }}>
+              <svg viewBox="0 0 20 20" className="absolute inset-0" fill="#e2e8f0">
+                <path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z" />
+              </svg>
+              <span className="absolute inset-0 overflow-hidden" style={{ width: `${fill}%` }}>
+                <svg viewBox="0 0 20 20" width={14} height={14} fill="#f59e0b">
+                  <path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z" />
+                </svg>
+              </span>
+            </span>
+          );
+        })}
+      </div>
+      <span className="text-[13px] font-bold text-[#002f5d]">{clamped.toFixed(1)}</span>
+      {!!reviewCount && (
+        <span className="text-[12px] text-gray-400">({reviewCount})</span>
+      )}
+    </div>
+  );
+};
+
 // Renders admin-authored rich text (service type / add-on descriptions).
 // Tailwind's preflight strips default browser list styling, so bullet/
 // numbered lists need it explicitly re-added here.
@@ -213,6 +250,8 @@ export default function CarParkBookingWizard() {
     slug: string;
     description?: string | null;
     more_details?: string | null;
+    rating?: number | null;
+    review_count?: number | null;
     add_ons?: { id: number; name: string; description?: string | null; more_details?: string | null; price: number; currency: string }[];
   }[]>([
     { name: "Meet & Greet", slug: "meet-and-greet" },
@@ -893,6 +932,8 @@ export default function CarParkBookingWizard() {
                                   More details
                                 </button>
                               </p>
+
+                              <StarRating rating={st.rating} reviewCount={st.review_count} />
 
                               {st.description && (
                                 <div

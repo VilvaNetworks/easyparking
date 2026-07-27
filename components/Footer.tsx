@@ -101,6 +101,35 @@ export default function Footer() {
                 </Link>
               ))}
             </div>
+
+            {/* Trust badges — SiteLock / SSL Secure Connection */}
+            <div className="flex flex-wrap items-center" style={{ gap: 10, marginTop: 20 }}>
+              <Image
+                src="/images/footerimages/siteLock.jpg"
+                alt="SiteLock — Malware-Free"
+                width={100}
+                height={56}
+                className="h-auto w-auto max-w-full"
+              />
+              <Image
+                src="/images/footerimages/sslSecure.webp"
+                alt="SSL Secure Connection"
+                width={110}
+                height={49}
+                className="h-auto w-auto max-w-full"
+              />
+            </div>
+
+            {/* Payment methods — PayPal, Mastercard, Visa, Amex, Discover */}
+            <div style={{ marginTop: 12 }}>
+              <Image
+                src="/images/footerimages/paypal.webp"
+                alt="We accept PayPal, Mastercard, Visa, Amex and Discover"
+                width={160}
+                height={61}
+                className="h-auto w-auto max-w-full"
+              />
+            </div>
           </div>
 
           {/* ── COL 2: Quick Links ── */}
