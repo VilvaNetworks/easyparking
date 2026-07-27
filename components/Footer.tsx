@@ -21,6 +21,7 @@ const generalLinks = [
 
 const serviceLinks = [
   { label: "Meet & Greet Airport Parking Service", href: "/services#1" },
+  { label: "Park & Ride Airport Parking Service", href: "/services#4" },
   { label: "Full Car Wash Service – £34.99", href: "/services#2" },
   { label: "Car Wash Outside Only – £14.99", href: "/services#3" },
 ];
