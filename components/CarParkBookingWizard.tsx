@@ -189,7 +189,7 @@ export default function CarParkBookingWizard() {
   const [selectedServiceType, setSelectedServiceType] = useState(initialServiceType);
   const [dateError, setDateError] = useState("");
   const todayISO = new Date().toISOString().split("T")[0];
-  const [moreDetailsFor, setMoreDetailsFor] = useState<{ title: string; html?: string | null } | null>(null);
+  const [moreDetailsFor, setMoreDetailsFor] = useState<{ title: string; description?: string | null; html?: string | null } | null>(null);
 
   // Step 2: Space Packages Selection — the card picked here IS the real
   // service type (selectedServiceType), kept in sync with Step 1's dropdown.
@@ -587,6 +587,7 @@ export default function CarParkBookingWizard() {
         <MoreDetailsModal
           onClose={() => setMoreDetailsFor(null)}
           title={moreDetailsFor.title}
+          description={moreDetailsFor.description}
           html={moreDetailsFor.html}
         />
       )}
@@ -934,17 +935,7 @@ export default function CarParkBookingWizard() {
                             <div className="flex-1 px-6 py-4">
                               <h3 className="text-[#002f5d] text-[20px] font-black tracking-tight">{st.name}</h3>
                               <p className="text-gray-400 text-[12px] font-bold mt-1 uppercase tracking-[0.5px]">
-                                {terminalName(terminal)}{" "}
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setMoreDetailsFor({ title: st.name, html: st.more_details });
-                                  }}
-                                  className="text-[#e7701e] lowercase font-normal underline cursor-pointer bg-transparent border-none p-0 ml-1"
-                                >
-                                  More details
-                                </button>
+                                {terminalName(terminal)}
                               </p>
 
                               <StarRating rating={st.rating} reviewCount={st.review_count} />
@@ -955,6 +946,20 @@ export default function CarParkBookingWizard() {
                                   dangerouslySetInnerHTML={{ __html: st.description }}
                                 />
                               )}
+
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setMoreDetailsFor({ title: st.name, description: st.description, html: st.more_details });
+                                }}
+                                className="mt-3 inline-flex items-center gap-1 text-[#e7701e] text-[13px] font-bold uppercase tracking-[0.5px] cursor-pointer bg-transparent border-none p-0 hover:text-[#d56113]"
+                              >
+                                More Details
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                              </button>
                             </div>
 
                             {/* Price / Select — stacked below the details */}
@@ -1029,7 +1034,7 @@ export default function CarParkBookingWizard() {
                                     type="button"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      setMoreDetailsFor({ title: addOn.name, html: addOn.more_details });
+                                      setMoreDetailsFor({ title: addOn.name, description: addOn.description, html: addOn.more_details });
                                     }}
                                     className="text-[#e7701e] text-[11px] font-normal underline cursor-pointer bg-transparent border-none p-0"
                                   >
