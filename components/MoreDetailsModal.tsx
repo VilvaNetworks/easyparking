@@ -1,46 +1,89 @@
 "use client";
 
+import { useEffect } from "react";
+
 interface MoreDetailsModalProps {
   onClose: () => void;
   /** Admin-authored HTML specific to whichever card was opened (service
-   * type or add-on) — rendered above the generic logistics info below. */
+   * type or add-on) — this is now the ONLY per-card content in the modal;
+   * the old hardcoded "Directions for South/North Terminal"/"Additional
+   * Info" text has been removed since it was identical for every card
+   * regardless of what was actually clicked. */
+  description?: string | null;
   html?: string | null;
   title?: string;
 }
 
-// Static drop-off/pick-up logistics info — the same regardless of which
-// service type or add-on card the customer opened it from, since this is
-// about the physical handover process at each terminal, not the product.
-export default function MoreDetailsModal({ onClose, html, title }: MoreDetailsModalProps) {
+// Contact/Business Hours stay static (genuinely the same for every card),
+// but everything else now comes from whatever the admin has entered for
+// this specific service type/add-on (Description + More Details) — see
+// CarParkBookingWizard's setMoreDetailsFor() call sites.
+export default function MoreDetailsModal({ onClose, description, html, title }: MoreDetailsModalProps) {
+  // Without this, the page behind the modal scrolled right along with it —
+  // the modal had its own scroll but so did the body underneath, at the same time.
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   return (
-    <div
-      className="fixed inset-0 z-[10000] flex items-start justify-center bg-black/50 p-4 overflow-y-auto"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <style jsx>{`
+        .ep-modal-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #e7701e #f3f4f6;
+        }
+        .ep-modal-scroll::-webkit-scrollbar {
+          width: 8px;
+        }
+        .ep-modal-scroll::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 8px;
+        }
+        .ep-modal-scroll::-webkit-scrollbar-thumb {
+          background-color: #e7701e;
+          border-radius: 8px;
+        }
+        .ep-modal-scroll::-webkit-scrollbar-thumb:hover {
+          background-color: #d56113;
+        }
+      `}</style>
+
       <div
-        className="relative bg-white w-full max-w-[720px] mt-10 mb-10 p-8 rounded-[4px] shadow-2xl"
+        className="ep-modal-scroll relative bg-white w-full max-w-[720px] max-h-[85vh] overflow-y-auto p-8 rounded-[4px] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border border-[#e7701e] text-[#e7701e] rounded cursor-pointer hover:bg-[#e7701e] hover:text-white transition-colors"
+          className="sticky top-0 float-right -mt-2 -mr-2 w-8 h-8 flex items-center justify-center border border-[#e7701e] text-[#e7701e] bg-white rounded cursor-pointer hover:bg-[#e7701e] hover:text-white transition-colors"
         >
           ✕
         </button>
 
-        {html && (
-          <div className="mb-6 pb-6 border-b border-gray-100">
+        {(description || html) && (
+          <div className="mb-6 pb-6 border-b border-gray-100 clear-both">
             {title && <h3 className="text-[20px] font-bold text-[#1a1a1a] mb-3">{title}</h3>}
-            <div
-              className="text-[14px] text-[#4a4a4a] leading-relaxed [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
+            {description && (
+              <div
+                className="text-[14px] text-[#4a4a4a] leading-relaxed mb-4 [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            )}
+            {html && (
+              <div
+                className="text-[14px] text-[#4a4a4a] leading-relaxed [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1"
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+            )}
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 clear-both">
           <div>
             <p className="text-[#e7701e] text-[12px] font-bold uppercase tracking-[0.5px] mb-2">Contact</p>
             <p className="text-[14px] text-[#1a1a1a]">Phone: 0333 004 0262</p>
@@ -53,36 +96,6 @@ export default function MoreDetailsModal({ onClose, html, title }: MoreDetailsMo
             <p className="text-[14px] text-[#1a1a1a]">Monday to Friday: 9 AM–5 PM</p>
           </div>
         </div>
-
-        <h3 className="text-[20px] font-bold text-[#1a1a1a] mt-6 mb-3">Directions for South Terminal</h3>
-        <p className="text-[14px] text-[#4a4a4a] leading-relaxed">
-          For South terminal when approaching the south terminal stay in the right-hand lane and follow the signs
-          for the short stay car park (pick up and drop off). On entering the barrier after taking your ticket you
-          will proceed to the ORANGE CAR PARK – LEVEL 4. Please reach out to our driver with EASY PARKING uniform
-          and they will be happy to help you. This is also your meeting point on your return.
-        </p>
-
-        <h3 className="text-[20px] font-bold text-[#1a1a1a] mt-6 mb-3">Directions for North Terminal</h3>
-        <p className="text-[14px] text-[#4a4a4a] leading-relaxed">
-          For North terminal when entering the North terminal stay in the left lane following the signs for the
-          short stay car park 6 (the SECOND car park on your right). On entering the barrier after taking your
-          ticket you will proceed to the CAR PARK 6 – LEVEL 3. Please reach out to our driver with EASY PARKING
-          uniform and they will be happy to help you. This is also your meeting point on your return.
-        </p>
-
-        <h3 className="text-[20px] font-bold text-[#1a1a1a] mt-6 mb-3">Additional Info</h3>
-        <p className="text-[14px] text-[#4a4a4a] leading-relaxed">
-          Please ensure that your vehicle is insured and has a valid road tax, MOT and sufficient petrol as the
-          vehicle is parked off the airport. Please print a copy of this booking confirmation and bring it with you
-          when you come to drop off your vehicle for your convenience. Please bear in mind that the vehicle will be
-          driven to our parking facility which is off-airport storage facility approved by British Parking
-          Association and the average mileage travelled will be 10-15 miles. The maximum distance travelled will be
-          within 10 mile (one way only) to the storage as per the British Parking Association guideline and
-          requirements and then will be driven back to the airport during your collection, not exceeding 20 mile
-          which is the maximum mileage it may be moved whilst your vehicle is in our care. We may move your vehicle
-          more than this mileage only in case of any emergencies (accidents/roadworks or any other unexpected
-          situations) and you will be informed regarding the same should such situation arise.
-        </p>
       </div>
     </div>
   );
