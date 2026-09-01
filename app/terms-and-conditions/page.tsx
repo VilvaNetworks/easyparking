@@ -72,7 +72,7 @@ export default function TermsAndConditionsPage() {
     "If the customer wishes to record the mileage, they can do so with our vehicle handling staff but should bear in mind that the vehicle will be moved to and from our parking facility which will be less than 10 mile one way as per the BPA authorized guidelines.",
     "We accept no liability for any electrical failure of any part including alarm, windscreens, immobilizers, glass, flat batteries, tyres and alloys and mechanical or structural failures, however caused.",
     "We are also not responsible for any damages that were not visible earlier due to dirt or hidden damages which becomes visible after cleaning or washing of the vehicle.",
-    "We are not responsible for any property or things left unattended in your vehicle or in the courtesy cars that we provided you.",
+    "We are not responding for any property or things left unattended in your vehicle or in the courtesy cars that we provided you.",
     "We will take responsible care of your vehicle for the period that you have booked with us and paid for. However, if you park for longer than the days you booked with us due to flight delays or other personal reasons, we will charge you in full for those days based on the prices at that time.",
     "If you did not collect your vehicle for longer days and did not attempt to contact us or arrange any alternative plans with us, then we may dispose your vehicle (after reasonable attempts to contact you from our staffs before doing so) and cover any loss incurred by us. We will not refund for any early returns.",
     "You can cancel your bookings up to 14 days after the booking and you will be refunded all the money that you have paid us.",
