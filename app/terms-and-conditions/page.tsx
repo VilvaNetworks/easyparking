@@ -73,6 +73,9 @@ export default function TermsAndConditionsPage() {
     "We accept no liability for any electrical failure of any part including alarm, windscreens, immobilizers, glass, flat batteries, tyres and alloys and mechanical or structural failures, however caused.",
     "We are also not responsible for any damages that were not visible earlier due to dirt or hidden damages which becomes visible after cleaning or washing of the vehicle.",
     "We are not responsible for any property or things left unattended in your vehicle or in the courtesy cars that we provided you.",
+    "We are not responsible for damages to your vehicle including damage to windscreens, wing mirrors and aerials, punctures, minor abrasions and dents.",
+    "We are not responsible for any theft or loss of any items left unattended in the car as we clearly instruct you to check all your belongings and take them with you when leaving the vehicle with us.",
+    "We are not responsible for damage or loss of the vehicle or contents arising due to unexpected circumstances like flood, fire, terrorism, catastrophe, adverse weather, traffic conditions, vandalism and anything else that is out of our control.",
     "We will take responsible care of your vehicle for the period that you have booked with us and paid for. However, if you park for longer than the days you booked with us due to flight delays or other personal reasons, we will charge you in full for those days based on the prices at that time.",
     "If you did not collect your vehicle for longer days and did not attempt to contact us or arrange any alternative plans with us, then we may dispose your vehicle (after reasonable attempts to contact you from our staffs before doing so) and cover any loss incurred by us. We will not refund for any early returns.",
     "You can cancel your bookings up to 14 days after the booking and you will be refunded all the money that you have paid us.",
@@ -83,7 +86,9 @@ export default function TermsAndConditionsPage() {
   const fineTerms = [
     "Any parking charge or penalty notice received for your vehicle whilst in our care – after the time the vehicle was handed over to us and before the time the vehicle was picked up back by you (which will be verified from the handover and collection sheet as we record all the details including the time of drop off and pick up) will be paid by us.",
     "You have to inform us as soon as you receive the charge or notice so we get to pay the discounted charge or fine within the 14 days time limit or you have to transfer the charge to us formally so we can get the letter and pay the discounted charge or fine within the stipulated time.",
-    "Failure to do this (inform us early allowing us to pay the discounted amount or transfer the charge formally) will result in the charge or fine being shared by the customer as well due to the customer’s negligence."
+    "Failure to do this (inform us early allowing us to pay the discounted amount or transfer the charge formally) will result in the charge or fine being shared by the customer as well due to the customer’s negligence.",
+    "We are not responsible for any penalty notices (PCN) received from Gatwick Airport, as we always instruct customers to park the vehicle in any empty row or bay so our staff can complete the formalities.",
+    "If there is no row or bay available due to the car park being full and you are unable to park the vehicle, this is not our fault as airports are very busy at times, and we will not be responsible for any PCN received as a result of this."
   ];
 
   return (
